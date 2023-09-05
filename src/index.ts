@@ -20,7 +20,7 @@ const app: Application = express();
 const PORT = process.env.PORT || 5000 
  
 const corsOptions = {
-    origin: 'http://127.0.0.1:5500', 
+    origin: 'https://umma-e96w.onrender.com', 
 }; 
 
 const __filename = fileURLToPath(import.meta.url);
