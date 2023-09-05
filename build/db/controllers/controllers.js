@@ -1,0 +1,92 @@
+import { DataModel } from "../models/dataModel.js";
+import { AdminInfo } from "../models/adminInfoModel.js";
+import { addressInfoAdminChat } from "../../options.js";
+export const dataController = {
+    postData: async (req, res) => {
+        const { name, region, place, city, prayer, address, location } = req.body;
+        const coordinates = location.split(",");
+        const photo = req.file;
+        try {
+            const data = await DataModel.create({
+                title: name,
+                region,
+                city,
+                place,
+                prayer,
+                photo: {
+                    image: (photo === null || photo === void 0 ? void 0 : photo.filename) || "",
+                },
+                address,
+                location: coordinates
+            });
+            res.json(data);
+        }
+        catch (error) {
+            console.log(error.message);
+        }
+    },
+    getAddressesAll: async (req, res) => {
+        try {
+            const data = await DataModel.find();
+            res.json(data);
+        }
+        catch (error) {
+            console.log(error.message);
+        }
+    },
+    getRegion: async () => {
+        try {
+            const data = await DataModel.find();
+            return data;
+        }
+        catch (error) {
+            console.log(error.message);
+        }
+    },
+    postAdminInfo: async (req, res) => {
+        const { token, botToken, chatId } = req.body;
+        try {
+            await AdminInfo.create({
+                token,
+                botToken,
+                chatId
+            });
+        }
+        catch (error) {
+            console.log(error.message);
+        }
+    },
+    getAdminInfo: async (req, res) => {
+        try {
+            const data = await AdminInfo.find();
+            res.json(data);
+        }
+        catch (error) {
+            console.log(error.message);
+        }
+    },
+    getAddressId: async (id, bot) => {
+        try {
+            const data = await DataModel.findById(id);
+            if (data) {
+                await addressInfoAdminChat(data, bot);
+            }
+        }
+        catch (error) {
+            console.log(error.message);
+        }
+    },
+    deleteAddress: async (addressId, obj) => {
+        const { id, bot } = obj;
+        try {
+            const data = await DataModel.findByIdAndDelete(addressId);
+            if (data) {
+                await bot.telegram.sendMessage(id, "Адрес удален");
+            }
+        }
+        catch (error) {
+            console.log(error.message);
+        }
+    }
+};
+//# sourceMappingURL=controllers.js.map
