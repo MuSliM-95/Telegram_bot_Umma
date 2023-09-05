@@ -10,7 +10,8 @@
     "start": "npm run build && node build/index",
     "lint": "npx eslint ./src",
     "format": "npx eslint ./src --fix",
-    "test": "jest"
+    "test": "jest",
+    "prod": "node build/index"
   },
   "keywords": [],
   "author": "",
