@@ -13,8 +13,8 @@ const __dirname = path.dirname(__filename);
 const latitude = 43.290502;
 const longitude = 45.312061; 
 
-const urlButton = [Markup.button.webApp("Добавить место", "https://umma-e96w.onrender.com/html")]
-const addressButton = [Markup.button.webApp("Посмотреть адреса", "https://umma-e96w.onrender.com/html/YandexMaps.html")]
+const urlButton = [Markup.button.webApp("Добавить место", "https://testjavascript.ru/html")]
+const addressButton = [Markup.button.webApp("Посмотреть адреса", "https://testjavascript.ru/html/maps.html")]
 const callbackButton = [Markup.button.webApp("Яндекс карты ", `https://yandex.com/maps/?ll=${longitude},${latitude}&z=2`)]
 const callback = [Markup.button.callback("Время молитв", "Время молитв")]
 const prayerButtonlocation = [Markup.button.locationRequest("По геолокации")]
