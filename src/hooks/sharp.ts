@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 
 // Функция для вывода время молитв на изображения 
 export const generateImage = async (obj: Timings, { bot, id }: Bot) => {
-    const imagePath = path.join(__dirname, "../../image/prayerTime.png")
+    const imagePath = path.join(__dirname, "../../images/prayerTime.png")
     const image = await readFile(imagePath)
     const img = sharp(image)
     const textSvg = Buffer.from(`<svg width="400" height="267">
@@ -26,9 +26,9 @@ export const generateImage = async (obj: Timings, { bot, id }: Bot) => {
      </svg>`)
 
     const res = await img.composite([{ input: textSvg }]).toBuffer()
-    await writeFile(path.join(__dirname, "../../image/res.png"), res)
+    await writeFile(path.join(__dirname, "../../images/res.png"), res)
 
-    await bot.telegram.sendPhoto(id, { source: path.join(__dirname, "../../image/res.png") })
-     unlink(path.join(__dirname, "../../image/res.png"), (error) => console.log(error));
+    await bot.telegram.sendPhoto(id, { source: path.join(__dirname, "../../images/res.png") })
+     unlink(path.join(__dirname, "../../images/res.png"), (error) => console.log(error));
 
 }
