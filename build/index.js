@@ -1,7 +1,7 @@
 import express from "express";
 import { connect } from "mongoose";
 import { Telegraf } from "telegraf";
-import { keyboardСontainer, prayerKeyboardСontainer } from "./options.js";
+import { infoText, keyboardСontainer, prayerKeyboardСontainer } from "./options.js";
 import { prayerTime, prayerTimeCity } from "./asyncs/fetch.js";
 import rgx from "./hooks/regExp/regExp.js";
 import router from "./db/routs/rout.js";
@@ -21,7 +21,7 @@ const __dirname = path.dirname(__filename);
 app.use(express.json());
 app.use(cors(corsOptions));
 app.use(router);
-app.use(express.static(path.join(__dirname, './db/upload/')));
+app.use(express.static(path.join(__dirname, '../src/db/upload/')));
 await connect(process.env.MONGODB);
 app.listen(PORT, async () => {
     console.log(`Server is running on port http://localhost:${PORT}`);
@@ -29,7 +29,7 @@ app.listen(PORT, async () => {
 const bot = new Telegraf(process.env.TOKEN);
 const start = async () => {
     let newText = false;
-    bot.start((ctx) => ctx.reply("Выберите действие", keyboardСontainer));
+    bot.start((ctx) => ctx.replyWithHTML(infoText(), keyboardСontainer));
     bot.hears("Время молитв", (ctx) => ctx.reply("Выберите действие", prayerKeyboardСontainer));
     bot.hears("На главную", (ctx) => ctx.reply("Выберите действие", keyboardСontainer));
     bot.hears("По названию города", (ctx) => {

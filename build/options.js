@@ -28,7 +28,7 @@ export const prayerKeyboardСontainer = Markup.keyboard([
     [backButtonHome]
 ]);
 const pathImage = (params) => {
-    return { source: path.join(__dirname, `./db/upload/${params || "scale_1200.webp"}`) };
+    return { source: path.join(__dirname, `../src/db/upload/${params || "scale_1200.webp"}`) };
 };
 const caption = (params) => {
     return `<strong>${params.title}</strong>\n\n<strong>${params.region}</strong>\n\n<strong>${params.city}</strong>\n\n<strong>${params.place}</strong>\n\n<strong>${params.prayer}</strong>\n\n`;
@@ -52,5 +52,13 @@ export const addressInfoAdminChat = async (data, obj) => {
     catch (error) {
         console.error("Ошибка при отправке фото:", error);
     }
+};
+export const infoText = () => {
+    return `
+<strong>Ассаляму алейкум уа рахматуЛлахи уа баракатух.</strong>
+<em>Это бот предназначен для того, чтобы помочь мусульманам в дороге найти дозволенные места.
+Вы можете добавить места, которые вам показались интересными, главное, чтобы не было харамных мест.
+Чтобы бот работал корректно, проверьте настройки геолокации для построения маршрута, также рекомендуем скачать Яндекс карты</em>
+`;
 };
 //# sourceMappingURL=options.js.map

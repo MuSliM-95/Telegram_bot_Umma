@@ -3,6 +3,7 @@ import { connect } from "mongoose";
 import { Telegraf } from "telegraf"
 import { Context } from "vm";
 import {
+    infoText,
     keyboardСontainer,
     prayerKeyboardСontainer
 } from "./options.js";
@@ -30,7 +31,7 @@ app.use(express.json());
 app.use(cors(corsOptions));
 app.use(router) 
 
-app.use(express.static(path.join(__dirname, './db/upload/')))
+app.use(express.static(path.join(__dirname, '../src/db/upload/')))
 
 await connect(process.env.MONGODB!)
  
@@ -46,7 +47,7 @@ const start = async () => {
         let newText: string[] | boolean = false
 
 // Обработка команд
-        bot.start((ctx) => ctx.reply("Выберите действие", keyboardСontainer))
+        bot.start((ctx) => ctx.replyWithHTML(infoText(),  keyboardСontainer))
         bot.hears("Время молитв", (ctx) => ctx.reply("Выберите действие", prayerKeyboardСontainer))
         bot.hears("На главную", (ctx) => ctx.reply("Выберите действие", keyboardСontainer))
         bot.hears("По названию города", (ctx) => {

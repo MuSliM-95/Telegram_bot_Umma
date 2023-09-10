@@ -23,7 +23,7 @@ const backButtonHome = Markup.button.callback("На главную", "")
 const prayerDum = [Markup.button.webApp("ДУМ РФ", `https://www.time-namaz.ru/`)] 
 
 
-export const keyboardСontainer = Markup.keyboard([
+export const keyboardСontainer =  Markup.keyboard([
     urlButton,
     addressButton,
     callbackButton,
@@ -39,7 +39,7 @@ export const prayerKeyboardСontainer = Markup.keyboard([
  
 
 const pathImage  = (params?:string) => {
-   return { source: path.join(__dirname, `./db/upload/${params || "scale_1200.webp"}`) }
+   return { source: path.join(__dirname, `../src/db/upload/${params || "scale_1200.webp"}`) }
 }
 const caption = (params: Data) => {
    return `<strong>${params.title}</strong>\n\n<strong>${params.region}</strong>\n\n<strong>${params.city}</strong>\n\n<strong>${params.place}</strong>\n\n<strong>${params.prayer}</strong>\n\n`;
@@ -68,4 +68,13 @@ export const addressInfoAdminChat = async (data: Data, obj: Bot) => {
         console.error("Ошибка при отправке фото:", error);
     }
 
+}
+
+export const infoText = ():string => {
+return `
+<strong>Ассаляму алейкум уа рахматуЛлахи уа баракатух.</strong>
+<em>Это бот предназначен для того, чтобы помочь мусульманам в дороге найти дозволенные места.
+Вы можете добавить места, которые вам показались интересными, главное, чтобы не было харамных мест.
+Чтобы бот работал корректно, проверьте настройки геолокации для построения маршрута, также рекомендуем скачать Яндекс карты</em>
+`
 }
