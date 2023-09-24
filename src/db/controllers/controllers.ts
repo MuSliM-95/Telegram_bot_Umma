@@ -3,7 +3,8 @@ import { Request } from "express";
 import { Response } from 'express';
 import { AdminInfo } from "../models/adminInfoModel.js";
 import { addressInfoAdminChat } from "../../options.js";
-import { Bot } from "../../types/global.js";
+import { Bot, ChatTypes } from "../../types/global.js";
+import { Chat } from "../models/chatModel.js";
 
 export const dataController = {
     postData: async (req: Request, res: Response): Promise<void> => {
@@ -56,11 +57,10 @@ export const dataController = {
     },
     
     postAdminInfo: async (req: Request, res: Response) => {
-        const {token, botToken, chatId} = req.body
+        const {token, chatId} = req.body
         try {
              await AdminInfo.create({
              token,
-             botToken,
              chatId 
             })
         } catch (error) {
@@ -103,6 +103,69 @@ export const dataController = {
        } catch (error) {
         console.log((error as Error).message);
        }
-      }
+      },
 
+      addChat: async ({first_name, chatId, chat }: ChatTypes) => {
+        try {
+        const getChat = await Chat.findOne({chatId})
+        if(!getChat) {
+        const data = await Chat.create({
+            first_name,
+            chatId,
+            chat
+           })  
+
+        return data
+        } 
+       
+        const data = await Chat.findOneAndUpdate({chatId}, {
+          chat
+         },{new: true})
+
+         if(data) {
+           return data
+         }
+        
+        } catch (error) {
+          console.log((error as Error).message);
+        }
+      },
+
+      getChatId: async (chatId:number) => {
+        try {
+          const data = await Chat.findOne({chatId})
+          if(data) {
+            return data
+          }
+        } catch (error) {
+          console.log((error as Error).message);
+        }
+      },
+
+      getChatFirst_name: async (first_name:string) => {
+        try {
+          const data = await Chat.findOne({first_name})
+          if(data) {
+            
+            return data
+          }
+
+        } catch (error) {
+          console.log((error as Error).message);
+        }
+      },
+
+      updateChat: async ({first_name, block }:ChatTypes) => {
+       try {
+        const data = await Chat.findOneAndUpdate({first_name}, {
+          block
+        }, {new: true})
+        if(data) {
+          return data?.block
+
+        }
+       } catch (error) {
+        console.log((error as Error).message);
+       }
+      }
 }

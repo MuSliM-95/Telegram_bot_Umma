@@ -1,5 +1,5 @@
 import { Markup } from "telegraf";
-import { Bot, Data } from "./types/global.js";
+import { Bot, ChatTypes, Data } from "./types/global.js";
 import { fileURLToPath } from 'url';
 import path from "path";
 import dotenv from 'dotenv'
@@ -9,34 +9,52 @@ dotenv.config()
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
-const latitude = 43.290502;
-const longitude = 45.312061; 
-
 const urlButton = [Markup.button.webApp("Добавить место", "https://testjavascript.ru/UmmaClient/html")]
 const addressButton = [Markup.button.webApp("Посмотреть адреса", "https://testjavascript.ru/UmmaClient/html/maps.html")]
-const callbackButton = [Markup.button.webApp("Яндекс карты ", `https://yandex.com/maps/?ll=${longitude},${latitude}&z=2`)]
 const callback = [Markup.button.callback("Время молитв", "Время молитв")]
 const prayerButtonlocation = [Markup.button.locationRequest("По геолокации")]
 const prayerButton = [Markup.button.callback("По названию города", "По названию города")]
 const backButtonHome = Markup.button.callback("На главную", "")
-const prayerDum = [Markup.button.webApp("ДУМ РФ", `https://www.time-namaz.ru/`)] 
+const openСhat = [Markup.button.text("Написать администратору")]
+const closeСhat = [Markup.button.text("Завершить беседу")]
+
 
 
 export const keyboardСontainer =  Markup.keyboard([
     urlButton,
     addressButton,
-    callbackButton,
     callback,
+    openСhat,
+    closeСhat
+])
+
+export const adminKeyboard = Markup.keyboard([
+    urlButton,
+    addressButton,
+    callback
 ])
 
 export const prayerKeyboardСontainer = Markup.keyboard([
     prayerButton,
     prayerButtonlocation,
-    prayerDum,
     [backButtonHome]
 ]) 
- 
+
+export const chatblock = ({chatId, first_name, block}: ChatTypes) => {
+   const blockUsers = block ? "Разблокировать пользователя" : "Заблокировать пользователя"
+   const  keyboard = {
+    inline_keyboard: [
+        [
+           Markup.button.callback("Завершить беседу", `Завершить беседу: ${chatId}`)
+        ],
+        [
+           Markup.button.callback( blockUsers, `${blockUsers}: ${first_name}` )
+        ]
+       ]
+   }
+   return keyboard
+}
+
 
 const pathImage  = (params?:string) => {
    return { source: path.join(__dirname, `../src/db/upload/${params || "scale_1200.webp"}`) }
@@ -56,7 +74,7 @@ export const addressInfoAdminChat = async (data: Data, obj: Bot) => {
                         `https://yandex.ru/maps/?rtext=~${data.location[0]},${data.location[1]}`),        
                 ],
                 [
-                    Markup.button.callback(`Удалить`, `Удалить ${data?._id}`) 
+                    Markup.button.callback(`Удалить`, `Удалить: ${data?._id}`) 
                 ]
             ]
         };

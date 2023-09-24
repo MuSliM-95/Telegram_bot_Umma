@@ -34,3 +34,15 @@ export interface Timings {
     Imsak: string;
     Midnight: string;
 }
+
+export interface ChatTypes {
+    first_name?: string,
+    chatId?: number,
+    chat?: boolean,
+    block?: boolean
+}
+
+export interface Admin {
+    token:string,
+    chatId: number
+}

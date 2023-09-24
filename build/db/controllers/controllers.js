@@ -1,6 +1,7 @@
 import { DataModel } from "../models/dataModel.js";
 import { AdminInfo } from "../models/adminInfoModel.js";
 import { addressInfoAdminChat } from "../../options.js";
+import { Chat } from "../models/chatModel.js";
 export const dataController = {
     postData: async (req, res) => {
         const { name, region, place, city, prayer, address, location } = req.body;
@@ -44,11 +45,10 @@ export const dataController = {
         }
     },
     postAdminInfo: async (req, res) => {
-        const { token, botToken, chatId } = req.body;
+        const { token, chatId } = req.body;
         try {
             await AdminInfo.create({
                 token,
-                botToken,
                 chatId
             });
         }
@@ -82,6 +82,63 @@ export const dataController = {
             const data = await DataModel.findByIdAndDelete(addressId);
             if (data) {
                 await bot.telegram.sendMessage(id, "Адрес удален");
+            }
+        }
+        catch (error) {
+            console.log(error.message);
+        }
+    },
+    addChat: async ({ first_name, chatId, chat }) => {
+        try {
+            const getChat = await Chat.findOne({ chatId });
+            if (!getChat) {
+                const data = await Chat.create({
+                    first_name,
+                    chatId,
+                    chat
+                });
+                return data;
+            }
+            const data = await Chat.findOneAndUpdate({ chatId }, {
+                chat
+            }, { new: true });
+            if (data) {
+                return data;
+            }
+        }
+        catch (error) {
+            console.log(error.message);
+        }
+    },
+    getChatId: async (chatId) => {
+        try {
+            const data = await Chat.findOne({ chatId });
+            if (data) {
+                return data;
+            }
+        }
+        catch (error) {
+            console.log(error.message);
+        }
+    },
+    getChatFirst_name: async (first_name) => {
+        try {
+            const data = await Chat.findOne({ first_name });
+            if (data) {
+                return data;
+            }
+        }
+        catch (error) {
+            console.log(error.message);
+        }
+    },
+    updateChat: async ({ first_name, block }) => {
+        try {
+            const data = await Chat.findOneAndUpdate({ first_name }, {
+                block
+            }, { new: true });
+            if (data) {
+                return data === null || data === void 0 ? void 0 : data.block;
             }
         }
         catch (error) {

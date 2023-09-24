@@ -1,9 +1,9 @@
 import {model, Schema} from "mongoose"
+import { Admin } from "../../types/global.js"
 
 
-const adminInfoSchema = new Schema({
+const adminInfoSchema = new Schema<Admin>({
     token: String,
-    botToken: String,
     chatId: Number,
 })
 

@@ -6,23 +6,31 @@ import { unlink } from 'fs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 export const generateImage = async (obj, { bot, id }) => {
-    const imagePath = path.join(__dirname, "../../images/prayerTime.png");
+    const imagePath = path.join(__dirname, "../../images/religious-muslim-man-praying-mosque.jpg");
     const image = await readFile(imagePath);
     const img = sharp(image);
-    const textSvg = Buffer.from(`<svg width="400" height="267">
+    const textSvg = Buffer.from(`<svg width="600" height="400">
      <style>
-    .title { fill: #404e58; font-size: 17px}
-     </style>
-     <text x="170px" y="39px" text-anchor="middle" class="title">${obj.Fajr.split("(")[0]}</text>
-     <text x="170px" y="77px" text-anchor="middle" class="title">${obj.Sunrise.split("(")[0]}</text>
-     <text x="170px" y="115px" text-anchor="middle" class="title">${obj.Dhuhr.split("(")[0]}</text>
-     <text x="170px" y="155px" text-anchor="middle" class="title">${obj.Asr.split("(")[0]}</text>
-     <text x="170px" y="192px" text-anchor="middle" class="title">${obj.Maghrib.split("(")[0]}</text>
-     <text x="170px" y="231px" text-anchor="middle" class="title">${obj.Isha.split("(")[0]}</text>
+    .title { fill: #404e58; font-size: 25px}
+    .name_bot { font-size: 30px }
+    </style>
+     <text x="15px" y="25px" class="name_bot" >@DIARY_OF_A_MUSLIM_BOT</text>
+     <text x="157px" y="109px" text-anchor="middle" class="title">Фаджр: ${obj.Fajr.split("(")[0]}</text>
+     <text x="158px" y="147px" text-anchor="middle" class="title">Восход: ${obj.Sunrise.split("(")[0]}</text>
+     <text x="145px" y="185px" text-anchor="middle" class="title">Зухр: ${obj.Dhuhr.split("(")[0]}</text>
+     <text x="140px" y="225px" text-anchor="middle" class="title">Аср: ${obj.Asr.split("(")[0]}</text>
+     <text x="160px" y="262px" text-anchor="middle" class="title">Магриб: ${obj.Maghrib.split("(")[0]}</text>
+     <text x="145px" y="301px" text-anchor="middle" class="title">Иша: ${obj.Isha.split("(")[0]}</text>
      </svg>`);
     const res = await img.composite([{ input: textSvg }]).toBuffer();
     await writeFile(path.join(__dirname, "../../images/res.png"), res);
-    await bot.telegram.sendPhoto(id, { source: path.join(__dirname, "../../images/res.png") });
+    await bot.telegram.sendPhoto(id, { source: path.join(__dirname, "../../images/res.png") }, { caption: htmlText(), parse_mode: "HTML" });
     unlink(path.join(__dirname, "../../images/res.png"), (error) => console.log(error));
 };
+function htmlText() {
+    return `<strong>Данные об времени молитвы были взяты из открытого источника https://aladhan.com/.</strong>
+<em>Они могут отличаться немного от местного времени молитв, указанных в мечетях. Мы уточнили у имама точное время молитв. 
+ Нам сказали, что время каждого региона определяет муфтият или имам региона, и в некоторых случаях там принято тянуть время на 15-25 минут.
+ Нам также сказали сделать время минут на 15-25 минут позже, чем раньше!</em>`;
+}
 //# sourceMappingURL=sharp.js.map

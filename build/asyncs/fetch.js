@@ -41,7 +41,7 @@ export const prayerTimeCity = async (str, obj) => {
             await bot.telegram.sendMessage(id, "Вы ввели неправильный название страны или города");
             return;
         }
-        const res = await fetch(` http://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}&method=8`, {
+        const res = await fetch(`http://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}&method=8`, {
             method: 'GET',
             headers: {
                 'X-RapidAPI-Key': process.env.KEY,
