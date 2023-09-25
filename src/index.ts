@@ -96,7 +96,7 @@ const start = async () => {
                 return
             }  
          
-            if(chat?.chat && !chat.block && id != process.env.CHAT_ID && text !== "Завершить беседу") {
+            if(chat?.chat && !chat.block && id != process.env.CHAT_ID ) {
                 await ctx.telegram.forwardMessage(process.env.CHAT_ID!, id, message_id)
                 return 
             }
@@ -107,11 +107,6 @@ const start = async () => {
                 return 
             }
             
-            if(text === "Завершить беседу") {
-                chat = await dataController.addChat({chatId: id, chat: false})
-                return 
-            }
-  
             if(id == process.env.CHAT_ID) {
             const chat = await dataController.getChatFirst_name(text)
 

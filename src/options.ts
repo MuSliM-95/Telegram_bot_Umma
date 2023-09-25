@@ -16,7 +16,6 @@ const prayerButtonlocation = [Markup.button.locationRequest("По геолока
 const prayerButton = [Markup.button.callback("По названию города", "По названию города")]
 const backButtonHome = Markup.button.callback("На главную", "")
 const openСhat = [Markup.button.text("Написать администратору")]
-const closeСhat = [Markup.button.text("Завершить беседу")]
 
 
 
@@ -25,7 +24,6 @@ export const keyboardСontainer =  Markup.keyboard([
     addressButton,
     callback,
     openСhat,
-    closeСhat
 ])
 
 export const adminKeyboard = Markup.keyboard([
