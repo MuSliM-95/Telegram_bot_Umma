@@ -132,9 +132,9 @@ export const dataController = {
             console.log(error.message);
         }
     },
-    updateChat: async ({ first_name, block }) => {
+    updateChat: async ({ chatId, block }) => {
         try {
-            const data = await Chat.findOneAndUpdate({ first_name }, {
+            const data = await Chat.findOneAndUpdate({ chatId }, {
                 block
             }, { new: true });
             if (data) {

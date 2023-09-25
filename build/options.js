@@ -30,7 +30,7 @@ export const prayerKeyboardСontainer = Markup.keyboard([
     prayerButtonlocation,
     [backButtonHome]
 ]);
-export const chatblock = ({ chatId, first_name, block }) => {
+export const chatblock = ({ chatId, block }) => {
     const blockUsers = block ? "Разблокировать пользователя" : "Заблокировать пользователя";
     const keyboard = {
         inline_keyboard: [
@@ -38,7 +38,7 @@ export const chatblock = ({ chatId, first_name, block }) => {
                 Markup.button.callback("Завершить беседу", `Завершить беседу: ${chatId}`)
             ],
             [
-                Markup.button.callback(blockUsers, `${blockUsers}: ${first_name}`)
+                Markup.button.callback(blockUsers, `${blockUsers}: ${chatId}`)
             ]
         ]
     };
@@ -64,7 +64,7 @@ export const addressInfoAdminChat = async (data, obj) => {
                 ]
             ]
         };
-        await bot.telegram.sendPhoto(id, pathImage((_a = data === null || data === void 0 ? void 0 : data.photo) === null || _a === void 0 ? void 0 : _a.image), { caption: caption(data), parse_mode: "HTML", reply_markup: inlineKeyboard });
+        await bot.telegram.sendPhoto(process.env.CHAT_ID, pathImage((_a = data === null || data === void 0 ? void 0 : data.photo) === null || _a === void 0 ? void 0 : _a.image), { caption: caption(data), parse_mode: "HTML", reply_markup: inlineKeyboard });
     }
     catch (error) {
         console.error("Ошибка при отправке фото:", error);

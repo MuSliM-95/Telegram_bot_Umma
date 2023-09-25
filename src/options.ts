@@ -40,7 +40,7 @@ export const prayerKeyboardСontainer = Markup.keyboard([
     [backButtonHome]
 ]) 
 
-export const chatblock = ({chatId, first_name, block}: ChatTypes) => {
+export const chatblock = ({chatId,  block}: ChatTypes) => {
    const blockUsers = block ? "Разблокировать пользователя" : "Заблокировать пользователя"
    const  keyboard = {
     inline_keyboard: [
@@ -48,7 +48,7 @@ export const chatblock = ({chatId, first_name, block}: ChatTypes) => {
            Markup.button.callback("Завершить беседу", `Завершить беседу: ${chatId}`)
         ],
         [
-           Markup.button.callback( blockUsers, `${blockUsers}: ${first_name}` )
+           Markup.button.callback( blockUsers, `${blockUsers}: ${chatId}` )
         ]
        ]
    }

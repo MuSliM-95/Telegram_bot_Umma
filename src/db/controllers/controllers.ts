@@ -155,9 +155,9 @@ export const dataController = {
         }
       },
 
-      updateChat: async ({first_name, block }:ChatTypes) => {
+      updateChat: async ({chatId, block }:ChatTypes) => {
        try {
-        const data = await Chat.findOneAndUpdate({first_name}, {
+        const data = await Chat.findOneAndUpdate({chatId}, {
           block
         }, {new: true})
         if(data) {

@@ -115,13 +115,16 @@ const start = async () => {
             if(id == process.env.CHAT_ID) {
             const chat = await dataController.getChatFirst_name(text)
 
-            if(!chat) {
-              await ctx.reply(`Пользователь с именем ${text} не найден`)
-              return 
-            }
-              await ctx.reply(chat.first_name, {reply_markup: chatblock(chat)})
-              return 
-            }
+             if(!chat) {
+               await ctx.reply(`Пользователь с именем ${text} не найден`)
+               return 
+             }
+
+             if(chat) {
+                await ctx.reply(chat.first_name, {reply_markup: chatblock(chat)})
+                return 
+             }
+           }
         } catch (error) {
             console.error(error)
         }
@@ -142,17 +145,18 @@ const start = async () => {
 
             if(queryInfo[0] === 'Завершить беседу') {
                 await dataController.addChat({chatId: queryInfo[1], chat: false})
+                await  query.reply(`Чат ${queryInfo[1]} закрыт`)
                 return 
             }
 
             if(queryInfo[0] === 'Заблокировать пользователя') {
-                await dataController.updateChat({first_name: queryInfo[1], block: true})
+                await dataController.updateChat({chatId: queryInfo[1], block: true})
                 await  query.reply(`Пользователь ${queryInfo[1]} заблокирован`)
                 return
             }
 
             if(queryInfo[0] === 'Разблокировать пользователя') {
-                await dataController.updateChat({first_name: queryInfo[1], block: false})
+                await dataController.updateChat({chatId: queryInfo[1], block: false})
                 await  query.reply(`Пользователь ${queryInfo[1]} разблокирован`)
                 return 
             }
