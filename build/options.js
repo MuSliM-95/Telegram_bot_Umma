@@ -12,13 +12,11 @@ const prayerButtonlocation = [Markup.button.locationRequest("По геолока
 const prayerButton = [Markup.button.callback("По названию города", "По названию города")];
 const backButtonHome = Markup.button.callback("На главную", "");
 const openСhat = [Markup.button.text("Написать администратору")];
-const closeСhat = [Markup.button.text("Завершить беседу")];
 export const keyboardСontainer = Markup.keyboard([
     urlButton,
     addressButton,
     callback,
     openСhat,
-    closeСhat
 ]);
 export const adminKeyboard = Markup.keyboard([
     urlButton,
@@ -31,18 +29,25 @@ export const prayerKeyboardСontainer = Markup.keyboard([
     [backButtonHome]
 ]);
 export const chatblock = ({ chatId, block }) => {
-    const blockUsers = block ? "Разблокировать пользователя" : "Заблокировать пользователя";
-    const keyboard = {
-        inline_keyboard: [
-            [
-                Markup.button.callback("Завершить беседу", `Завершить беседу: ${chatId}`)
-            ],
-            [
-                Markup.button.callback(blockUsers, `${blockUsers}: ${chatId}`)
+    try {
+        const blockUsers = block ? "Разблокировать пользователя" : "Заблокировать пользователя";
+        const blockUsersCallbek = block ? "Разблокировать" : "Заблокировать";
+        console.log(chatId);
+        const keyboard = {
+            inline_keyboard: [
+                [
+                    Markup.button.callback("Завершить беседу", `Завершить беседу: ${chatId}`)
+                ],
+                [
+                    Markup.button.callback(blockUsers, `${blockUsersCallbek}: ${chatId}`)
+                ],
             ]
-        ]
-    };
-    return keyboard;
+        };
+        return keyboard;
+    }
+    catch (error) {
+        console.log(error);
+    }
 };
 const pathImage = (params) => {
     return { source: path.join(__dirname, `../src/db/upload/${params || "scale_1200.webp"}`) };
@@ -52,7 +57,7 @@ const caption = (params) => {
 };
 export const addressInfoAdminChat = async (data, obj) => {
     var _a;
-    const { bot, id } = obj;
+    const { bot } = obj;
     try {
         const inlineKeyboard = {
             inline_keyboard: [

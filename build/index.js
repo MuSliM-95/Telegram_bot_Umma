@@ -46,7 +46,6 @@ const start = async () => {
             const timestamp = ctx.update.message.date;
             const { location } = ctx.update.message;
             let chat = await dataController.getChatId(id);
-            console.log(id);
             if (text) {
                 var [idAddress, params] = text === null || text === void 0 ? void 0 : text.split(": ");
             }
@@ -70,17 +69,14 @@ const start = async () => {
                 await ctx.telegram.forwardMessage(process.env.CHAT_ID, id, message_id);
                 return;
             }
-            if ((chat === null || chat === void 0 ? void 0 : chat.chat) && !chat.block && id != process.env.CHAT_ID && text !== "Завершить беседу") {
+            console.log(id);
+            if ((chat === null || chat === void 0 ? void 0 : chat.chat) && !chat.block && id != process.env.CHAT_ID) {
                 await ctx.telegram.forwardMessage(process.env.CHAT_ID, id, message_id);
                 return;
             }
             if (id == process.env.CHAT_ID && replyIdChat) {
                 chat = await dataController.addChat({ chatId: replyIdChat, chat: true });
                 await ctx.telegram.copyMessage(replyIdChat, process.env.CHAT_ID, message_id);
-                return;
-            }
-            if (text === "Завершить беседу") {
-                chat = await dataController.addChat({ chatId: id, chat: false });
                 return;
             }
             if (id == process.env.CHAT_ID) {
@@ -114,12 +110,12 @@ const start = async () => {
                 await query.reply(`Чат ${queryInfo[1]} закрыт`);
                 return;
             }
-            if (queryInfo[0] === 'Заблокировать пользователя') {
+            if (queryInfo[0] === 'Заблокировать') {
                 await dataController.updateChat({ chatId: queryInfo[1], block: true });
                 await query.reply(`Пользователь ${queryInfo[1]} заблокирован`);
                 return;
             }
-            if (queryInfo[0] === 'Разблокировать пользователя') {
+            if (queryInfo[0] === 'Разблокировать') {
                 await dataController.updateChat({ chatId: queryInfo[1], block: false });
                 await query.reply(`Пользователь ${queryInfo[1]} разблокирован`);
                 return;

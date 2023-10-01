@@ -63,9 +63,7 @@ const start = async () => {
             const timestamp = ctx.update.message.date
             const { location } = ctx.update.message
             let chat =  await dataController.getChatId(id)
-               
-            console.log(id);
-            
+                     
             
             if(text){
              var [idAddress, params ] = text?.split(": ")
@@ -108,6 +106,7 @@ const start = async () => {
             }
             
             if(id == process.env.CHAT_ID) {
+            
             const chat = await dataController.getChatFirst_name(text)
 
              if(!chat) {
@@ -124,14 +123,11 @@ const start = async () => {
             console.error(error)
         }
          
-        
        })
      bot.on("callback_query", async (query:Context) => {
            const callbackData = query.update.callback_query.data;
            const id = query.from.id
-           const queryInfo = callbackData?.split(': ')
-           console.log(queryInfo);
-           
+           const queryInfo = callbackData?.split(': ')           
            try {
             if(queryInfo[0] === 'Удалить') {
                 await dataController.deleteAddress(queryInfo[1], {bot, id}) 
@@ -144,13 +140,13 @@ const start = async () => {
                 return 
             }
 
-            if(queryInfo[0] === 'Заблокировать пользователя') {
+            if(queryInfo[0] === 'Заблокировать') {
                 await dataController.updateChat({chatId: queryInfo[1], block: true})
                 await  query.reply(`Пользователь ${queryInfo[1]} заблокирован`)
                 return
             }
 
-            if(queryInfo[0] === 'Разблокировать пользователя') {
+            if(queryInfo[0] === 'Разблокировать') {
                 await dataController.updateChat({chatId: queryInfo[1], block: false})
                 await  query.reply(`Пользователь ${queryInfo[1]} разблокирован`)
                 return 

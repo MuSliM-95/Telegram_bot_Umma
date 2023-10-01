@@ -39,18 +39,27 @@ export const prayerKeyboardСontainer = Markup.keyboard([
 ]) 
 
 export const chatblock = ({chatId,  block}: ChatTypes) => {
-   const blockUsers = block ? "Разблокировать пользователя" : "Заблокировать пользователя"
-   const  keyboard = {
-    inline_keyboard: [
-        [
-           Markup.button.callback("Завершить беседу", `Завершить беседу: ${chatId}`)
-        ],
-        [
-           Markup.button.callback( blockUsers, `${blockUsers}: ${chatId}` )
-        ]
-       ]
-   }
-   return keyboard
+    try {
+        const blockUsers = block ? "Разблокировать пользователя" : "Заблокировать пользователя"
+        const blockUsersCallbek = block ? "Разблокировать" : "Заблокировать"
+        const  keyboard = {
+            inline_keyboard: [
+                [
+                   Markup.button.callback("Завершить беседу", `Завершить беседу: ${chatId}`)
+                ],
+                [
+                   Markup.button.callback( blockUsers, `${blockUsersCallbek}: ${chatId}`)
+                ],
+               ]
+           }
+           return keyboard
+    } catch (error) {
+        console.log(error);
+        
+    }
+   
+   
+  
 }
 
 
@@ -63,7 +72,7 @@ const caption = (params: Data) => {
 
 
 export const addressInfoAdminChat = async (data: Data, obj: Bot) => {
-    const { bot, id } = obj
+    const { bot } = obj
     try {
         const inlineKeyboard = {
             inline_keyboard:  [

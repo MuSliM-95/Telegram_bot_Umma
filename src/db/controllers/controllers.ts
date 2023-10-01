@@ -145,13 +145,12 @@ export const dataController = {
       getChatFirst_name: async (first_name:string) => {
         try {
           const data = await Chat.findOne({first_name})
-          if(data) {
-            
+          if(data) {           
             return data
           }
 
         } catch (error) {
-          console.log((error as Error).message);
+          console.log((error as Error).message.toString());
         }
       },
 

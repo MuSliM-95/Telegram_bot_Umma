@@ -129,7 +129,7 @@ export const dataController = {
             }
         }
         catch (error) {
-            console.log(error.message);
+            console.log(error.message.toString());
         }
     },
     updateChat: async ({ chatId, block }) => {
