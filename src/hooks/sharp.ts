@@ -5,6 +5,7 @@ import sharp from "sharp"
 import { unlink } from 'fs';
 import { Bot, Timings } from '../types/global.js';
 
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -33,7 +34,6 @@ export const generateImage = async (obj: Timings, { bot, id }: Bot) => {
     await bot.telegram.sendPhoto(id, { source: path.join(__dirname, "../../images/res.png") }, {caption: htmlText(), parse_mode:"HTML" })
    
      unlink(path.join(__dirname, "../../images/res.png"), (error) => console.log(error));
-
 }
 
 function htmlText() {

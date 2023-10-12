@@ -48,10 +48,10 @@ export const chatblock = ({chatId,  block}: ChatTypes) => {
                    Markup.button.callback("Завершить беседу", `Завершить беседу: ${chatId}`)
                 ],
                 [
-                   Markup.button.callback( blockUsers, `${blockUsersCallbek}: ${chatId}`)
+                   Markup.button.callback(blockUsers, `${blockUsersCallbek}: ${chatId}`)
                 ],
                ]
-           }
+           } 
            return keyboard
     } catch (error) {
         console.log(error);
@@ -67,12 +67,13 @@ const pathImage  = (params?:string) => {
    return { source: path.join(__dirname, `../src/db/upload/${params || "scale_1200.webp"}`) }
 }
 const caption = (params: Data) => {
-   return `<strong>${params.title}</strong>\n\n<strong>${params.region}</strong>\n\n<strong>${params.city}</strong>\n\n<strong>${params.place}</strong>\n\n<strong>${params.prayer}</strong>\n\n`;
+   return `<strong>${params.title}</strong>\n\n<strong>Время работы: ${params.time}</strong>\n\n<strong>${params.region}</strong>\n\n<strong>${params.city}</strong>\n\n<strong>${params.place}</strong>\n\n<strong>${params.prayer}</strong>\n\n`;
 }
 
 
 export const addressInfoAdminChat = async (data: Data, obj: Bot) => {
     const { bot } = obj
+    
     try {
         const inlineKeyboard = {
             inline_keyboard:  [
@@ -82,7 +83,7 @@ export const addressInfoAdminChat = async (data: Data, obj: Bot) => {
                 ],
                 [
                     Markup.button.callback(`Удалить`, `Удалить: ${data?._id}`) 
-                ]
+                ],
             ]
         };
 
@@ -98,8 +99,11 @@ export const addressInfoAdminChat = async (data: Data, obj: Bot) => {
 export const infoText = ():string => {
 return `
 <strong>Ассаляму алейкум уа рахматуЛлахи уа баракатух.</strong>
-<em>Это бот предназначен для того, чтобы помочь мусульманам в дороге найти дозволенные места.
-Вы можете добавить места, которые вам показались интересными, главное, чтобы не было харамных мест.
-Чтобы бот работал корректно, проверьте настройки геолокации для построения маршрута, также рекомендуем скачать Яндекс карты</em>
+<em>Bot "Umma places" является помощником для поиска объектов разного назначения как Мечети, Кафе-халяль, Магазины и т.п.
+
+Так же Вы можете добавить ваши личные объекты Вашей деятельности или известные Вам подобные места.
+
+Бот работает в основном с геолокацией, поэтому включите ее у себя заранее в настройках для корректной работы.
+</em>
 `
 }

@@ -12,6 +12,7 @@ export interface Data {
     },
     location: string[],
     address: string,
+    time: string,
 
 }
 export interface File {
@@ -45,4 +46,18 @@ export interface ChatTypes {
 export interface Admin {
     token:string,
     chatId: number
+}
+
+export interface Photo {
+    file_id: string,
+    file_unique_id: string,
+    file_size: number,
+    width: number,
+    height: number
+}
+
+export interface  UpdateAddress {
+    chatId: string,
+    photo: Photo[],
+    botObj: Bot
 }

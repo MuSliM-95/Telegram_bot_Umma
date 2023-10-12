@@ -12,6 +12,7 @@ const dataSchema = new Schema<Data>({
     photo: Object,
     address: String, 
     location:[],
+    time: String,
  
 }) 
 

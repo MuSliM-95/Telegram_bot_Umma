@@ -14,7 +14,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 const corsOptions = {
-    origin: 'https://testjavascript.ru',
+    origin: 'http://127.0.0.1:5500',
 };
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -29,6 +29,9 @@ app.listen(PORT, async () => {
 const bot = new Telegraf(process.env.TOKEN);
 const start = async () => {
     let newText = false;
+    bot.telegram.setMyCommands([
+        { command: "start", description: "start" }
+    ]);
     bot.start((ctx) => ctx.replyWithHTML(infoText(), (ctx === null || ctx === void 0 ? void 0 : ctx.chat.id.toString()) === process.env.CHAT_ID ? adminKeyboard : keyboardСontainer));
     bot.hears("Время молитв", (ctx) => ctx.reply("Выберите действие", prayerKeyboardСontainer));
     bot.hears("На главную", (ctx) => ctx.reply("Выберите действие", (ctx === null || ctx === void 0 ? void 0 : ctx.chat.id.toString()) === process.env.CHAT_ID ? adminKeyboard : keyboardСontainer));
@@ -40,7 +43,7 @@ const start = async () => {
         var _a, _b;
         try {
             const { text } = ctx.update.message;
-            const { message_id } = ctx.update.message;
+            const { message_id, photo, caption } = ctx.update.message;
             const { id, first_name } = ctx.update.message.chat;
             const replyIdChat = (_b = (_a = ctx.update.message.reply_to_message) === null || _a === void 0 ? void 0 : _a.forward_from) === null || _b === void 0 ? void 0 : _b.id;
             const timestamp = ctx.update.message.date;
@@ -55,7 +58,7 @@ const start = async () => {
                 newText = false;
                 return;
             }
-            if (idAddress === "id" && params) {
+            if (idAddress === "id" && params && id == process.env.CHAT_ID) {
                 await dataController.getAddressId(params, { bot, id });
                 return;
             }
@@ -69,7 +72,6 @@ const start = async () => {
                 await ctx.telegram.forwardMessage(process.env.CHAT_ID, id, message_id);
                 return;
             }
-            console.log(id);
             if ((chat === null || chat === void 0 ? void 0 : chat.chat) && !chat.block && id != process.env.CHAT_ID) {
                 await ctx.telegram.forwardMessage(process.env.CHAT_ID, id, message_id);
                 return;
@@ -77,6 +79,10 @@ const start = async () => {
             if (id == process.env.CHAT_ID && replyIdChat) {
                 chat = await dataController.addChat({ chatId: replyIdChat, chat: true });
                 await ctx.telegram.copyMessage(replyIdChat, process.env.CHAT_ID, message_id);
+                return;
+            }
+            if (id == process.env.CHAT_ID && photo && caption) {
+                await dataController.updateAddress(params = { chatId: caption, photo, botObj: { bot, id } });
                 return;
             }
             if (id == process.env.CHAT_ID) {
@@ -99,7 +105,6 @@ const start = async () => {
         const callbackData = query.update.callback_query.data;
         const id = query.from.id;
         const queryInfo = callbackData === null || callbackData === void 0 ? void 0 : callbackData.split(': ');
-        console.log(queryInfo);
         try {
             if (queryInfo[0] === 'Удалить') {
                 await dataController.deleteAddress(queryInfo[1], { bot, id });

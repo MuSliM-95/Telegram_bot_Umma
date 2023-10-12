@@ -8,6 +8,7 @@ const dataSchema = new Schema({
     photo: Object,
     address: String,
     location: [],
+    time: String,
 });
 export const DataModel = model("DataModel", dataSchema);
 //# sourceMappingURL=dataModel.js.map

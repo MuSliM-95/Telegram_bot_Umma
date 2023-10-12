@@ -1,7 +1,15 @@
+import {  UpdateAddress } from './../../types/global.js';
 import multer, { Multer, FileFilterCallback } from 'multer'
 import moment from 'moment'
 import { Request, Express } from 'express';
+import { writeFile } from "fs/promises"
+import path from 'path';
+import { fileURLToPath } from 'url';
+import fetch from 'node-fetch';
+import fs from "fs"
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 interface ExpressMulterFile extends Express.Multer.File {
     originalname: string;
@@ -26,6 +34,33 @@ const fileFilter = (req: Request, file: ExpressMulterFile, cb: FileFilterCallbac
     } else {
         cb(null, false)
     }
+}
+
+export const updatePhoto = async ({photo, botObj}: UpdateAddress) => {
+  const { bot } = botObj
+try {
+  const fileInfo = await  bot.telegram.getFile(photo[0].file_id)
+  const res = await fetch(`https://api.telegram.org/file/bot${process.env.TOKEN}/${fileInfo.file_path}`, {
+    headers: {
+      'Content-Type': 'application/octet-stream',
+    }
+  })
+ if(!res.ok) {
+    return
+ }
+
+   const filename = `${photo[0].file_id}.png`;
+   const outputPath = `../upload/${filename}`;
+   const writer = fs.createWriteStream(path.join(__dirname, outputPath));
+
+  if(res.body) {
+      res.body.pipe(writer)
+  }
+  
+  
+} catch (error) {
+    console.log((error as Error).message);
+}
 }
 
 

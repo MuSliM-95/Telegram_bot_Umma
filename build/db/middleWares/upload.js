@@ -1,5 +1,11 @@
 import multer from 'multer';
 import moment from 'moment';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import fetch from 'node-fetch';
+import fs from "fs";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const storage = multer.diskStorage({
     destination(req, file, cb) {
         cb(null, 'src/db/upload/');
@@ -15,6 +21,29 @@ const fileFilter = (req, file, cb) => {
     }
     else {
         cb(null, false);
+    }
+};
+export const updatePhoto = async ({ photo, botObj }) => {
+    const { bot } = botObj;
+    try {
+        const fileInfo = await bot.telegram.getFile(photo[0].file_id);
+        const res = await fetch(`https://api.telegram.org/file/bot${process.env.TOKEN}/${fileInfo.file_path}`, {
+            headers: {
+                'Content-Type': 'application/octet-stream',
+            }
+        });
+        if (!res.ok) {
+            return;
+        }
+        const filename = `${photo[0].file_id}.png`;
+        const outputPath = `../upload/${filename}`;
+        const writer = fs.createWriteStream(path.join(__dirname, outputPath));
+        if (res.body) {
+            res.body.pipe(writer);
+        }
+    }
+    catch (error) {
+        console.log(error.message);
     }
 };
 export default multer({ storage, fileFilter });

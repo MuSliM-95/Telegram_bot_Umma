@@ -3,13 +3,14 @@ import { Request } from "express";
 import { Response } from 'express';
 import { AdminInfo } from "../models/adminInfoModel.js";
 import { addressInfoAdminChat } from "../../options.js";
-import { Bot, ChatTypes } from "../../types/global.js";
+import { Bot, ChatTypes, UpdateAddress } from "../../types/global.js";
 import { Chat } from "../models/chatModel.js";
+import { updatePhoto } from "../middleWares/upload.js"
 
 export const dataController = {
     postData: async (req: Request, res: Response): Promise<void> => {
     
-        const {name, region, place, city, prayer, address, location   } = req.body
+        const {name, region, place, city, prayer, address, location, time } = req.body
         const coordinates = location.split(",")
         const photo = req.file 
         try {
@@ -23,7 +24,8 @@ export const dataController = {
                     image: photo?.filename || "",
                 },
                 address, 
-                location: coordinates
+                location: coordinates,
+                time,
             })
     
             res.json(data)
@@ -33,27 +35,25 @@ export const dataController = {
         }
     },
 
-    getAddressesAll: async (req:Request, res:Response) => {
-     try {
+    getAddresses: async (req:Request, res:Response) => { 
+      const location = JSON.parse(req.params.jsonLocation)
+      const { topLeft, bottomRight } = location
+    
+      try {
        const data = await DataModel.find()
 
-       res.json(data)
+       const filterAddresses = data.filter(address => {
+        if(address.location[0] >= topLeft[0] && address.location[0] <= bottomRight[0]
+           && address.location[1] >= topLeft[1] &&  address.location[1] <= bottomRight[1] ) {
+            return address
+          }
+       })
+             
+        res.json(filterAddresses)
 
      } catch (error) {
-      console.log((error as Error).message);
+        console.log((error as Error).message);
      }
-    },
-
-    getRegion: async () => {
-        try {
-            const data = await DataModel.find()
-
-            return data 
- 
-        } catch (error) {
-            console.log((error as Error).message);
-        }
-
     },
     
     postAdminInfo: async (req: Request, res: Response) => {
@@ -78,7 +78,7 @@ export const dataController = {
       }
     },
 
-      getAddressId: async (id: string, bot:Bot) => {
+     getAddressId: async (id: string, bot:Bot) => {
         try {
           const data = await DataModel.findById(id)
           if(data) {
@@ -88,7 +88,7 @@ export const dataController = {
         } catch (error) {
           console.log((error as Error).message);
         }
-      },
+     },
 
       deleteAddress: async (addressId:string, obj:Bot) => {
         const {id, bot} = obj
@@ -161,10 +161,28 @@ export const dataController = {
         }, {new: true})
         if(data) {
           return data?.block
-
         }
        } catch (error) {
         console.log((error as Error).message);
        }
+      },
+
+      updateAddress: async (params : UpdateAddress) => {
+        const { chatId, photo, botObj } = params
+        const addressId = chatId.split(": ")[1]  
+        await  updatePhoto(params)
+        
+        try {
+          const data = await DataModel.findOneAndUpdate({_id: addressId}, {
+            photo: {
+              image: `${photo[0].file_id}.png` || "",
+            }
+          }, {new: true})
+          if(data) {
+          await  addressInfoAdminChat(data, botObj)
+          }
+        } catch (error) {
+          console.log((error as Error).message);
+        }
       }
 }

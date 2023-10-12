@@ -32,7 +32,6 @@ export const chatblock = ({ chatId, block }) => {
     try {
         const blockUsers = block ? "Разблокировать пользователя" : "Заблокировать пользователя";
         const blockUsersCallbek = block ? "Разблокировать" : "Заблокировать";
-        console.log(chatId);
         const keyboard = {
             inline_keyboard: [
                 [
@@ -53,7 +52,7 @@ const pathImage = (params) => {
     return { source: path.join(__dirname, `../src/db/upload/${params || "scale_1200.webp"}`) };
 };
 const caption = (params) => {
-    return `<strong>${params.title}</strong>\n\n<strong>${params.region}</strong>\n\n<strong>${params.city}</strong>\n\n<strong>${params.place}</strong>\n\n<strong>${params.prayer}</strong>\n\n`;
+    return `<strong>${params.title}</strong>\n\n<strong>Время работы: ${params.time}</strong>\n\n<strong>${params.region}</strong>\n\n<strong>${params.city}</strong>\n\n<strong>${params.place}</strong>\n\n<strong>${params.prayer}</strong>\n\n`;
 };
 export const addressInfoAdminChat = async (data, obj) => {
     var _a;
@@ -66,7 +65,7 @@ export const addressInfoAdminChat = async (data, obj) => {
                 ],
                 [
                     Markup.button.callback(`Удалить`, `Удалить: ${data === null || data === void 0 ? void 0 : data._id}`)
-                ]
+                ],
             ]
         };
         await bot.telegram.sendPhoto(process.env.CHAT_ID, pathImage((_a = data === null || data === void 0 ? void 0 : data.photo) === null || _a === void 0 ? void 0 : _a.image), { caption: caption(data), parse_mode: "HTML", reply_markup: inlineKeyboard });
@@ -78,9 +77,12 @@ export const addressInfoAdminChat = async (data, obj) => {
 export const infoText = () => {
     return `
 <strong>Ассаляму алейкум уа рахматуЛлахи уа баракатух.</strong>
-<em>Это бот предназначен для того, чтобы помочь мусульманам в дороге найти дозволенные места.
-Вы можете добавить места, которые вам показались интересными, главное, чтобы не было харамных мест.
-Чтобы бот работал корректно, проверьте настройки геолокации для построения маршрута, также рекомендуем скачать Яндекс карты</em>
+<em>Bot "Umma places" является помощником для поиска объектов разного назначения как Мечети, Кафе-халяль, Магазины и т.п.
+
+Так же Вы можете добавить ваши личные объекты Вашей деятельности или известные Вам подобные места.
+
+Бот работает в основном с геолокацией, поэтому включите ее у себя заранее в настройках для корректной работы.
+</em>
 `;
 };
 //# sourceMappingURL=options.js.map
