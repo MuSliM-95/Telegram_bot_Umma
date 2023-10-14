@@ -42,12 +42,6 @@ export interface ChatTypes {
     chat?: boolean,
     block?: boolean
 }
-
-export interface Admin {
-    token:string,
-    chatId: number
-}
-
 export interface Photo {
     file_id: string,
     file_unique_id: string,

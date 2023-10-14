@@ -1,8 +1,9 @@
 import { DataModel } from "../models/dataModel.js";
-import { AdminInfo } from "../models/adminInfoModel.js";
 import { addressInfoAdminChat } from "../../options.js";
 import { Chat } from "../models/chatModel.js";
 import { updatePhoto } from "../middleWares/upload.js";
+import dotenv from 'dotenv';
+dotenv.config();
 export const dataController = {
     postData: async (req, res) => {
         const { name, region, place, city, prayer, address, location, time } = req.body;
@@ -45,21 +46,12 @@ export const dataController = {
             console.log(error.message);
         }
     },
-    postAdminInfo: async (req, res) => {
-        const { token, chatId } = req.body;
-        try {
-            await AdminInfo.create({
-                token,
-                chatId
-            });
-        }
-        catch (error) {
-            console.log(error.message);
-        }
-    },
     getAdminInfo: async (req, res) => {
         try {
-            const data = await AdminInfo.find();
+            const data = {
+                token: process.env.TOKEN,
+                chatId: process.env.CHAT_ID
+            };
             res.json(data);
         }
         catch (error) {

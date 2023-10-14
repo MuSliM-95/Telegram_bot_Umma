@@ -14,7 +14,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 const corsOptions = {
-    origin: 'http://127.0.0.1:5500',
+    origin: 'https://testjavascript.ru',
 };
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

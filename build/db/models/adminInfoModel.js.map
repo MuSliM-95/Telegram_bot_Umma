@@ -1,1 +1,0 @@
-{"version":3,"file":"adminInfoModel.js","sourceRoot":"","sources":["../../../src/db/models/adminInfoModel.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,KAAK,EAAE,MAAM,EAAC,MAAM,UAAU,CAAA;AAItC,MAAM,eAAe,GAAG,IAAI,MAAM,CAAQ;IACtC,KAAK,EAAE,MAAM;IACb,MAAM,EAAE,MAAM;CACjB,CAAC,CAAA;AAEF,MAAM,CAAC,MAAM,SAAS,GAAG,KAAK,CAAC,WAAW,EAAE,eAAe,CAAE,CAAA"}
