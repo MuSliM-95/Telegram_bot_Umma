@@ -1,16 +1,18 @@
 import { Update } from 'telegraf/types';
 import { Telegraf, Context } from 'telegraf';
-export interface Data {
-    _id: string,
+import { Model, InferAttributes, InferCreationAttributes } from "sequelize"
+export interface Data extends Model<InferAttributes<Data>, InferCreationAttributes<Data>> {
+    id?: string,
     region: string,
     city: string,
     title: string,
     place: string,
     prayer: string,
-    photo?: {
+    photo: {
         image: string,
     },
-    location: string[],
+    latitude: string,
+    longitude: string,
     address: string,
     time: string,
 
@@ -36,11 +38,12 @@ export interface Timings {
     Midnight: string;
 }
 
-export interface ChatTypes {
-    first_name?: string,
-    chatId?: number,
-    chat?: boolean,
-    block?: boolean
+export interface ChatTypes extends Model<InferAttributes<ChatTypes>, InferCreationAttributes<ChatTypes>> {
+    id?: number,
+    first_name: string,
+    chatId: string,
+    chat: boolean,
+    block: boolean
 }
 export interface Photo {
     file_id: string,
@@ -50,7 +53,7 @@ export interface Photo {
     height: number
 }
 
-export interface  UpdateAddress {
+export interface UpdateAddress {
     chatId: string,
     photo: Photo[],
     botObj: Bot

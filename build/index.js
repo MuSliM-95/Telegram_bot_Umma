@@ -1,5 +1,4 @@
 import express from "express";
-import { connect } from "mongoose";
 import { Telegraf } from "telegraf";
 import { adminKeyboard, chatblock, infoText, keyboardСontainer, prayerKeyboardСontainer } from "./options.js";
 import { prayerTime, prayerTimeCity } from "./asyncs/fetch.js";
@@ -7,22 +6,24 @@ import rgx from "./hooks/regExp/regExp.js";
 import router from "./db/routs/rout.js";
 import cors from "cors";
 import dotenv from 'dotenv';
-import { dataController } from "./db/controllers/controllers.js";
+import { chatController } from "./db/controllers/chatController.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import { addressController } from "./db/controllers/addressController.js";
+import "./db/index.js";
+import { sendBroadcast } from "./hooks/mailing/mailing.js";
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 const corsOptions = {
-    origin: 'https://testjavascript.ru',
+    origin: 'http://127.0.0.1:5500',
 };
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.json());
 app.use(cors(corsOptions));
 app.use(router);
-app.use(express.static(path.join(__dirname, '../src/db/upload/')));
-await connect(process.env.MONGODB);
+app.use(express.static(path.join(__dirname, './db/uploads/')));
 app.listen(PORT, async () => {
     console.log(`Server is running on port http://localhost:${PORT}`);
 });
@@ -48,9 +49,17 @@ const start = async () => {
             const replyIdChat = (_b = (_a = ctx.update.message.reply_to_message) === null || _a === void 0 ? void 0 : _a.forward_from) === null || _b === void 0 ? void 0 : _b.id;
             const timestamp = ctx.update.message.date;
             const { location } = ctx.update.message;
-            let chat = await dataController.getChatId(id);
+            console.log(caption);
+            let chat = await chatController.getChatId(id);
             if (text) {
                 var [idAddress, params] = text === null || text === void 0 ? void 0 : text.split(": ");
+            }
+            if (idAddress === "Отправить рассылку") {
+                const chatIdArr = await chatController.getChat();
+                if (chatIdArr && chatIdArr.length > 0) {
+                    await sendBroadcast(params, chatIdArr, bot);
+                    return;
+                }
             }
             if (!location && newText) {
                 newText = rgx(text);
@@ -59,7 +68,7 @@ const start = async () => {
                 return;
             }
             if (idAddress === "id" && params && id == process.env.CHAT_ID) {
-                await dataController.getAddressId(params, { bot, id });
+                await addressController.getAddressId(params, { bot, id });
                 return;
             }
             if (location) {
@@ -67,7 +76,7 @@ const start = async () => {
                 return;
             }
             if (text === "Написать администратору") {
-                chat = await dataController.addChat({ first_name, chatId: id, chat: true });
+                chat = await chatController.addChat({ first_name, chatId: id, chat: true });
                 await ctx.reply("Вам скора ответят, по воле Аллаха");
                 await ctx.telegram.forwardMessage(process.env.CHAT_ID, id, message_id);
                 return;
@@ -77,16 +86,16 @@ const start = async () => {
                 return;
             }
             if (id == process.env.CHAT_ID && replyIdChat) {
-                chat = await dataController.addChat({ chatId: replyIdChat, chat: true });
+                chat = await chatController.addChat({ chatId: replyIdChat, chat: true });
                 await ctx.telegram.copyMessage(replyIdChat, process.env.CHAT_ID, message_id);
                 return;
             }
             if (id == process.env.CHAT_ID && photo && caption) {
-                await dataController.updateAddress(params = { chatId: caption, photo, botObj: { bot, id } });
+                await addressController.updateAddress(params = { chatId: caption, photo, botObj: { bot, id } });
                 return;
             }
             if (id == process.env.CHAT_ID) {
-                const chat = await dataController.getChatFirst_name(text);
+                const chat = await chatController.getChatFirst_name(text);
                 if (!chat) {
                     await ctx.reply(`Пользователь с именем ${text} не найден`);
                     return;
@@ -107,21 +116,21 @@ const start = async () => {
         const queryInfo = callbackData === null || callbackData === void 0 ? void 0 : callbackData.split(': ');
         try {
             if (queryInfo[0] === 'Удалить') {
-                await dataController.deleteAddress(queryInfo[1], { bot, id });
+                await addressController.deleteAddress(queryInfo[1], { bot, id });
                 return;
             }
             if (queryInfo[0] === 'Завершить беседу') {
-                await dataController.addChat({ chatId: queryInfo[1], chat: false });
+                await chatController.addChat({ chatId: queryInfo[1], chat: false });
                 await query.reply(`Чат ${queryInfo[1]} закрыт`);
                 return;
             }
             if (queryInfo[0] === 'Заблокировать') {
-                await dataController.updateChat({ chatId: queryInfo[1], block: true });
+                await chatController.updateChat({ chatId: queryInfo[1], block: true });
                 await query.reply(`Пользователь ${queryInfo[1]} заблокирован`);
                 return;
             }
             if (queryInfo[0] === 'Разблокировать') {
-                await dataController.updateChat({ chatId: queryInfo[1], block: false });
+                await chatController.updateChat({ chatId: queryInfo[1], block: false });
                 await query.reply(`Пользователь ${queryInfo[1]} разблокирован`);
                 return;
             }

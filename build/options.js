@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const urlButton = [Markup.button.webApp("Добавить место", "https://testjavascript.ru/UmmaClient/html")];
+const urlButton = [Markup.button.webApp("Добавить место", "https://testjavascript.ru/UmmaClient/html/")];
 const addressButton = [Markup.button.webApp("Посмотреть адреса", "https://testjavascript.ru/UmmaClient/html/maps.html")];
 const callback = [Markup.button.callback("Время молитв", "Время молитв")];
 const prayerButtonlocation = [Markup.button.locationRequest("По геолокации")];
@@ -49,7 +49,7 @@ export const chatblock = ({ chatId, block }) => {
     }
 };
 const pathImage = (params) => {
-    return { source: path.join(__dirname, `../src/db/upload/${params || "scale_1200.webp"}`) };
+    return { source: path.join(__dirname, `../src/db/uploads/${params || "scale_1200.webp"}`) };
 };
 const caption = (params) => {
     return `<strong>${params.title}</strong>\n\n<strong>Время работы: ${params.time}</strong>\n\n<strong>${params.region}</strong>\n\n<strong>${params.city}</strong>\n\n<strong>${params.place}</strong>\n\n<strong>${params.prayer}</strong>\n\n`;
@@ -61,10 +61,10 @@ export const addressInfoAdminChat = async (data, obj) => {
         const inlineKeyboard = {
             inline_keyboard: [
                 [
-                    Markup.button.webApp("Открыть в Яндекс картах", `https://yandex.ru/maps/?rtext=~${data.location[0]},${data.location[1]}`),
+                    Markup.button.webApp("Открыть в Яндекс картах", `https://yandex.ru/maps/?rtext=~${data.latitude},${data.longitude}`),
                 ],
                 [
-                    Markup.button.callback(`Удалить`, `Удалить: ${data === null || data === void 0 ? void 0 : data._id}`)
+                    Markup.button.callback(`Удалить`, `Удалить: ${data === null || data === void 0 ? void 0 : data.id}`)
                 ],
             ]
         };
