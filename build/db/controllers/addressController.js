@@ -2,6 +2,7 @@ import { addressInfoAdminChat } from "../../options.js";
 import { updatePhoto } from "../middleWares/upload.js";
 import dotenv from 'dotenv';
 import Address from "../models/Address.js";
+import { sendMessageTelegram } from "../../hooks/mailing/mailing.js";
 dotenv.config();
 export const addressController = {
     postData: async (req, res) => {
@@ -23,7 +24,8 @@ export const addressController = {
                 longitude: coordinates[1],
                 time,
             });
-            res.json(data);
+            sendMessageTelegram(data);
+            res.json("Данные сохранены");
         }
         catch (error) {
             console.log(error.message);

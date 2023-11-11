@@ -5,6 +5,7 @@ import { Bot, UpdateAddress } from "../../types/global.js";
 import { updatePhoto } from "../middleWares/upload.js";
 import dotenv from 'dotenv'
 import Address from "../models/Address.js";
+import { sendMessageTelegram } from "../../hooks/mailing/mailing.js";
 
 dotenv.config()
 
@@ -29,8 +30,9 @@ export const addressController = {
         longitude: coordinates[1],
         time,
       })
-
-      res.json(data)
+        
+       sendMessageTelegram(data)
+      res.json("Данные сохранены")
     } catch (error) {
       console.log((error as Error).message);
 
@@ -74,7 +76,7 @@ export const addressController = {
   getAddressId: async (id: string, bot: Bot) => {
     try {
       const data = await Address.findOne({ where: { id } })
-      
+
       if (data) {
         await addressInfoAdminChat(data, bot)
       }
@@ -105,7 +107,7 @@ export const addressController = {
     await updatePhoto(params)
 
     try {
-      const data = await Address.findOne({where: {id: addressId}})
+      const data = await Address.findOne({ where: { id: addressId } })
       data?.update(
         {
           photo: {
@@ -120,6 +122,6 @@ export const addressController = {
       }
     } catch (error) {
       console.log((error as Error).message);
-    } 
+    }
   }
 }

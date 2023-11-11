@@ -16,7 +16,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 const corsOptions = {
-    origin: 'http://127.0.0.1:5500',
+    origin: 'https://umma-maps.ru',
 };
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, './db/uploads/')));
 app.listen(PORT, async () => {
     console.log(`Server is running on port http://localhost:${PORT}`);
 });
-const bot = new Telegraf(process.env.TOKEN);
+export const bot = new Telegraf(process.env.TOKEN);
 const start = async () => {
     let newText = false;
     bot.telegram.setMyCommands([
@@ -49,7 +49,6 @@ const start = async () => {
             const replyIdChat = (_b = (_a = ctx.update.message.reply_to_message) === null || _a === void 0 ? void 0 : _a.forward_from) === null || _b === void 0 ? void 0 : _b.id;
             const timestamp = ctx.update.message.date;
             const { location } = ctx.update.message;
-            console.log(caption);
             let chat = await chatController.getChatId(id);
             if (text) {
                 var [idAddress, params] = text === null || text === void 0 ? void 0 : text.split(": ");

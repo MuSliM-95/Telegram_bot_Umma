@@ -27,7 +27,7 @@ const app: Application = express();
 const PORT = process.env.PORT || 5000
 
 const corsOptions = {
-    origin: 'http://127.0.0.1:5500',
+    origin: 'https://umma-maps.ru',
 };
 
 const __filename = fileURLToPath(import.meta.url);
@@ -44,7 +44,7 @@ app.listen(PORT, async () => {
     console.log(`Server is running on port http://localhost:${PORT}`);
 });
 
-const bot = new Telegraf(process.env.TOKEN!)
+export const bot = new Telegraf(process.env.TOKEN!)
 
 const start = async () => {
     let newText: string[] | boolean = false 
