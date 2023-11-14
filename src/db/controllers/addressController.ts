@@ -60,18 +60,6 @@ export const addressController = {
     }
   },
 
-  getAdminInfo: async (req: Request, res: Response) => {
-    try {
-      const data = {
-        token: process.env.TOKEN,
-        chatId: process.env.CHAT_ID
-      }
-
-      res.json(data)
-    } catch (error) {
-      console.log((error as Error).message);
-    }
-  },
 
   getAddressId: async (id: string, bot: Bot) => {
     try {

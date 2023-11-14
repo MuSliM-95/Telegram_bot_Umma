@@ -12,9 +12,16 @@ import { fileURLToPath } from "url";
 import { addressController } from "./db/controllers/addressController.js";
 import "./db/index.js";
 import { sendBroadcast } from "./hooks/mailing/mailing.js";
+import fs from "fs";
+import https from "https";
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
+const options = {
+    key: fs.readFileSync('/path/to/privkey.pem'),
+    cert: fs.readFileSync('/path/to/fullchain.pem'),
+};
+const server = https.createServer(options, app);
 const corsOptions = {
     origin: 'https://umma-maps.ru',
 };

@@ -21,13 +21,20 @@ import { ChatTypes } from "./types/global.js";
 import "./db/index.js"
 import { sendBroadcast } from "./hooks/mailing/mailing.js";
 
+
 dotenv.config()
 
 const app: Application = express();
 const PORT = process.env.PORT || 5000
 
+
+
+
 const corsOptions = {
     origin: 'https://umma-maps.ru',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 204,
 };
 
 const __filename = fileURLToPath(import.meta.url);
@@ -38,7 +45,6 @@ app.use(cors(corsOptions));
 app.use(router)
 
 app.use(express.static(path.join(__dirname, './db/uploads/')))
-
 
 app.listen(PORT, async () => {
     console.log(`Server is running on port http://localhost:${PORT}`);

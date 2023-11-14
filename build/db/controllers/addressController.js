@@ -48,18 +48,6 @@ export const addressController = {
             console.log(error.message);
         }
     },
-    getAdminInfo: async (req, res) => {
-        try {
-            const data = {
-                token: process.env.TOKEN,
-                chatId: process.env.CHAT_ID
-            };
-            res.json(data);
-        }
-        catch (error) {
-            console.log(error.message);
-        }
-    },
     getAddressId: async (id, bot) => {
         try {
             const data = await Address.findOne({ where: { id } });

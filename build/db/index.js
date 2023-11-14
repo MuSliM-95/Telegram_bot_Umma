@@ -4,7 +4,7 @@ dotenv.config();
 export const sequelize = new Sequelize(process.env.DB_NAME, process.env.USER, process.env.PASSWORD, {
     host: process.env.HOST_DB,
     dialect: "mysql",
-    logging: true,
+    logging: false,
     port: Number(process.env.DB_PORT),
 });
 export const connect = async () => {
