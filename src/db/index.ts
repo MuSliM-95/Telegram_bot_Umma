@@ -5,7 +5,7 @@ import dotenv from "dotenv"
 dotenv.config()
 
 
-export const sequelize = new Sequelize(process.env.DB_NAME!, process.env.USER_DB!, process.env.PASSWORD!, {
+export const sequelize = new Sequelize(process.env.DB_NAME!, process.env.USER_DB!, process.env.PASSWORD_DB!, {
     host: process.env.HOST_DB!,
     dialect: "mysql",
     logging: false,
