@@ -21,7 +21,6 @@ import { ChatTypes } from "./types/global.js";
 import "./db/index.js"
 import { sendBroadcast } from "./hooks/mailing/mailing.js";
 
-
 dotenv.config()
 
 const app: Application = express();
@@ -45,6 +44,7 @@ app.use(cors(corsOptions));
 app.use(router)
 
 app.use(express.static(path.join(__dirname, './db/uploads/')))
+
 
 app.listen(PORT, async () => {
     console.log(`Server is running on port http://localhost:${PORT}`);
