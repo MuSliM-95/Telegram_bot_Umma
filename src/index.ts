@@ -47,7 +47,7 @@ app.get("/", (req, res) => {
   res.send(`<h1>Ассаламу Алейкум</h1>`)
 })
 
-app.use(express.static(path.join(__dirname, './db/uploads/')))
+app.use(express.static(path.join(__dirname, 'src', './db/uploads/')))
 
 
 app.listen(PORT, async () => {
