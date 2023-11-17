@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const storage = multer.diskStorage({
     destination(req, file, cb) {
-        cb(null, path.join(__dirname, "../uploads/"));
+        cb(null, path.join(__dirname, "../../../src/db/uploads/"));
     },
     filename(req, file, cb) {
         const data = moment().format('DDMMYYYY-HHmmss_SSS');

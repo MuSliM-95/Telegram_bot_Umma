@@ -26,7 +26,7 @@ const __dirname = path.dirname(__filename);
 app.use(express.json());
 app.use(cors(corsOptions));
 app.use(router);
-app.use(express.static(path.join(__dirname, './db/uploads/')));
+app.use(express.static(path.join(__dirname, '../src/db/uploads/')));
 app.listen(PORT, async () => {
     console.log(`Server is running on port http://localhost:${PORT}`);
 });
