@@ -48,7 +48,7 @@ try {
  }
 
    const filename = `${photo[photo.length - 1].file_id}.png`;
-   const outputPath = `../../../src/uploads/${filename}`;
+   const outputPath = `../../../src/db/uploads/${filename}`;
    const writer = fs.createWriteStream(path.join(__dirname, outputPath));
 
   if(res.body) {

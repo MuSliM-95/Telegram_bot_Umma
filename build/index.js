@@ -36,7 +36,10 @@ const start = async () => {
     bot.telegram.setMyCommands([
         { command: "start", description: "start" }
     ]);
-    bot.start((ctx) => ctx.replyWithHTML(infoText(), (ctx === null || ctx === void 0 ? void 0 : ctx.chat.id.toString()) === process.env.CHAT_ID ? adminKeyboard : keyboardСontainer));
+    bot.start((ctx) => {
+        ctx.replyWithHTML(infoText(), (ctx === null || ctx === void 0 ? void 0 : ctx.chat.id) === process.env.CHAT_ID ? adminKeyboard : keyboardСontainer),
+            chatController.addChat({ first_name: ctx.update.message.chat.first_name, chatId: ctx.update.message.chat.id, chat: false });
+    });
     bot.hears("Время молитв", (ctx) => ctx.reply("Выберите действие", prayerKeyboardСontainer));
     bot.hears("На главную", (ctx) => ctx.reply("Выберите действие", (ctx === null || ctx === void 0 ? void 0 : ctx.chat.id.toString()) === process.env.CHAT_ID ? adminKeyboard : keyboardСontainer));
     bot.hears("По названию города", (ctx) => {
@@ -98,9 +101,8 @@ const start = async () => {
             }
             if (id == process.env.CHAT_ID) {
                 const chat = await chatController.getChatFirst_name(text);
-                if (!chat) {
-                    await ctx.reply(`Пользователь с именем ${text} не найден`);
-                    return;
+                if (!chat && !photo) {
+                    return ctx.reply(`Пользователь с именем ${text} не найден`);
                 }
                 if (chat) {
                     await ctx.reply(chat.first_name, { reply_markup: chatblock(chat) });

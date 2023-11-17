@@ -35,8 +35,8 @@ export const updatePhoto = async ({ photo, botObj }) => {
         if (!res.ok) {
             return;
         }
-        const filename = `${photo[0].file_id}.png`;
-        const outputPath = `../uploads/${filename}`;
+        const filename = `${photo[photo.length - 1].file_id}.png`;
+        const outputPath = `../../../src/db/uploads/${filename}`;
         const writer = fs.createWriteStream(path.join(__dirname, outputPath));
         if (res.body) {
             res.body.pipe(writer);

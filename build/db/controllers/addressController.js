@@ -79,7 +79,7 @@ export const addressController = {
             const data = await Address.findOne({ where: { id: addressId } });
             data === null || data === void 0 ? void 0 : data.update({
                 photo: {
-                    image: `${photo[0].file_id}.png` || "",
+                    image: `${photo[photo.length - 1].file_id}.png` || "",
                 }
             });
             await (data === null || data === void 0 ? void 0 : data.save());

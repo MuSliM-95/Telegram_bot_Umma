@@ -43,7 +43,7 @@ app.use(express.json());
 app.use(cors(corsOptions));
 app.use(router)
 
-app.use(express.static(path.join(__dirname,  '../src/db/uploads/')))
+app.use(express.static(path.join(__dirname, '../src/db/uploads/')))
 
 
 app.listen(PORT, async () => {
@@ -53,12 +53,17 @@ app.listen(PORT, async () => {
 export const bot = new Telegraf(process.env.TOKEN!)
 
 const start = async () => {
-    let newText: string[] | boolean = false 
+    let newText: string[] | boolean = false
     // Обработка команд
     bot.telegram.setMyCommands([
         { command: "start", description: "start" }
     ])
-    bot.start((ctx) => ctx.replyWithHTML(infoText(), ctx?.chat.id.toString() === process.env.CHAT_ID! ? adminKeyboard : keyboardСontainer))
+
+    bot.start((ctx: Context) => {
+        ctx.replyWithHTML(infoText(), ctx?.chat.id === process.env.CHAT_ID! ? adminKeyboard : keyboardСontainer),
+        chatController.addChat({first_name: ctx.update.message.chat.first_name, chatId: ctx.update.message.chat.id, chat: false } as ChatTypes)
+    })
+
     bot.hears("Время молитв", (ctx) => ctx.reply("Выберите действие", prayerKeyboardСontainer))
     bot.hears("На главную", (ctx) => ctx.reply("Выберите действие", ctx?.chat.id.toString() === process.env.CHAT_ID! ? adminKeyboard : keyboardСontainer))
     bot.hears("По названию города", (ctx) => {
@@ -84,7 +89,7 @@ const start = async () => {
                 const chatIdArr = await chatController.getChat()
 
                 if (chatIdArr && chatIdArr.length > 0) {
-                 await  sendBroadcast(params, chatIdArr, bot)
+                    await sendBroadcast(params, chatIdArr, bot)
                     return
                 }
             }
@@ -134,8 +139,8 @@ const start = async () => {
                 const chat = await chatController.getChatFirst_name(text)
 
                 if (!chat && !photo) {
-                    return  ctx.reply(`Пользователь с именем ${text} не найден`)
-                    
+                    return ctx.reply(`Пользователь с именем ${text} не найден`)
+
                 }
 
                 if (chat) {
