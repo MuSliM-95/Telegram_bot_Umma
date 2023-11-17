@@ -60,7 +60,7 @@ const start = async () => {
     ])
 
     bot.start((ctx: Context) => {
-        ctx.replyWithHTML(infoText(), ctx?.chat.id === process.env.CHAT_ID! ? adminKeyboard : keyboardСontainer),
+        ctx.replyWithHTML(infoText(), ctx?.chat.id == process.env.CHAT_ID! ? adminKeyboard : keyboardСontainer),
         ctx?.chat.id !== process.env.CHAT_ID! &&  chatController.addChat({first_name: ctx.update.message.chat.first_name, chatId: ctx.update.message.chat.id, chat: false } as ChatTypes)
     })
 
@@ -85,7 +85,7 @@ const start = async () => {
                 var [idAddress, params] = text?.split(": ")
             }
 
-            if (id === process.env.CHAT_ID && idAddress === "Отправить рассылку") {
+            if (id == process.env.CHAT_ID! && idAddress === "Отправить рассылку") {
                 const chatIdArr = await chatController.getChat()
 
                 if (chatIdArr && chatIdArr.length > 0) {
