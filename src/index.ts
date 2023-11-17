@@ -61,7 +61,7 @@ const start = async () => {
 
     bot.start((ctx: Context) => {
         ctx.replyWithHTML(infoText(), ctx?.chat.id == process.env.CHAT_ID! ? adminKeyboard : keyboardСontainer),
-        ctx?.chat.id !== process.env.CHAT_ID! &&  chatController.addChat({first_name: ctx.update.message.chat.first_name, chatId: ctx.update.message.chat.id, chat: false } as ChatTypes)
+        ctx?.chat.id != process.env.CHAT_ID! &&  chatController.addChat({first_name: ctx.update.message.chat.first_name, chatId: ctx.update.message.chat.id, chat: false } as ChatTypes)
     })
 
     bot.hears("Время молитв", (ctx) => ctx.reply("Выберите действие", prayerKeyboardСontainer))
