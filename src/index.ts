@@ -133,9 +133,9 @@ const start = async () => {
             if (id == process.env.CHAT_ID) {
                 const chat = await chatController.getChatFirst_name(text)
 
-                if (!chat) {
-                    await ctx.reply(`Пользователь с именем ${text} не найден`)
-                    return
+                if (!chat && !photo) {
+                    return  ctx.reply(`Пользователь с именем ${text} не найден`)
+                    
                 }
 
                 if (chat) {
