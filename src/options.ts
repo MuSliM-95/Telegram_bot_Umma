@@ -85,8 +85,10 @@ export const addressInfoAdminChat = async (data: Data, obj: Bot) => {
             ]
         };
 
-        await bot.telegram.sendPhoto(process.env.CHAT_ID!, pathImage(data?.photo?.image),
+        return bot.telegram.sendPhoto(process.env.CHAT_ID!, pathImage(data?.photo?.image),
         { caption: caption(data), parse_mode: "HTML", reply_markup: inlineKeyboard  });
+
+         
 
     } catch (error) {
         console.error("Ошибка при отправке фото:", error);

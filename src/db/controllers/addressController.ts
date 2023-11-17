@@ -99,7 +99,7 @@ export const addressController = {
       data?.update(
         {
           photo: {
-            image: `${photo[0].file_id}.png` || "",
+            image: `${photo[photo.length -1].file_id}.png` || "",
           }
         }
       )
