@@ -37,8 +37,8 @@ const start = async () => {
         { command: "start", description: "start" }
     ]);
     bot.start((ctx) => {
-        ctx.replyWithHTML(infoText(), (ctx === null || ctx === void 0 ? void 0 : ctx.chat.id) === process.env.CHAT_ID ? adminKeyboard : keyboardСontainer),
-            chatController.addChat({ first_name: ctx.update.message.chat.first_name, chatId: ctx.update.message.chat.id, chat: false });
+        ctx.replyWithHTML(infoText(), (ctx === null || ctx === void 0 ? void 0 : ctx.chat.id) == process.env.CHAT_ID ? adminKeyboard : keyboardСontainer),
+            (ctx === null || ctx === void 0 ? void 0 : ctx.chat.id) != process.env.CHAT_ID && chatController.addChat({ first_name: ctx.update.message.chat.first_name, chatId: ctx.update.message.chat.id, chat: false });
     });
     bot.hears("Время молитв", (ctx) => ctx.reply("Выберите действие", prayerKeyboardСontainer));
     bot.hears("На главную", (ctx) => ctx.reply("Выберите действие", (ctx === null || ctx === void 0 ? void 0 : ctx.chat.id.toString()) === process.env.CHAT_ID ? adminKeyboard : keyboardСontainer));
@@ -59,7 +59,7 @@ const start = async () => {
             if (text) {
                 var [idAddress, params] = text === null || text === void 0 ? void 0 : text.split(": ");
             }
-            if (idAddress === "Отправить рассылку") {
+            if (id == process.env.CHAT_ID && idAddress === "Отправить рассылку") {
                 const chatIdArr = await chatController.getChat();
                 if (chatIdArr && chatIdArr.length > 0) {
                     await sendBroadcast(params, chatIdArr, bot);
