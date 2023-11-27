@@ -3,6 +3,7 @@ import { Bot, ChatTypes, Data } from "./types/global.js";
 import { fileURLToPath } from 'url';
 import path from "path";
 import dotenv from 'dotenv'
+import { unlink } from "fs";
 dotenv.config()
 
 
@@ -45,10 +46,10 @@ export const chatblock = ({chatId,  block}: ChatTypes) => {
         const  keyboard = {
             inline_keyboard: [
                 [
-                   Markup.button.callback("Завершить беседу", `Завершить беседу: ${chatId}`)
+                   Markup.button.callback("Завершить беседу", `Завершить беседу:${chatId}`)
                 ],
                 [
-                   Markup.button.callback(blockUsers, `${blockUsersCallbek}: ${chatId}`)
+                   Markup.button.callback(blockUsers, `${blockUsersCallbek}:${chatId}`)
                 ],
                ]
            } 
@@ -70,7 +71,8 @@ const caption = (params: Data) => {
 
 
 export const addressInfoAdminChat = async (data: Data, obj: Bot) => {
-    const { bot } = obj
+    const { bot, id } = obj
+    const dataString = JSON.stringify(data);
     
     try {
         const inlineKeyboard = {
@@ -80,12 +82,12 @@ export const addressInfoAdminChat = async (data: Data, obj: Bot) => {
                         `https://yandex.ru/maps/?rtext=~${data.latitude},${data.longitude}`),        
                 ],
                 [
-                    Markup.button.callback(`Удалить`, `Удалить: ${data?.id}`) 
+                    Markup.button.callback(`Удалить`, `Удалить: ${dataString}`) 
                 ],
             ]
         };
 
-        await bot.telegram.sendPhoto(process.env.CHAT_ID!, pathImage(data?.photo?.image),
+        await bot.telegram.sendPhoto(id, pathImage(data?.photo?.image),
         { caption: caption(data), parse_mode: "HTML", reply_markup: inlineKeyboard  });
 
          
@@ -94,6 +96,11 @@ export const addressInfoAdminChat = async (data: Data, obj: Bot) => {
         console.error("Ошибка при отправке фото:", error);
     }
 
+}
+
+
+export const removeImage = (param:string) => {
+    return unlink(path.join(param), (error) => console.log(error));
 }
 
 export const infoText = ():string => {

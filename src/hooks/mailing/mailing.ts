@@ -1,6 +1,4 @@
 import { Context } from "vm";
-import { Data } from "../../types/global.js";
-import { bot } from "../../index.js";
 
 export async function sendBroadcast(message: string, chatIdArr: string[], bot: Context) {
     try {
@@ -13,16 +11,4 @@ export async function sendBroadcast(message: string, chatIdArr: string[], bot: C
         console.log(error);
     }
 
-}
-
-
-export  function sendMessageTelegram(data: Data) {
-    try {        
-
-        bot.telegram.sendMessage(process.env.CHAT_ID!, `${data.dataValues.id}`)
-
-    } catch (error) {
-        
-        console.log(error);
-    }
 }

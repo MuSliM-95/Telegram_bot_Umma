@@ -5,7 +5,7 @@ import { Bot, UpdateAddress } from "../../types/global.js";
 import { updatePhoto } from "../middleWares/upload.js";
 import dotenv from 'dotenv'
 import Address from "../models/Address.js";
-import { sendMessageTelegram } from "../../hooks/mailing/mailing.js";
+import { bot } from "../../index.js";
 
 dotenv.config()
 
@@ -30,8 +30,8 @@ export const addressController = {
         longitude: coordinates[1],
         time,
       })
-        
-       sendMessageTelegram(data)
+        addressInfoAdminChat(data, {bot, id: process.env.CHAT_ID!})
+  
       res.json("Данные сохранены")
     } catch (error) {
       console.log((error as Error).message);

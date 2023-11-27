@@ -6,7 +6,8 @@ import {
     chatblock,
     infoText,
     keyboardСontainer,
-    prayerKeyboardСontainer
+    prayerKeyboardСontainer,
+    removeImage
 } from "./options.js";
 import { prayerTime, prayerTimeCity } from "./asyncs/fetch.js";
 import rgx from "./hooks/regExp/regExp.js";
@@ -17,7 +18,7 @@ import { chatController } from "./db/controllers/chatController.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import { addressController } from "./db/controllers/addressController.js";
-import { ChatTypes } from "./types/global.js";
+import { ChatTypes, Data } from "./types/global.js";
 import "./db/index.js"
 import { sendBroadcast } from "./hooks/mailing/mailing.js";
 
@@ -54,6 +55,7 @@ export const bot = new Telegraf(process.env.TOKEN!)
 
 const start = async () => {
     let newText: string[] | boolean = false
+
     // Обработка команд
     bot.telegram.setMyCommands([
         { command: "start", description: "start" }
@@ -79,10 +81,13 @@ const start = async () => {
             const timestamp = ctx.update.message.date
             const { location } = ctx.update.message
 
+            console.log(caption);
+            
+
             let chat = await chatController.getChatId(id)
 
             if (text) {
-                var [idAddress, params] = text?.split(": ")
+                var [idAddress, params] = text?.split(":")
             }
 
             if (id == process.env.CHAT_ID! && idAddress === "Отправить рассылку") {
@@ -157,10 +162,14 @@ const start = async () => {
     bot.on("callback_query", async (query: Context) => {
         const callbackData = query.update.callback_query.data;
         const id = query.from.id
-        const queryInfo = callbackData?.split(': ')
+        const queryInfo = callbackData?.split(':')
+
+        const dataString = JSON.parse(queryInfo[0])
+        
         try {
             if (queryInfo[0] === 'Удалить') {
-                await addressController.deleteAddress(queryInfo[1], { bot, id })
+                await addressController.deleteAddress(dataString.id!, { bot, id })
+                removeImage(`${__dirname}../src/db/uploads/${dataString.photo.image}` )
                 return
             }
 

@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import sharp from "sharp"
 import { unlink } from 'fs';
 import { Bot, Timings } from '../types/global.js';
+import { removeImage } from '../options.js';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -33,7 +34,8 @@ export const generateImage = async (obj: Timings, { bot, id }: Bot) => {
 
     await bot.telegram.sendPhoto(id, { source: path.join(__dirname, "../../images/res.png") }, {caption: htmlText(), parse_mode:"HTML" })
    
-     unlink(path.join(__dirname, "../../images/res.png"), (error) => console.log(error));
+    removeImage(`${__dirname}../../images/res.png`)
+    //  unlink(path.join(__dirname, "../../images/res.png"), (error) => console.log(error));
 }
 
 function htmlText() {
