@@ -78,7 +78,7 @@ export const addressInfoAdminChat = async (data, obj) => {
 };
 export const removeImage = (param) => {
     console.log(param);
-    return unlink(path.join(param), (error) => console.log(error));
+    return unlink(param, (error) => console.log(error));
 };
 export const infoText = () => {
     return `

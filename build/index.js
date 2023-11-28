@@ -123,7 +123,7 @@ const start = async () => {
         try {
             if (queryInfo[0] === 'Удалить') {
                 await addressController.deleteAddress(dataString.id, { bot, id });
-                removeImage(`${__dirname}/../../src/db/uploads/${dataString.photo.image}`);
+                removeImage(path.join(__dirname, `../src/db/uploads/${dataString.photo.image}`));
                 return;
             }
             if (queryInfo[0] === 'Завершить беседу') {

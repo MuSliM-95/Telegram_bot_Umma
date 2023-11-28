@@ -25,7 +25,7 @@ export const generateImage = async (obj, { bot, id }) => {
     const res = await img.composite([{ input: textSvg }]).toBuffer();
     await writeFile(path.join(__dirname, "../../images/res.png"), res);
     await bot.telegram.sendPhoto(id, { source: path.join(__dirname, "../../images/res.png") }, { caption: htmlText(), parse_mode: "HTML" });
-    removeImage(`${__dirname}/../../../images/res.png`);
+    removeImage(path.join(__dirname, "../../images/res.png"));
 };
 function htmlText() {
     return `<strong>Данные взяты с источника  https://aladhan.com/.</strong>
