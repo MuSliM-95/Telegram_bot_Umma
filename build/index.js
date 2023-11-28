@@ -1,6 +1,6 @@
 import express from "express";
 import { Telegraf } from "telegraf";
-import { adminKeyboard, chatblock, infoText, keyboardСontainer, prayerKeyboardСontainer } from "./options.js";
+import { adminKeyboard, chatblock, infoText, keyboardСontainer, prayerKeyboardСontainer, removeImage } from "./options.js";
 import { prayerTime, prayerTimeCity } from "./asyncs/fetch.js";
 import rgx from "./hooks/regExp/regExp.js";
 import router from "./db/routs/rout.js";
@@ -55,9 +55,10 @@ const start = async () => {
             const replyIdChat = (_b = (_a = ctx.update.message.reply_to_message) === null || _a === void 0 ? void 0 : _a.forward_from) === null || _b === void 0 ? void 0 : _b.id;
             const timestamp = ctx.update.message.date;
             const { location } = ctx.update.message;
+            console.log(caption);
             let chat = await chatController.getChatId(id);
             if (text) {
-                var [idAddress, params] = text === null || text === void 0 ? void 0 : text.split(": ");
+                var [idAddress, params] = text === null || text === void 0 ? void 0 : text.split(":");
             }
             if (id == process.env.CHAT_ID && idAddress === "Отправить рассылку") {
                 const chatIdArr = await chatController.getChat();
@@ -117,10 +118,12 @@ const start = async () => {
     bot.on("callback_query", async (query) => {
         const callbackData = query.update.callback_query.data;
         const id = query.from.id;
-        const queryInfo = callbackData === null || callbackData === void 0 ? void 0 : callbackData.split(': ');
+        const queryInfo = callbackData === null || callbackData === void 0 ? void 0 : callbackData.split(':');
+        const dataString = JSON.parse(queryInfo[0]);
         try {
             if (queryInfo[0] === 'Удалить') {
-                await addressController.deleteAddress(queryInfo[1], { bot, id });
+                await addressController.deleteAddress(dataString.id, { bot, id });
+                removeImage(`${__dirname}/../../src/db/uploads/${dataString.photo.image}`);
                 return;
             }
             if (queryInfo[0] === 'Завершить беседу') {

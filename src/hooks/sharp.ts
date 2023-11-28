@@ -33,8 +33,8 @@ export const generateImage = async (obj: Timings, { bot, id }: Bot) => {
     await writeFile(path.join(__dirname, "../../images/res.png"), res)
 
     await bot.telegram.sendPhoto(id, { source: path.join(__dirname, "../../images/res.png") }, {caption: htmlText(), parse_mode:"HTML" })
-   
-    removeImage(__dirname, `/../../images/res.png`)
+  
+    removeImage(`${__dirname}/../../../images/res.png`)
     //  unlink(path.join(__dirname, "../../images/res.png"), (error) => console.log(error));
 }
 

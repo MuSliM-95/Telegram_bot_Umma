@@ -2,6 +2,7 @@ import { Markup } from "telegraf";
 import { fileURLToPath } from 'url';
 import path from "path";
 import dotenv from 'dotenv';
+import { unlink } from "fs";
 dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -35,10 +36,10 @@ export const chatblock = ({ chatId, block }) => {
         const keyboard = {
             inline_keyboard: [
                 [
-                    Markup.button.callback("Завершить беседу", `Завершить беседу: ${chatId}`)
+                    Markup.button.callback("Завершить беседу", `Завершить беседу:${chatId}`)
                 ],
                 [
-                    Markup.button.callback(blockUsers, `${blockUsersCallbek}: ${chatId}`)
+                    Markup.button.callback(blockUsers, `${blockUsersCallbek}:${chatId}`)
                 ],
             ]
         };
@@ -56,7 +57,8 @@ const caption = (params) => {
 };
 export const addressInfoAdminChat = async (data, obj) => {
     var _a;
-    const { bot } = obj;
+    const { bot, id } = obj;
+    const dataString = JSON.stringify(data);
     try {
         const inlineKeyboard = {
             inline_keyboard: [
@@ -64,15 +66,19 @@ export const addressInfoAdminChat = async (data, obj) => {
                     Markup.button.webApp("Открыть в Яндекс картах", `https://yandex.ru/maps/?rtext=~${data.latitude},${data.longitude}`),
                 ],
                 [
-                    Markup.button.callback(`Удалить`, `Удалить: ${data === null || data === void 0 ? void 0 : data.id}`)
+                    Markup.button.callback(`Удалить`, `Удалить:${dataString}`)
                 ],
             ]
         };
-        await bot.telegram.sendPhoto(process.env.CHAT_ID, pathImage((_a = data === null || data === void 0 ? void 0 : data.photo) === null || _a === void 0 ? void 0 : _a.image), { caption: caption(data), parse_mode: "HTML", reply_markup: inlineKeyboard });
+        await bot.telegram.sendPhoto(id, pathImage((_a = data === null || data === void 0 ? void 0 : data.photo) === null || _a === void 0 ? void 0 : _a.image), { caption: caption(data), parse_mode: "HTML", reply_markup: inlineKeyboard });
     }
     catch (error) {
-        console.error("Ошибка при отправке фото:", error);
+        console.error("Ошибка при отправке фото:", error.message);
     }
+};
+export const removeImage = (param) => {
+    console.log(param);
+    return unlink(path.join(param), (error) => console.log(error));
 };
 export const infoText = () => {
     return `
