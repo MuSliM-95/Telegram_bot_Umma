@@ -99,10 +99,10 @@ export const addressInfoAdminChat = async (data: Data, obj: Bot) => {
 }
 
 
-export const removeImage = (param:string) => {
-    console.log(param);
+export const removeImage = (dirname:string, param:string) => {
+    console.log(dirname, param);
     
-    return unlink(path.join(param), (error) => console.log(error));
+    return unlink(path.join(dirname, param), (error) => console.log(error));
 }
 
 export const infoText = ():string => {
