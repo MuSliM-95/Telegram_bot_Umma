@@ -93,7 +93,7 @@ export const addressInfoAdminChat = async (data: Data, obj: Bot) => {
          
 
     } catch (error) {
-        console.error("Ошибка при отправке фото:", error);
+        console.error("Ошибка при отправке фото:", ( error as Error).message);
     }
 
 }
