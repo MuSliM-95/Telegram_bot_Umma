@@ -81,7 +81,7 @@ const start = async () => {
             const timestamp = ctx.update.message.date
             const { location } = ctx.update.message
 
-            console.log(caption);
+            // console.log(caption);
             
 
             let chat = await chatController.getChatId(id)
@@ -107,7 +107,6 @@ const start = async () => {
             }
 
             if (idAddress === "id" && params && id == process.env.CHAT_ID) {
-                console.log(idAddress, params);
                 await addressController.getAddressId(params, { bot, id })
                 return
             }

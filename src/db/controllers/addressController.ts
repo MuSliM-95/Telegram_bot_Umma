@@ -64,7 +64,8 @@ export const addressController = {
   getAddressId: async (id: string, bot: Bot) => {
     try {
       const data = await Address.findOne({ where: { id } })
-
+     console.log(data);
+     
       if (data) {
         await addressInfoAdminChat(data, bot)
       }

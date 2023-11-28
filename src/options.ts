@@ -73,6 +73,9 @@ const caption = (params: Data) => {
 export const addressInfoAdminChat = async (data: Data, obj: Bot) => {
     const { bot, id } = obj
     const dataString = JSON.stringify(data);
+
+    console.log(data);
+    
     
     try {
         const inlineKeyboard = {
