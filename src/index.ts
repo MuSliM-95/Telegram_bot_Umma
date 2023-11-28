@@ -107,6 +107,7 @@ const start = async () => {
             }
 
             if (idAddress === "id" && params && id == process.env.CHAT_ID) {
+                console.log(idAddress, params);
                 await addressController.getAddressId(params, { bot, id })
                 return
             }
