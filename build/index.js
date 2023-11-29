@@ -55,7 +55,6 @@ const start = async () => {
             const replyIdChat = (_b = (_a = ctx.update.message.reply_to_message) === null || _a === void 0 ? void 0 : _a.forward_from) === null || _b === void 0 ? void 0 : _b.id;
             const timestamp = ctx.update.message.date;
             const { location } = ctx.update.message;
-            console.log(caption);
             let chat = await chatController.getChatId(id);
             if (text) {
                 var [idAddress, params] = text === null || text === void 0 ? void 0 : text.split(":");
@@ -119,11 +118,10 @@ const start = async () => {
         const callbackData = query.update.callback_query.data;
         const id = query.from.id;
         const queryInfo = callbackData === null || callbackData === void 0 ? void 0 : callbackData.split(':');
-        const dataString = JSON.parse(queryInfo[0]);
         try {
             if (queryInfo[0] === 'Удалить') {
-                await addressController.deleteAddress(dataString.id, { bot, id });
-                removeImage(path.join(__dirname, `../src/db/uploads/${dataString.photo.image}`));
+                await addressController.deleteAddress(queryInfo[1], { bot, id });
+                removeImage(path.join(__dirname, `../src/db/uploads/${queryInfo[2]}`));
                 return;
             }
             if (queryInfo[0] === 'Завершить беседу') {

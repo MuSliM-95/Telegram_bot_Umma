@@ -53,12 +53,11 @@ const pathImage = (params) => {
     return { source: path.join(__dirname, `../src/db/uploads/${params || "scale_1200.webp"}`) };
 };
 const caption = (params) => {
-    return `<strong>${params.title}</strong>\n\n<strong>Время работы: ${params.time}</strong>\n\n<strong>${params.region}</strong>\n\n<strong>${params.city}</strong>\n\n<strong>${params.place}</strong>\n\n<strong>${params.prayer}</strong>\n\n`;
+    return `<strong>${params.title}</strong>\n\n<strong>Время работы: ${params.time}</strong>\n\n<strong>${params.region}</strong>\n\n<strong>${params.city}</strong>\n\n<strong>${params.place}</strong>\n\n<strong>${params.prayer}</strong>\n\n<strong>${params.id}</strong>\n\n`;
 };
 export const addressInfoAdminChat = async (data, obj) => {
     var _a;
     const { bot, id } = obj;
-    const dataString = JSON.stringify(data);
     try {
         const inlineKeyboard = {
             inline_keyboard: [
@@ -66,14 +65,14 @@ export const addressInfoAdminChat = async (data, obj) => {
                     Markup.button.webApp("Открыть в Яндекс картах", `https://yandex.ru/maps/?rtext=~${data.latitude},${data.longitude}`),
                 ],
                 [
-                    Markup.button.callback(`Удалить`, `Удалить:${dataString}`)
+                    Markup.button.callback(`Удалить`, `Удалить:${data.id}:${data.photo.image}`)
                 ],
             ]
         };
         await bot.telegram.sendPhoto(id, pathImage((_a = data === null || data === void 0 ? void 0 : data.photo) === null || _a === void 0 ? void 0 : _a.image), { caption: caption(data), parse_mode: "HTML", reply_markup: inlineKeyboard });
     }
     catch (error) {
-        console.error("Ошибка при отправке фото:", error.message);
+        console.error("Ошибка при отправке фото:", error);
     }
 };
 export const removeImage = (param) => {

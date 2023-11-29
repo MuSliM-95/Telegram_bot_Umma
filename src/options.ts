@@ -66,17 +66,13 @@ const pathImage  = (params?:string) => {
    return { source: path.join(__dirname, `../src/db/uploads/${params || "scale_1200.webp"}`) }
 }
 const caption = (params: Data) => {
-   return `<strong>${params.title}</strong>\n\n<strong>Время работы: ${params.time}</strong>\n\n<strong>${params.region}</strong>\n\n<strong>${params.city}</strong>\n\n<strong>${params.place}</strong>\n\n<strong>${params.prayer}</strong>\n\n`;
+   return `<strong>${params.title}</strong>\n\n<strong>Время работы: ${params.time}</strong>\n\n<strong>${params.region}</strong>\n\n<strong>${params.city}</strong>\n\n<strong>${params.place}</strong>\n\n<strong>${params.prayer}</strong>\n\n<strong>${params.id}</strong>\n\n`;
 }
 
 
 export const addressInfoAdminChat = async (data: Data, obj: Bot) => {
     const { bot, id } = obj
-    const dataString = JSON.stringify(data);
 
-    console.log(data);
-    
-    
     try {
         const inlineKeyboard = {
             inline_keyboard:  [
@@ -85,7 +81,7 @@ export const addressInfoAdminChat = async (data: Data, obj: Bot) => {
                         `https://yandex.ru/maps/?rtext=~${data.latitude},${data.longitude}`),        
                 ],
                 [
-                    Markup.button.callback(`Удалить`, `Удалить:${dataString}`) 
+                    Markup.button.callback(`Удалить`, `Удалить:${data.id}:${data.photo.image}`) 
                 ],
             ]
         };

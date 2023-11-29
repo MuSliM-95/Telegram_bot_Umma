@@ -163,13 +163,11 @@ const start = async () => {
         const callbackData = query.update.callback_query.data;
         const id = query.from.id
         const queryInfo = callbackData?.split(':')
-
-        const dataString = JSON.parse(queryInfo[0])
         
         try {
             if (queryInfo[0] === 'Удалить') {
-                await addressController.deleteAddress(dataString.id!, { bot, id })
-                removeImage(path.join(__dirname, `../src/db/uploads/${dataString.photo.image}`) )
+                await addressController.deleteAddress(queryInfo[1], { bot, id })
+                removeImage(path.join(__dirname, `../src/db/uploads/${queryInfo[2]}`) )
                 return
             }
 
