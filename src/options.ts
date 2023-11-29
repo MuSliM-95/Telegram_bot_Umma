@@ -66,7 +66,7 @@ const pathImage  = (params?:string) => {
    return { source: path.join(__dirname, `../src/db/uploads/${params || "scale_1200.webp"}`) }
 }
 const caption = (params: Data) => {
-   return `<strong>${params.title}</strong>\n\n<strong>Время работы: ${params.time}</strong>\n\n<strong>${params.region}</strong>\n\n<strong>${params.city}</strong>\n\n<strong>${params.place}</strong>\n\n<strong>${params.prayer}</strong>\n\n<strong>${params.id}</strong>\n\n`;
+   return `<strong>${params.title}</strong>\n\n<strong>Время работы: ${params.time}</strong>\n\n<strong>Регион: ${params.region || "Не обозначен"}</strong>\n\n<strong>Город: ${params.city}</strong>\n\n<strong>Место: ${params.place}</strong>\n\n<strong>Место для молитвы: ${params.prayer}</strong>\n\n<strong>id:${params.id}</strong>\n\n`;
 }
 
 
