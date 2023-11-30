@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
     },
     filename(req, file, cb) {
         const data = moment().format('DDMMYYYY-HHmmss_SSS');
-        const name = file.originalname.slice(0, 6);
+        const name = file.originalname.slice(0, 5);
         cb(null, `${data}-${name}.png`);
     }
 });

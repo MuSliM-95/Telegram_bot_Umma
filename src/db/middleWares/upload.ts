@@ -23,7 +23,7 @@ const storage: multer.StorageEngine = multer.diskStorage({
     }, 
     filename(req: Request, file: ExpressMulterFile, cb: (error: Error | null, destination: string) => void) {
         const data = moment().format('DDMMYYYY-HHmmss_SSS')
-        const name = file.originalname.slice(0, 6)
+        const name = file.originalname.slice(0, 5)
         cb(null, `${data}-${name}.png`) 
     }
 })
