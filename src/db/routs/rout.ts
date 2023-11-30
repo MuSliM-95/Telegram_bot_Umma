@@ -4,7 +4,7 @@ import upload from "../middleWares/upload.js"
 
 const router = Router()
 
-router.post("/data",  upload.single("photo"),  addressController.postData) 
+router.post("/data/:chatId",  upload.single("photo"),  addressController.postData) 
 router.get("/addresses/:jsonLocation",   addressController.getAddresses) 
 
 export default router 

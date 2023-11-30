@@ -6,6 +6,7 @@ import { bot } from "../../index.js";
 dotenv.config();
 export const addressController = {
     postData: async (req, res) => {
+        const chatId = req.params.chatId;
         const { name, region, place, city, prayer, address, location, time } = req.body;
         const coordinates = location.split(",");
         const photo = req.file;
@@ -24,6 +25,9 @@ export const addressController = {
                 longitude: coordinates[1],
                 time,
             });
+            if (chatId && process.env.CHAT_ID !== chatId) {
+                addressInfoAdminChat(data, { bot, id: chatId });
+            }
             addressInfoAdminChat(data, { bot, id: process.env.CHAT_ID });
             res.json("Данные сохранены");
         }
@@ -48,12 +52,16 @@ export const addressController = {
             console.log(error.message);
         }
     },
-    getAddressId: async (id, bot) => {
+    getAddressId: async (Id, obj) => {
+        const { id, bot } = obj;
         try {
-            const data = await Address.findOne({ where: { id } });
+            const data = await Address.findOne({ where: { id: Id } });
             if (data) {
-                await addressInfoAdminChat(data, bot);
+                console.log(data);
+                await addressInfoAdminChat(data, obj);
+                return;
             }
+            await bot.telegram.sendMessage(id, "Адрес не найден");
         }
         catch (error) {
             console.log(error.message);

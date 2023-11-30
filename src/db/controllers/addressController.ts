@@ -12,6 +12,8 @@ dotenv.config()
 export const addressController = {
   postData: async (req: Request, res: Response): Promise<void> => {
 
+    const chatId = req.params.chatId;
+        
     const { name, region, place, city, prayer, address, location, time } = req.body
     const coordinates = location.split(",")
     const photo = req.file
@@ -30,16 +32,19 @@ export const addressController = {
         longitude: coordinates[1],
         time,
       })
+      if( chatId && process.env.CHAT_ID !== chatId) {
+        addressInfoAdminChat(data, {bot, id: chatId as string})
+      }
         addressInfoAdminChat(data, {bot, id: process.env.CHAT_ID!})
   
       res.json("Данные сохранены")
-    } catch (error) {
+    } catch (error) { 
       console.log((error as Error).message);
 
     }
   },
 
-  getAddresses: async (req: Request, res: Response) => {
+  getAddresses: async (req: Request, res: Response): Promise<void> => {
     const location = JSON.parse(req.params.jsonLocation)
     const { topLeft, bottomRight } = location
 
@@ -61,13 +66,19 @@ export const addressController = {
   },
 
 
-  getAddressId: async (id: string, bot: Bot) => {
+  getAddressId: async (Id: string, obj: Bot): Promise<void> => {
+    const {id, bot } = obj
     try {
-      const data = await Address.findOne({ where: { id } })
+      const data = await Address.findOne({ where: { id: Id } })
      
       if (data) {
-        await addressInfoAdminChat(data, bot)
+        console.log(data);
+        
+        await addressInfoAdminChat(data, obj)
+        return 
       }
+  
+        await bot.telegram.sendMessage(id, "Адрес не найден") 
 
     } catch (error) {
       console.log((error as Error).message);

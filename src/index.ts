@@ -18,17 +18,15 @@ import { chatController } from "./db/controllers/chatController.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import { addressController } from "./db/controllers/addressController.js";
-import { ChatTypes, Data } from "./types/global.js";
+import { ChatTypes } from "./types/global.js";
 import "./db/index.js"
 import { sendBroadcast } from "./hooks/mailing/mailing.js";
+import { readingFs } from "./hooks/readingFiles/readingFiles.js";
 
 dotenv.config()
 
 const app: Application = express();
 const PORT = process.env.PORT || 5000
-
-
-
 
 const corsOptions = {
     origin: 'https://umma-maps.ru',
@@ -55,6 +53,7 @@ export const bot = new Telegraf(process.env.TOKEN!)
 
 const start = async () => {
     let newText: string[] | boolean = false
+  
 
     // Обработка команд
     bot.telegram.setMyCommands([
@@ -62,12 +61,13 @@ const start = async () => {
     ])
 
     bot.start((ctx: Context) => {
-        ctx.replyWithHTML(infoText(), ctx?.chat.id == process.env.CHAT_ID! ? adminKeyboard : keyboardСontainer),
+        
+        ctx.replyWithHTML(infoText(), ctx?.chat.id == process.env.CHAT_ID! ? adminKeyboard(ctx?.chat.id) : keyboardСontainer(ctx?.chat.id)),
         ctx?.chat.id != process.env.CHAT_ID! &&  chatController.addChat({first_name: ctx.update.message.chat.first_name, chatId: ctx.update.message.chat.id, chat: false } as ChatTypes)
     })
 
     bot.hears("Время молитв", (ctx) => ctx.reply("Выберите действие", prayerKeyboardСontainer))
-    bot.hears("На главную", (ctx) => ctx.reply("Выберите действие", ctx?.chat.id.toString() === process.env.CHAT_ID! ? adminKeyboard : keyboardСontainer))
+    bot.hears("На главную", (ctx:Context) => ctx.reply("Выберите действие", ctx?.chat.id == process.env.CHAT_ID! ? adminKeyboard(ctx?.chat.id) : keyboardСontainer(ctx?.chat.id)))
     bot.hears("По названию города", (ctx) => {
         ctx.reply("Введите названия города в таком формате: Египет, Каир")
         newText = true
@@ -81,9 +81,9 @@ const start = async () => {
             const timestamp = ctx.update.message.date
             const { location } = ctx.update.message
 
-            // console.log(caption);
+            // console.log(caption); 
+            console.log(ctx);
             
-
             let chat = await chatController.getChatId(id)
 
             if (text) {
@@ -163,12 +163,18 @@ const start = async () => {
         const callbackData = query.update.callback_query.data;
         const id = query.from.id
         const queryInfo = callbackData?.split(':')
+        const pathUploads = path.join(__dirname, `../src/db/uploads/${queryInfo[2]}`)
+        const file =  readingFs(pathUploads)
         
         try {
             if (queryInfo[0] === 'Удалить') {
                 await addressController.deleteAddress(queryInfo[1], { bot, id })
-                removeImage(path.join(__dirname, `../src/db/uploads/${queryInfo[2]}`) )
-                return
+                if(file && queryInfo[2]) {
+                    console.log(queryInfo[2]);
+                    // console.log(file); 
+                    removeImage(pathUploads)
+                }
+                return  
             }
 
             if (queryInfo[0] === 'Завершить беседу') {

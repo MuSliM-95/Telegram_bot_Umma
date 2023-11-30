@@ -12,6 +12,7 @@ import { fileURLToPath } from "url";
 import { addressController } from "./db/controllers/addressController.js";
 import "./db/index.js";
 import { sendBroadcast } from "./hooks/mailing/mailing.js";
+import { readingFs } from "./hooks/readingFiles/readingFiles.js";
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -37,11 +38,11 @@ const start = async () => {
         { command: "start", description: "start" }
     ]);
     bot.start((ctx) => {
-        ctx.replyWithHTML(infoText(), (ctx === null || ctx === void 0 ? void 0 : ctx.chat.id) == process.env.CHAT_ID ? adminKeyboard : keyboardСontainer),
+        ctx.replyWithHTML(infoText(), (ctx === null || ctx === void 0 ? void 0 : ctx.chat.id) == process.env.CHAT_ID ? adminKeyboard(ctx === null || ctx === void 0 ? void 0 : ctx.chat.id) : keyboardСontainer(ctx === null || ctx === void 0 ? void 0 : ctx.chat.id)),
             (ctx === null || ctx === void 0 ? void 0 : ctx.chat.id) != process.env.CHAT_ID && chatController.addChat({ first_name: ctx.update.message.chat.first_name, chatId: ctx.update.message.chat.id, chat: false });
     });
     bot.hears("Время молитв", (ctx) => ctx.reply("Выберите действие", prayerKeyboardСontainer));
-    bot.hears("На главную", (ctx) => ctx.reply("Выберите действие", (ctx === null || ctx === void 0 ? void 0 : ctx.chat.id.toString()) === process.env.CHAT_ID ? adminKeyboard : keyboardСontainer));
+    bot.hears("На главную", (ctx) => ctx.reply("Выберите действие", (ctx === null || ctx === void 0 ? void 0 : ctx.chat.id) == process.env.CHAT_ID ? adminKeyboard(ctx === null || ctx === void 0 ? void 0 : ctx.chat.id) : keyboardСontainer(ctx === null || ctx === void 0 ? void 0 : ctx.chat.id)));
     bot.hears("По названию города", (ctx) => {
         ctx.reply("Введите названия города в таком формате: Египет, Каир");
         newText = true;
@@ -55,6 +56,7 @@ const start = async () => {
             const replyIdChat = (_b = (_a = ctx.update.message.reply_to_message) === null || _a === void 0 ? void 0 : _a.forward_from) === null || _b === void 0 ? void 0 : _b.id;
             const timestamp = ctx.update.message.date;
             const { location } = ctx.update.message;
+            console.log(ctx);
             let chat = await chatController.getChatId(id);
             if (text) {
                 var [idAddress, params] = text === null || text === void 0 ? void 0 : text.split(":");
@@ -118,10 +120,15 @@ const start = async () => {
         const callbackData = query.update.callback_query.data;
         const id = query.from.id;
         const queryInfo = callbackData === null || callbackData === void 0 ? void 0 : callbackData.split(':');
+        const pathUploads = path.join(__dirname, `../src/db/uploads/${queryInfo[2]}`);
+        const file = readingFs(pathUploads);
         try {
             if (queryInfo[0] === 'Удалить') {
                 await addressController.deleteAddress(queryInfo[1], { bot, id });
-                removeImage(path.join(__dirname, `../src/db/uploads/${queryInfo[2]}`));
+                if (file && queryInfo[2]) {
+                    console.log(queryInfo[2]);
+                    removeImage(pathUploads);
+                }
                 return;
             }
             if (queryInfo[0] === 'Завершить беседу') {

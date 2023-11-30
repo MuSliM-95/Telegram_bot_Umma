@@ -16,12 +16,15 @@ interface ExpressMulterFile extends Express.Multer.File {
   
 const storage: multer.StorageEngine = multer.diskStorage({
     destination(req: Request, file: ExpressMulterFile, cb: (error: Error | null, destination: string) => void) {
+      console.log(path.join(__dirname,   "../../../src/db/uploads/"));
+      
 
         cb(null, path.join(__dirname,   "../../../src/db/uploads/"))
     }, 
     filename(req: Request, file: ExpressMulterFile, cb: (error: Error | null, destination: string) => void) {
         const data = moment().format('DDMMYYYY-HHmmss_SSS')
-        cb(null, `${data}-${file.originalname}`) 
+        const name = file.originalname.slice(0, 6)
+        cb(null, `${data}-${name}.png`) 
     }
 })
    

@@ -10,7 +10,11 @@ dotenv.config()
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const urlButton = [Markup.button.webApp("Добавить место", "https://umma-maps.ru/html/")]
+
+    
+
+
+// const urlButton = [Markup.button.webApp("Добавить место", `https://umma-maps.ru/html/index.html?start=${id}`)]
 const addressButton = [Markup.button.webApp("Посмотреть адреса", "https://umma-maps.ru/html/maps.html")]
 const callback = [Markup.button.callback("Время молитв", "Время молитв")]
 const prayerButtonlocation = [Markup.button.locationRequest("По геолокации")]
@@ -19,16 +23,17 @@ const backButtonHome = Markup.button.callback("На главную", "")
 const openСhat = [Markup.button.text("Написать администратору")]
 
 
-
-export const keyboardСontainer =  Markup.keyboard([
-    urlButton,
+export const keyboardСontainer = (id:string) =>  Markup.keyboard([
+    // urlButton,
+    [Markup.button.webApp("Добавить место", `https://umma-maps.ru/html/index.html?chatId=${id}`)],
     addressButton,
     callback,
     openСhat,
 ])
 
-export const adminKeyboard = Markup.keyboard([
-    urlButton,
+export const adminKeyboard = (id:string) => Markup.keyboard([
+    // urlButton,
+    [Markup.button.webApp("Добавить место", `https://umma-maps.ru/html/index.html?chatId=${id}`)],
     addressButton,
     callback
 ])
@@ -66,12 +71,14 @@ const pathImage  = (params?:string) => {
    return { source: path.join(__dirname, `../src/db/uploads/${params || "scale_1200.webp"}`) }
 }
 const caption = (params: Data) => {
-   return `<strong>${params.title}</strong>\n\n<strong>Время работы: ${params.time}</strong>\n\n<strong>Регион: ${params.region === "undefined" && "Не обозначен"}</strong>\n\n<strong>Город: ${params.city}</strong>\n\n<strong>Место: ${params.place}</strong>\n\n<strong>Место для молитвы: ${params.prayer}</strong>\n\n<strong>id:${params.id}</strong>\n\n`;
+   return `<strong>${params.title}</strong>\n\n<strong>Время работы: ${params.time}</strong>\n\n<strong>Регион: ${params.region === "undefined" ? "Не обозначен" : params.region}</strong>\n\n<strong>Город: ${params.city}</strong>\n\n<strong>Место: ${params.place}</strong>\n\n<strong>Место для молитвы: ${params.prayer}</strong>\n\n<strong>id:${params.id}</strong>\n\n`;
 }
 
 
 export const addressInfoAdminChat = async (data: Data, obj: Bot) => {
     const { bot, id } = obj
+    console.log(data.photo.image);
+    
 
     try {
         const inlineKeyboard = {
@@ -98,9 +105,7 @@ export const addressInfoAdminChat = async (data: Data, obj: Bot) => {
 }
 
 
-export const removeImage = (param:string) => {
-    console.log(param);
-    
+export const removeImage = (param:string) => {    
     return unlink(param, (error) => console.log(error));
 }
 
