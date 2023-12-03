@@ -13,6 +13,10 @@ const Address = sequelize.define("Address", {
         type: DataTypes.STRING,
         allowNull: false
     },
+    descriptions: {
+        type: DataTypes.TEXT,
+        allowNull: true
+    },
     place: {
         type: DataTypes.STRING,
         allowNull: false

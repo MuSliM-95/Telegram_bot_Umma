@@ -16,6 +16,10 @@ const Address = sequelize.define<Data>("Address", {
     title: {
          type: DataTypes.STRING,
          allowNull: false
+         },  
+    descriptions: {
+         type: DataTypes.TEXT,
+         allowNull: true
          },
     place: {
          type: DataTypes.STRING,

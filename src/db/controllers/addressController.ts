@@ -13,13 +13,14 @@ export const addressController = {
   postData: async (req: Request, res: Response): Promise<void> => {
 
     const chatId = req.params.chatId;
-        
-    const { name, region, place, city, prayer, address, location, time } = req.body
+
+    const { textarea, name, region, place, city, prayer, address, location, time } = req.body
     const coordinates = location.split(",")
     const photo = req.file
     try {
       const data = await Address.create({
         title: name,
+        descriptions: textarea || "",
         region,
         city,
         place,
@@ -32,13 +33,13 @@ export const addressController = {
         longitude: coordinates[1],
         time,
       })
-      if( chatId && process.env.CHAT_ID !== chatId) {
-        addressInfoAdminChat(data, {bot, id: chatId as string})
+      if (chatId && process.env.CHAT_ID !== chatId) {
+        addressInfoAdminChat(data, { bot, id: chatId as string })
       }
-        addressInfoAdminChat(data, {bot, id: process.env.CHAT_ID!})
-  
+      addressInfoAdminChat(data, { bot, id: process.env.CHAT_ID! })
+
       res.json("Данные сохранены")
-    } catch (error) { 
+    } catch (error) {
       console.log((error as Error).message);
 
     }
@@ -67,25 +68,25 @@ export const addressController = {
 
 
   getAddressId: async (Id: string, obj: Bot): Promise<void> => {
-    const {id, bot } = obj
+    const { id, bot } = obj
     try {
       const data = await Address.findOne({ where: { id: Id } })
-     
+
       if (data) {
         console.log(data);
-        
+
         await addressInfoAdminChat(data, obj)
-        return 
+        return
       }
-  
-        await bot.telegram.sendMessage(id, "Адрес не найден") 
+
+      await bot.telegram.sendMessage(id, "Адрес не найден")
 
     } catch (error) {
       console.log((error as Error).message);
     }
   },
 
-  deleteAddress: async (addressId: string, obj: Bot) => {
+  deleteAddress: async (addressId: string, obj: Bot): Promise<void> => {
     const { id, bot } = obj
     try {
       const data = await Address.destroy({ where: { id: addressId } })
@@ -100,7 +101,7 @@ export const addressController = {
     }
   },
 
-  updateAddress: async (params: UpdateAddress) => {
+  updateAddress: async (params: UpdateAddress): Promise<void> => {
     const { chatId, photo, botObj } = params
     const addressId = chatId.split(": ")[1]
     await updatePhoto(params)

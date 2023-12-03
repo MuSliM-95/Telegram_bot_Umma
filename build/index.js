@@ -56,7 +56,6 @@ const start = async () => {
             const replyIdChat = (_b = (_a = ctx.update.message.reply_to_message) === null || _a === void 0 ? void 0 : _a.forward_from) === null || _b === void 0 ? void 0 : _b.id;
             const timestamp = ctx.update.message.date;
             const { location } = ctx.update.message;
-            console.log(ctx);
             let chat = await chatController.getChatId(id);
             if (text) {
                 var [idAddress, params] = text === null || text === void 0 ? void 0 : text.split(":");
@@ -126,7 +125,6 @@ const start = async () => {
             if (queryInfo[0] === 'Удалить') {
                 await addressController.deleteAddress(queryInfo[1], { bot, id });
                 if (file && queryInfo[2]) {
-                    console.log(queryInfo[2]);
                     removeImage(pathUploads);
                 }
                 return;

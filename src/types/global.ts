@@ -6,6 +6,7 @@ export interface Data extends Model<InferAttributes<Data>, InferCreationAttribut
     region: string,
     city: string,
     title: string,
+    descriptions:string,
     place: string,
     prayer: string,
     photo: {

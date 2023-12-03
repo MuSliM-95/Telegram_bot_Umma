@@ -81,9 +81,6 @@ const start = async () => {
             const timestamp = ctx.update.message.date
             const { location } = ctx.update.message
 
-            // console.log(caption); 
-            console.log(ctx);
-            
             let chat = await chatController.getChatId(id)
 
             if (text) {
@@ -170,8 +167,6 @@ const start = async () => {
             if (queryInfo[0] === 'Удалить') {
                 await addressController.deleteAddress(queryInfo[1], { bot, id })
                 if(file && queryInfo[2]) {
-                    console.log(queryInfo[2]);
-                    // console.log(file); 
                     removeImage(pathUploads)
                 }
                 return  

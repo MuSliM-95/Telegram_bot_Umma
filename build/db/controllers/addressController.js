@@ -7,12 +7,13 @@ dotenv.config();
 export const addressController = {
     postData: async (req, res) => {
         const chatId = req.params.chatId;
-        const { name, region, place, city, prayer, address, location, time } = req.body;
+        const { textarea, name, region, place, city, prayer, address, location, time } = req.body;
         const coordinates = location.split(",");
         const photo = req.file;
         try {
             const data = await Address.create({
                 title: name,
+                descriptions: textarea || "",
                 region,
                 city,
                 place,
