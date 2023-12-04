@@ -4,24 +4,24 @@ import Chat from "../models/Chat.js"
 
 export const chatController = {
 
-    getChat: async () => {
+    getChat: async (): Promise<string[] | undefined> => {
         try {
             const chatId = await Chat.findAll({
                 attributes: ['chatId']
             })
-                const id = chatId?.map(el => el.chatId)
-                return id 
+            const id = chatId?.map(el => el.chatId)
+            return id
         } catch (error) {
             console.log((error as Error).message);
         }
     },
 
-    addChat: async ({ first_name, chatId, chat }: ChatTypes) => {
+    addChat: async ({ first_name, chatId, chat }: ChatTypes): Promise<ChatTypes | undefined> => {
         try {
             const getChat = await Chat.findOne({ where: { chatId } })
             if (!getChat) {
                 const data = await Chat.create({
-                    first_name, 
+                    first_name,
                     chatId,
                     chat,
                     block: false
@@ -47,7 +47,7 @@ export const chatController = {
         }
     },
 
-    getChatId: async (chatId: number) => {
+    getChatId: async (chatId: number): Promise<ChatTypes | void> => {
         try {
             const data = await Chat.findOne({ where: { chatId } })
             if (data) {
@@ -58,7 +58,7 @@ export const chatController = {
         }
     },
 
-    getChatFirst_name: async (first_name: string) => {
+    getChatFirst_name: async (first_name: string): Promise<ChatTypes | void> => {
         try {
             const data = await Chat.findOne({ where: { first_name } })
             if (data) {
@@ -71,7 +71,7 @@ export const chatController = {
     },
 
 
-    updateChat: async ({ chatId, block }: ChatTypes) => {
+    updateChat: async ({ chatId, block }: ChatTypes): Promise<boolean | void> => {
         try {
             const data = await Chat.findOne({ where: { chatId } })
 

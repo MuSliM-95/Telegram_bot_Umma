@@ -1,4 +1,4 @@
-import { addressInfoAdminChat } from "../../options.js";
+import { addressInfoAdminChat, addressInfoUserChat } from "../../options.js";
 import { updatePhoto } from "../middleWares/upload.js";
 import dotenv from 'dotenv';
 import Address from "../models/Address.js";
@@ -58,11 +58,29 @@ export const addressController = {
         try {
             const data = await Address.findOne({ where: { id: Id } });
             if (data) {
-                console.log(data);
                 await addressInfoAdminChat(data, obj);
-                return;
             }
-            await bot.telegram.sendMessage(id, "Адрес не найден");
+            else {
+                await bot.telegram.sendMessage(id, "Адрес не найден");
+            }
+        }
+        catch (error) {
+            console.log(error.message);
+        }
+    },
+    getClientInfo: async (req, res) => {
+        const { chatId, addressId } = req.params;
+        try {
+            const data = await Address.findOne({ where: { id: addressId } });
+            if (data) {
+                if (process.env.CHAT_ID !== chatId) {
+                    addressInfoUserChat(data, { bot, id: chatId });
+                }
+                else {
+                    addressInfoAdminChat(data, { bot, id: chatId });
+                }
+            }
+            res.json("Закрыть браузер");
         }
         catch (error) {
             console.log(error.message);

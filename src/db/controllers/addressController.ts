@@ -1,6 +1,6 @@
 import { Request } from "express";
 import { Response } from 'express';
-import { addressInfoAdminChat } from "../../options.js";
+import { addressInfoAdminChat, addressInfoUserChat } from "../../options.js";
 import { Bot, UpdateAddress } from "../../types/global.js";
 import { updatePhoto } from "../middleWares/upload.js";
 import dotenv from 'dotenv'
@@ -35,8 +35,9 @@ export const addressController = {
       })
       if (chatId && process.env.CHAT_ID !== chatId) {
         addressInfoAdminChat(data, { bot, id: chatId as string })
-      }
-      addressInfoAdminChat(data, { bot, id: process.env.CHAT_ID! })
+      } 
+        addressInfoAdminChat(data, { bot, id: process.env.CHAT_ID! })
+      
 
       res.json("Данные сохранены")
     } catch (error) {
@@ -73,24 +74,41 @@ export const addressController = {
       const data = await Address.findOne({ where: { id: Id } })
 
       if (data) {
-        console.log(data);
-
         await addressInfoAdminChat(data, obj)
-        return
-      }
+      } else {
+        await bot.telegram.sendMessage(id, "Адрес не найден")
 
-      await bot.telegram.sendMessage(id, "Адрес не найден")
+      }
 
     } catch (error) {
       console.log((error as Error).message);
     }
   },
 
+  getClientInfo: async (req: Request, res: Response): Promise<void> => {
+    const { chatId, addressId } = req.params
+    try {
+      const data = await Address.findOne({ where: { id: addressId } })
+
+      if (data) {
+        if (process.env.CHAT_ID !== chatId) {
+          addressInfoUserChat(data, { bot, id: chatId })
+        } else {
+          addressInfoAdminChat(data, { bot, id: chatId })
+        }
+      }
+      res.json("Закрыть браузер")
+
+    } catch (error) {
+      console.log((error as Error).message);
+    }
+
+  },
+
   deleteAddress: async (addressId: string, obj: Bot): Promise<void> => {
     const { id, bot } = obj
     try {
       const data = await Address.destroy({ where: { id: addressId } })
-
 
       if (data) {
         await bot.telegram.sendMessage(id, "Адрес удален")
