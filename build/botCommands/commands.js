@@ -6,6 +6,9 @@ import { prayerTime, prayerTimeCity } from "../asyncs/fetch.js";
 import path from "path";
 import { readingFs } from "../hooks/readingFiles/readingFiles.js";
 import rgx from "../hooks/regExp/regExp.js";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 export const start = async (bot) => {
     bot.telegram.setMyCommands([
         { command: "start", description: "start" }
@@ -65,6 +68,7 @@ export const start = async (bot) => {
             if (text === "Закрыть чат") {
                 await chatController.addChat({ chatId: id, chat: false });
                 await ctx.reply("Чат закрыт", keyboardСontainer(id));
+                await bot.telegram.sendMessage(process.env.CHAT_ID, `Пользователь ${first_name} завершил беседу`, keyboardСontainer(id));
                 return;
             }
             if ((chat === null || chat === void 0 ? void 0 : chat.chat) && !chat.block && id != process.env.CHAT_ID) {
@@ -99,7 +103,7 @@ export const start = async (bot) => {
         const callbackData = query.update.callback_query.data;
         const id = query.from.id;
         const queryInfo = callbackData === null || callbackData === void 0 ? void 0 : callbackData.split(':');
-        const pathUploads = path.join(__dirname, `../src/db/uploads/${queryInfo[2]}`);
+        const pathUploads = path.join(__dirname, `../../src/db/uploads/${queryInfo[2]}`);
         const file = readingFs(pathUploads);
         try {
             if (queryInfo[0] === 'Удалить') {

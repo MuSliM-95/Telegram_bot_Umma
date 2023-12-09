@@ -1,9 +1,9 @@
 import { Context } from "vm";
 
-const arr = ["373573317", "117575225", "6209971994"]
+
 export async function sendBroadcast(message: string, chatIdArr: string[], bot: Context): Promise<void> {
     try {
-        await Promise.all(arr.map(async id => {
+        await Promise.all(chatIdArr.map(async id => {
             await bot.telegram.copyMessage(id, process.env.CHAT_ID, message)
         }))
 

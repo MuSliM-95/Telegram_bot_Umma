@@ -91,6 +91,7 @@ export const start = async (bot: Telegraf): Promise<void> => {
             if(text === "Закрыть чат") {
                 await chatController.addChat({ chatId: id, chat: false } as ChatTypes)
                 await ctx.reply("Чат закрыт", keyboardСontainer(id))
+                await bot.telegram.sendMessage(process.env.CHAT_ID!, `Пользователь ${first_name} завершил беседу`, keyboardСontainer(id))
                 return
             }
 
