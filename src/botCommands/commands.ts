@@ -9,6 +9,12 @@ import { prayerTime, prayerTimeCity } from "../asyncs/fetch.js"
 import path from "path"
 import { readingFs } from "../hooks/readingFiles/readingFiles.js"
 import rgx from "../hooks/regExp/regExp.js"
+import { fileURLToPath } from "url"
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 export const start = async (bot: Telegraf): Promise<void> => {
     // Обработка команд
@@ -127,7 +133,7 @@ export const start = async (bot: Telegraf): Promise<void> => {
         const callbackData = query.update.callback_query.data;
         const id = query.from.id
         const queryInfo = callbackData?.split(':')
-        const pathUploads = path.join(__dirname, `../src/db/uploads/${queryInfo[2]}`)
+        const pathUploads = path.join(__dirname, `../../src/db/uploads/${queryInfo[2]}`)
         const file = readingFs(pathUploads)
 
         try {
