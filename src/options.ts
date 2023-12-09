@@ -11,76 +11,77 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 
-    
 
-
-// const urlButton = [Markup.button.webApp("Добавить место", `https://umma-maps.ru/html/index.html?start=${id}`)]
-// const addressButton = [Markup.button.webApp("Посмотреть адреса", "https://umma-maps.ru/html/maps.html")]
 const callback = [Markup.button.callback("Время молитв", "Время молитв")]
 const prayerButtonlocation = [Markup.button.locationRequest("По геолокации")]
 const prayerButton = [Markup.button.callback("По названию города", "По названию города")]
 const backButtonHome = Markup.button.callback("На главную", "")
 const openСhat = [Markup.button.text("Написать администратору")]
+const info = [Markup.button.text("Получить данные")]
 
 
-export const keyboardСontainer = (id:string) =>  Markup.keyboard([
-    // urlButton,
+
+export const keyboardСontainer = (id: string) => Markup.keyboard([
     [Markup.button.webApp("Добавить место", `https://umma-maps.ru/html/index.html?chatId=${id}`)],
     [Markup.button.webApp("Посмотреть адреса", `https://umma-maps.ru/html/maps.html?chatId=${id}`)],
     callback,
     openСhat,
 ])
 
-export const adminKeyboard = (id:string) => Markup.keyboard([
-    // urlButton,
+export const adminKeyboard = (id: string) => Markup.keyboard([
     [Markup.button.webApp("Добавить место", `https://umma-maps.ru/html/index.html?chatId=${id}`)],
     [Markup.button.webApp("Посмотреть адреса", `https://umma-maps.ru/html/maps.html?chatId=${id}`)],
-    callback
+    callback,
+    info
+])
+
+export const closeChat = () => Markup.keyboard([
+    [Markup.button.text("Закрыть чат")]
 ])
 
 export const prayerKeyboardСontainer = Markup.keyboard([
     prayerButton,
     prayerButtonlocation,
     [backButtonHome]
-]) 
+])
 
-export const chatblock = ({chatId,  block}: ChatTypes) => {
+export const chatblock = ({ chatId, block }: ChatTypes) => {
     try {
         const blockUsers = block ? "Разблокировать пользователя" : "Заблокировать пользователя"
         const blockUsersCallbek = block ? "Разблокировать" : "Заблокировать"
-        const  keyboard = {
+        const keyboard = {
             inline_keyboard: [
                 [
-                   Markup.button.callback("Завершить беседу", `Завершить беседу:${chatId}`)
+                    Markup.button.callback("Завершить беседу", `Завершить беседу:${chatId}`)
                 ],
                 [
-                   Markup.button.callback(blockUsers, `${blockUsersCallbek}:${chatId}`)
+                    Markup.button.callback(blockUsers, `${blockUsersCallbek}:${chatId}`)
                 ],
-               ]
-           } 
-           return keyboard
+            ]
+        }
+        return keyboard
     } catch (error) {
         console.log(error);
-        
+
     }
-   
+
 }
 
 
-const pathImage  = (params?:string) => {
-    console.log( path.join(__dirname, `../src/db/uploads/${params || "scale_1200.webp"}`));
-    
-   return { source: path.join(__dirname, `../src/db/uploads/${params || "scale_1200.webp"}`) }
+const pathImage = (params?: string) => {
+    console.log(path.join(__dirname, `../src/db/uploads/${params || "scale_1200.webp"}`));
+
+    return { source: path.join(__dirname, `../src/db/uploads/${params || "scale_1200.webp"}`) }
 }
 
 const caption = (params: Data) => {
-   return `<strong>${params.title}</strong>\n\n` +
-   `<strong>Время работы: ${params.time}</strong>\n\n` +
-   `<strong>Регион: ${params.region === "undefined" ? "Не обозначен" : params.region}</strong>\n\n` +
-   `<strong>Город: ${params.city}</strong>\n\n<strong>Место: ${params.place}</strong>\n\n` +
-   `<strong>Место для молитвы: ${params.prayer}</strong>\n\n` +
-   `<strong>id:${params.id}</strong>\n\n` +
-   `<em><strong>Описания:</strong> ${params.descriptions !== undefined ? params.descriptions : "нет"}</em>\n\n`;
+    return `<strong>${params.title}</strong>\n\n` +
+        `<strong>Время работы: ${params.time}</strong>\n\n` +
+        `<strong>Регион: ${params.region === "undefined" ? "Не обозначен" : params.region}</strong>\n\n` +
+        `<strong>Город: ${params.city}</strong>\n\n<strong>Место: ${params.place}</strong>\n\n` +
+        `<strong>Место для молитвы: ${params.prayer}</strong>\n\n` +
+        `<strong>id:${params.id}</strong>\n\n` +
+        `<em><strong>Описания:</strong> ${params.descriptions !== undefined ? params.descriptions : "нет"}</em>\n\n`;
 
 }
 
@@ -90,58 +91,58 @@ export const addressInfoAdminChat = async (data: Data, obj: Bot) => {
 
     try {
         const inlineKeyboard = {
-            inline_keyboard:  [
+            inline_keyboard: [
                 [
                     Markup.button.webApp("Открыть в Яндекс картах",
-                        `https://yandex.ru/maps/?rtext=~${data.latitude},${data.longitude}`),        
+                        `https://yandex.ru/maps/?rtext=~${data.latitude},${data.longitude}`),
                 ],
                 [
-                    Markup.button.callback(`Удалить`, `Удалить:${data.id}:${data.photo.image}`) 
+                    Markup.button.callback(`Удалить`, `Удалить:${data.id}:${data.photo.image}`)
                 ],
             ]
         };
 
         await bot.telegram.sendPhoto(id, pathImage(data?.photo?.image),
-        { caption: caption(data), parse_mode: "HTML", reply_markup: inlineKeyboard  });
+            { caption: caption(data), parse_mode: "HTML", reply_markup: inlineKeyboard });
 
-         
+
 
     } catch (error) {
-        console.error("Ошибка при отправке фото:",  error );
+        console.error("Ошибка при отправке фото:", error);
     }
 
 }
-export const addressInfoUserChat = async (data: Data, obj: Bot) => {
+export const addressInfoUserChat = async (data: Data, obj: Bot): Promise<void> => {
     const { bot, id } = obj
 
     try {
         const inlineKeyboard = {
-            inline_keyboard:  [
+            inline_keyboard: [
                 [
                     Markup.button.webApp("Открыть в Яндекс картах",
-                        `https://yandex.ru/maps/?rtext=~${data.latitude},${data.longitude}`),        
+                        `https://yandex.ru/maps/?rtext=~${data.latitude},${data.longitude}`),
                 ]
             ]
         };
 
         await bot.telegram.sendPhoto(id, pathImage(data?.photo?.image),
-        { caption: caption(data), parse_mode: "HTML", reply_markup: inlineKeyboard  });
+            { caption: caption(data), parse_mode: "HTML", reply_markup: inlineKeyboard });
 
-         
+
 
     } catch (error) {
-        console.error("Ошибка при отправке фото:",  error );
+        console.error("Ошибка при отправке фото:", error);
     }
 
 }
 
 
-export const removeImage = (param:string) => {    
+export const removeImage = (param: string) => {
     return unlink(param, (error) => console.log(error));
 }
 
-export const infoText = ():string => {
-return `
+export const infoText = (): string => {
+    return `
 <strong>Ассаляму алейкум уа рахматуЛлахи уа баракатух.</strong>
 <em>Bot "Umma places" является помощником для поиска объектов разного назначения как Мечети, Кафе-халяль, Магазины и т.п.
 

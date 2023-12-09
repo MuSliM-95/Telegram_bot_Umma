@@ -87,4 +87,19 @@ export const chatController = {
         }
     },
 
+    chatRemove: async (chatId: string): Promise<void> => {
+
+        try {
+            await Chat.destroy({
+                where: {
+                    chatId
+                }
+            })
+
+
+        } catch (error) {
+            console.log((error as Error).message);
+        }
+    }
+
 }

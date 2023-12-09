@@ -10,7 +10,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Функция для вывода время молитв на изображения 
-export const generateImage = async (obj: Timings, { bot, id }: Bot) => {
+export const generateImage = async (obj: Timings, { bot, id }: Bot): Promise<void> => {
     const imagePath = path.join(__dirname, "../../images/religious-muslim-man-praying-mosque.jpg")
     const image = await readFile(imagePath)
     const img = sharp(image)
@@ -31,12 +31,12 @@ export const generateImage = async (obj: Timings, { bot, id }: Bot) => {
     const res = await img.composite([{ input: textSvg }]).toBuffer()
     await writeFile(path.join(__dirname, "../../images/res.png"), res)
 
-    await bot.telegram.sendPhoto(id, { source: path.join(__dirname, "../../images/res.png") }, {caption: htmlText(), parse_mode:"HTML" })
-   
+    await bot.telegram.sendPhoto(id, { source: path.join(__dirname, "../../images/res.png") }, { caption: htmlText(), parse_mode: "HTML" })
+
     removeImage(path.join(__dirname, "../../images/res.png"))
 }
 
-function htmlText() {
+function htmlText(): string {
     return `<strong>Данные взяты с источника  https://aladhan.com/.</strong>
 <em>Рекомендуется оттянуть время молитвы на 15-25 мин. поскольку времена молитв местности вашего пребывания могут разниться с источником.</em>`
 }

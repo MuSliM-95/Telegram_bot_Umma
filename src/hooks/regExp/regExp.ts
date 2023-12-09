@@ -1,10 +1,11 @@
 
  const rgx = (str: string): string[] | boolean => {
-  
+    
     if (str === undefined) {
         return false
     }
-    const match = str.split(/[, ]+/)
+    const text = str.trimStart()
+    const match = text.split(/[, ]+/)
     const result = match.map(e => {
         return e.split("").map((el, index) => {
             return el = index === 0 ? el.toUpperCase() : el

@@ -10,17 +10,17 @@ export const sequelize = new Sequelize(process.env.DB_NAME!, process.env.USER_DB
     dialect: "mysql",
     logging: false,
     port: Number(process.env.DB_PORT!),
-    
+
 });
 
-export const connect  = async () => {
+export const connect = async (): Promise<void> => {
     try {
-        await sequelize.authenticate() 
+        await sequelize.authenticate()
         console.log('Connection has been established successfully.');
     } catch (error) {
-        console.log('Unable to connect to the database:', error );
+        console.log('Unable to connect to the database:', error);
     }
-  }
+}
 
 
-  connect()
+connect()

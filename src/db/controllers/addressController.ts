@@ -6,6 +6,8 @@ import { updatePhoto } from "../middleWares/upload.js";
 import dotenv from 'dotenv'
 import Address from "../models/Address.js";
 import { bot } from "../../index.js";
+import Chat from "../models/Chat.js";
+
 
 dotenv.config()
 
@@ -35,9 +37,9 @@ export const addressController = {
       })
       if (chatId && process.env.CHAT_ID !== chatId) {
         addressInfoAdminChat(data, { bot, id: chatId as string })
-      } 
-        addressInfoAdminChat(data, { bot, id: process.env.CHAT_ID! })
-      
+      }
+      addressInfoAdminChat(data, { bot, id: process.env.CHAT_ID! })
+
 
       res.json("Данные сохранены")
     } catch (error) {
@@ -141,5 +143,20 @@ export const addressController = {
     } catch (error) {
       console.log((error as Error).message);
     }
+  },
+
+  getInfo: async ({ bot }: Bot): Promise<void> => {
+    try {
+      const address = await Address.findAll()
+      const users = await Chat.findAll()
+ 
+      await bot.telegram.sendMessage(process.env.CHAT_ID!, `Адреса: ${address.length}\n\nПользователей: ${users.length}`)
+
+    } catch (error) {
+      console.log((error as Error).message);
+    }
+
   }
 }
+
+

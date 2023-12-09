@@ -11,6 +11,7 @@ const prayerButtonlocation = [Markup.button.locationRequest("По геолока
 const prayerButton = [Markup.button.callback("По названию города", "По названию города")];
 const backButtonHome = Markup.button.callback("На главную", "");
 const openСhat = [Markup.button.text("Написать администратору")];
+const info = [Markup.button.text("Получить данные")];
 export const keyboardСontainer = (id) => Markup.keyboard([
     [Markup.button.webApp("Добавить место", `https://umma-maps.ru/html/index.html?chatId=${id}`)],
     [Markup.button.webApp("Посмотреть адреса", `https://umma-maps.ru/html/maps.html?chatId=${id}`)],
@@ -20,7 +21,11 @@ export const keyboardСontainer = (id) => Markup.keyboard([
 export const adminKeyboard = (id) => Markup.keyboard([
     [Markup.button.webApp("Добавить место", `https://umma-maps.ru/html/index.html?chatId=${id}`)],
     [Markup.button.webApp("Посмотреть адреса", `https://umma-maps.ru/html/maps.html?chatId=${id}`)],
-    callback
+    callback,
+    info
+]);
+export const closeChat = () => Markup.keyboard([
+    [Markup.button.text("Закрыть чат")]
 ]);
 export const prayerKeyboardСontainer = Markup.keyboard([
     prayerButton,

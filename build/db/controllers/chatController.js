@@ -74,5 +74,17 @@ export const chatController = {
             console.log(error.message);
         }
     },
+    chatRemove: async (chatId) => {
+        try {
+            await Chat.destroy({
+                where: {
+                    chatId
+                }
+            });
+        }
+        catch (error) {
+            console.log(error.message);
+        }
+    }
 };
 //# sourceMappingURL=chatController.js.map
