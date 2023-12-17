@@ -9,9 +9,14 @@ import { bot } from "../../index.js";
 import Chat from "../models/Chat.js";
 import { readingFs } from "../../hooks/readingFiles/readingFiles.js";
 import path from "path";
+import { fileURLToPath } from "url";
 
 
 dotenv.config()
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 export const addressController = {
   postData: async (req: Request, res: Response): Promise<void> => {

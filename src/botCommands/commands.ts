@@ -6,14 +6,8 @@ import { ChatTypes } from "../types/global.js"
 import { sendBroadcast } from "../hooks/mailing/mailing.js"
 import { addressController } from "../db/controllers/addressController.js"
 import { prayerTime, prayerTimeCity } from "../asyncs/fetch.js"
-import path from "path"
-import { readingFs } from "../hooks/readingFiles/readingFiles.js"
 import rgx from "../hooks/regExp/regExp.js"
-import { fileURLToPath } from "url"
 
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 
 export const start = async (bot: Telegraf): Promise<void> => {
