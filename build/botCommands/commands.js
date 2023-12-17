@@ -1,10 +1,9 @@
-import { adminKeyboard, chatblock, closeChat, infoText, keyboardСontainer, prayerKeyboardСontainer, removeImage } from "../options.js";
+import { adminKeyboard, chatblock, closeChat, infoText, keyboardСontainer, prayerKeyboardСontainer } from "../options.js";
 import { chatController } from "../db/controllers/chatController.js";
 import { sendBroadcast } from "../hooks/mailing/mailing.js";
 import { addressController } from "../db/controllers/addressController.js";
 import { prayerTime, prayerTimeCity } from "../asyncs/fetch.js";
 import path from "path";
-import { readingFs } from "../hooks/readingFiles/readingFiles.js";
 import rgx from "../hooks/regExp/regExp.js";
 import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
@@ -103,14 +102,9 @@ export const start = async (bot) => {
         const callbackData = query.update.callback_query.data;
         const id = query.from.id;
         const queryInfo = callbackData === null || callbackData === void 0 ? void 0 : callbackData.split(':');
-        const pathUploads = path.join(__dirname, `../../src/db/uploads/${queryInfo[2]}`);
-        const file = readingFs(pathUploads);
         try {
             if (queryInfo[0] === 'Удалить') {
                 await addressController.deleteAddress(queryInfo[1], { bot, id });
-                if (file && queryInfo[2]) {
-                    removeImage(pathUploads);
-                }
                 return;
             }
             if (queryInfo[0] === 'Завершить беседу') {

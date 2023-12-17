@@ -75,7 +75,7 @@ export const addressInfoAdminChat = async (data, obj) => {
                     Markup.button.webApp("Открыть в Яндекс картах", `https://yandex.ru/maps/?rtext=~${data.latitude},${data.longitude}`),
                 ],
                 [
-                    Markup.button.callback(`Удалить`, `Удалить:${data.id}:${data.photo.image}`)
+                    Markup.button.callback(`Удалить`, `Удалить:${data.id}`)
                 ],
             ]
         };

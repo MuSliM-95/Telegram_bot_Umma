@@ -1,12 +1,14 @@
 import { Request } from "express";
 import { Response } from 'express';
-import { addressInfoAdminChat, addressInfoUserChat } from "../../options.js";
+import { addressInfoAdminChat, addressInfoUserChat, removeImage } from "../../options.js";
 import { Bot, UpdateAddress } from "../../types/global.js";
 import { updatePhoto } from "../middleWares/upload.js";
 import dotenv from 'dotenv'
 import Address from "../models/Address.js";
 import { bot } from "../../index.js";
 import Chat from "../models/Chat.js";
+import { readingFs } from "../../hooks/readingFiles/readingFiles.js";
+import path from "path";
 
 
 dotenv.config()
@@ -110,9 +112,15 @@ export const addressController = {
   deleteAddress: async (addressId: string, obj: Bot): Promise<void> => {
     const { id, bot } = obj
     try {
-      const data = await Address.destroy({ where: { id: addressId } })
+      const address = await Address.findOne({ where: { id: addressId } })
+      const deletionAddress = await Address.destroy({ where: { id: addressId } })
 
-      if (data) {
+      if (deletionAddress && address) {
+        const pathUploads = path.join(__dirname, `../../../src/db/uploads/${address?.photo.image}`)
+        const file = readingFs(pathUploads)
+        if (file) {
+          removeImage(pathUploads)
+        }
         await bot.telegram.sendMessage(id, "Адрес удален")
       }
 
@@ -149,7 +157,7 @@ export const addressController = {
     try {
       const address = await Address.findAll()
       const users = await Chat.findAll()
- 
+
       await bot.telegram.sendMessage(process.env.CHAT_ID!, `Адреса: ${address.length}\n\nПользователей: ${users.length}`)
 
     } catch (error) {

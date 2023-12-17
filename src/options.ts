@@ -97,7 +97,7 @@ export const addressInfoAdminChat = async (data: Data, obj: Bot) => {
                         `https://yandex.ru/maps/?rtext=~${data.latitude},${data.longitude}`),
                 ],
                 [
-                    Markup.button.callback(`Удалить`, `Удалить:${data.id}:${data.photo.image}`)
+                    Markup.button.callback(`Удалить`, `Удалить:${data.id}`)
                 ],
             ]
         };

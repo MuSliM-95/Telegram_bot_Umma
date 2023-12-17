@@ -88,7 +88,7 @@ export const start = async (bot: Telegraf): Promise<void> => {
                 return
             }
 
-            if(text === "Закрыть чат") {
+            if (text === "Закрыть чат") {
                 await chatController.addChat({ chatId: id, chat: false } as ChatTypes)
                 await ctx.reply("Чат закрыт", keyboardСontainer(id))
                 await bot.telegram.sendMessage(process.env.CHAT_ID!, `Пользователь ${first_name} завершил беседу`, keyboardСontainer(id))
@@ -134,15 +134,10 @@ export const start = async (bot: Telegraf): Promise<void> => {
         const callbackData = query.update.callback_query.data;
         const id = query.from.id
         const queryInfo = callbackData?.split(':')
-        const pathUploads = path.join(__dirname, `../../src/db/uploads/${queryInfo[2]}`)
-        const file = readingFs(pathUploads)
-
+   
         try {
             if (queryInfo[0] === 'Удалить') {
                 await addressController.deleteAddress(queryInfo[1], { bot, id })
-                if (file && queryInfo[2]) {
-                    removeImage(pathUploads)
-                }
                 return
             }
 
@@ -172,11 +167,11 @@ export const start = async (bot: Telegraf): Promise<void> => {
     bot.on('my_chat_member', async (ctx: Context) => {
 
         const chatInfo = ctx.update.my_chat_member
-        const {status} = chatInfo.new_chat_member
-        const {id} = chatInfo.chat
-  
+        const { status } = chatInfo.new_chat_member
+        const { id } = chatInfo.chat
+
         if (status === "kicked") {
-         await chatController.chatRemove(id)
+            await chatController.chatRemove(id)
         }
     });
 

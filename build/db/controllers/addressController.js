@@ -1,9 +1,11 @@
-import { addressInfoAdminChat, addressInfoUserChat } from "../../options.js";
+import { addressInfoAdminChat, addressInfoUserChat, removeImage } from "../../options.js";
 import { updatePhoto } from "../middleWares/upload.js";
 import dotenv from 'dotenv';
 import Address from "../models/Address.js";
 import { bot } from "../../index.js";
 import Chat from "../models/Chat.js";
+import { readingFs } from "../../hooks/readingFiles/readingFiles.js";
+import path from "path";
 dotenv.config();
 export const addressController = {
     postData: async (req, res) => {
@@ -90,8 +92,14 @@ export const addressController = {
     deleteAddress: async (addressId, obj) => {
         const { id, bot } = obj;
         try {
-            const data = await Address.destroy({ where: { id: addressId } });
-            if (data) {
+            const address = await Address.findOne({ where: { id: addressId } });
+            const deletionAddress = await Address.destroy({ where: { id: addressId } });
+            if (deletionAddress && address) {
+                const pathUploads = path.join(__dirname, `../../../src/db/uploads/${address === null || address === void 0 ? void 0 : address.photo.image}`);
+                const file = readingFs(pathUploads);
+                if (file) {
+                    removeImage(pathUploads);
+                }
                 await bot.telegram.sendMessage(id, "Адрес удален");
             }
         }
