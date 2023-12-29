@@ -69,8 +69,6 @@ export const chatblock = ({ chatId, block }: ChatTypes) => {
 
 
 const pathImage = (params?: string) => {
-    console.log(path.join(__dirname, `../src/db/uploads/${params || "scale_1200.webp"}`));
-
     return { source: path.join(__dirname, `../src/db/uploads/${params || "scale_1200.webp"}`) }
 }
 
@@ -150,5 +148,6 @@ export const infoText = (): string => {
 
 Бот работает в основном с геолокацией, поэтому включите ее у себя заранее в настройках для корректной работы.
 </em>
+<em>https://t.me/+q3g7zPQgT6VmOWRi</em>
 `
 }

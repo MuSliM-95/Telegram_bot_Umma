@@ -1,14 +1,12 @@
+import { Telegraf } from "telegraf";
 import { adminKeyboard, chatblock, closeChat, infoText, keyboardСontainer, prayerKeyboardСontainer } from "../options.js";
 import { chatController } from "../db/controllers/chatController.js";
 import { sendBroadcast } from "../hooks/mailing/mailing.js";
 import { addressController } from "../db/controllers/addressController.js";
 import { prayerTime, prayerTimeCity } from "../asyncs/fetch.js";
-import path from "path";
 import rgx from "../hooks/regExp/regExp.js";
-import { fileURLToPath } from "url";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-export const start = async (bot) => {
+export const bot = new Telegraf(process.env.TOKEN);
+export const start = async () => {
     bot.telegram.setMyCommands([
         { command: "start", description: "start" }
     ]);
@@ -60,7 +58,7 @@ export const start = async (bot) => {
             }
             if (text === "Написать администратору") {
                 chat = await chatController.addChat({ first_name, chatId: id, chat: true });
-                await ctx.reply("Вам скора ответят, по воле Аллаха", closeChat());
+                await ctx.reply(`Вам скоро ответят, по воле Аллаха. Также, у нас есть группа, вы можете задать вопрос и там.\nhttps://t.me/+q3g7zPQgT6VmOWRi`, closeChat());
                 await ctx.telegram.forwardMessage(process.env.CHAT_ID, id, message_id);
                 return;
             }

@@ -5,11 +5,11 @@ import { Bot, UpdateAddress } from "../../types/global.js";
 import { updatePhoto } from "../middleWares/upload.js";
 import dotenv from 'dotenv'
 import Address from "../models/Address.js";
-import { bot } from "../../index.js";
 import Chat from "../models/Chat.js";
 import { readingFs } from "../../hooks/readingFiles/readingFiles.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import { bot } from "../../botCommands/commands.js";
 
 
 dotenv.config()
@@ -120,6 +120,8 @@ export const addressController = {
       const address = await Address.findOne({ where: { id: addressId } })
       const deletionAddress = await Address.destroy({ where: { id: addressId } })
 
+      console.log(address, deletionAddress);
+      
       if (deletionAddress && address) {
         const pathUploads = path.join(__dirname, `../../../src/db/uploads/${address?.photo.image}`)
         const file = readingFs(pathUploads)

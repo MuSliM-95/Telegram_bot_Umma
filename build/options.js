@@ -53,7 +53,6 @@ export const chatblock = ({ chatId, block }) => {
     }
 };
 const pathImage = (params) => {
-    console.log(path.join(__dirname, `../src/db/uploads/${params || "scale_1200.webp"}`));
     return { source: path.join(__dirname, `../src/db/uploads/${params || "scale_1200.webp"}`) };
 };
 const caption = (params) => {
@@ -114,6 +113,7 @@ export const infoText = () => {
 
 Бот работает в основном с геолокацией, поэтому включите ее у себя заранее в настройках для корректной работы.
 </em>
+<em>https://t.me/+q3g7zPQgT6VmOWRi</em>
 `;
 };
 //# sourceMappingURL=options.js.map

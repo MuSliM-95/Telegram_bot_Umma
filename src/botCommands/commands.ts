@@ -1,6 +1,6 @@
 import { Telegraf } from "telegraf"
 import { Context } from "vm"
-import { adminKeyboard, chatblock, closeChat, infoText, keyboardСontainer, prayerKeyboardСontainer, removeImage } from "../options.js"
+import { adminKeyboard, chatblock, closeChat, infoText, keyboardСontainer, prayerKeyboardСontainer } from "../options.js"
 import { chatController } from "../db/controllers/chatController.js"
 import { ChatTypes } from "../types/global.js"
 import { sendBroadcast } from "../hooks/mailing/mailing.js"
@@ -8,9 +8,9 @@ import { addressController } from "../db/controllers/addressController.js"
 import { prayerTime, prayerTimeCity } from "../asyncs/fetch.js"
 import rgx from "../hooks/regExp/regExp.js"
 
+export const bot = new Telegraf(process.env.TOKEN!)
 
-
-export const start = async (bot: Telegraf): Promise<void> => {
+export const start = async (): Promise<void> => {
     // Обработка команд
 
     bot.telegram.setMyCommands([
@@ -77,7 +77,7 @@ export const start = async (bot: Telegraf): Promise<void> => {
 
             if (text === "Написать администратору") {
                 chat = await chatController.addChat({ first_name, chatId: id, chat: true } as ChatTypes)
-                await ctx.reply("Вам скора ответят, по воле Аллаха", closeChat())
+                await ctx.reply(`Вам скоро ответят, по воле Аллаха. Также, у нас есть группа, вы можете задать вопрос и там.\nhttps://t.me/+q3g7zPQgT6VmOWRi`, closeChat())
                 await ctx.telegram.forwardMessage(process.env.CHAT_ID!, id, message_id)
                 return
             }
@@ -133,7 +133,7 @@ export const start = async (bot: Telegraf): Promise<void> => {
             if (queryInfo[0] === 'Удалить') {
                 await addressController.deleteAddress(queryInfo[1], { bot, id })
                 return
-            }
+            } 
 
             if (queryInfo[0] === 'Завершить беседу') {
                 await chatController.addChat({ chatId: queryInfo[1], chat: false } as ChatTypes)

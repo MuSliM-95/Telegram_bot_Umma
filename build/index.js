@@ -1,5 +1,4 @@
 import express from "express";
-import { Telegraf } from "telegraf";
 import router from "./db/routs/rout.js";
 import cors from "cors";
 import dotenv from 'dotenv';
@@ -25,6 +24,5 @@ app.use(express.static(path.join(__dirname, '../src/db/uploads/')));
 app.listen(PORT, async () => {
     console.log(`Server is running on port http://localhost:${PORT}`);
 });
-export const bot = new Telegraf(process.env.TOKEN);
-await start(bot);
+await start();
 //# sourceMappingURL=index.js.map
