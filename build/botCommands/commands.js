@@ -1,22 +1,26 @@
-import { Telegraf } from "telegraf";
-import { adminKeyboard, chatblock, closeChat, infoText, keyboardСontainer, prayerKeyboardСontainer } from "../options.js";
-import { chatController } from "../db/controllers/chatController.js";
-import { sendBroadcast } from "../hooks/mailing/mailing.js";
-import { addressController } from "../db/controllers/addressController.js";
-import { prayerTime, prayerTimeCity } from "../asyncs/fetch.js";
-import rgx from "../hooks/regExp/regExp.js";
+import { Telegraf } from 'telegraf';
+import { adminKeyboard, chatblock, closeChat, infoText, keyboardСontainer, prayerKeyboardСontainer, } from '../options.js';
+import { chatController } from '../db/controllers/chatController.js';
+import { sendBroadcast } from '../hooks/mailing/mailing.js';
+import { addressController } from '../db/controllers/addressController.js';
+import { prayerTime, prayerTimeCity } from '../asyncs/fetch.js';
+import rgx from '../hooks/regExp/regExp.js';
+import { botCommands } from '../hooks/сommand/getData.js';
 export const bot = new Telegraf(process.env.TOKEN);
 export const start = async () => {
-    bot.telegram.setMyCommands([
-        { command: "start", description: "start" }
-    ]);
+    bot.telegram.setMyCommands([{ command: 'start', description: 'start' }]);
     bot.start((ctx) => {
         ctx.replyWithHTML(infoText(), (ctx === null || ctx === void 0 ? void 0 : ctx.chat.id) == process.env.CHAT_ID ? adminKeyboard(ctx === null || ctx === void 0 ? void 0 : ctx.chat.id) : keyboardСontainer(ctx === null || ctx === void 0 ? void 0 : ctx.chat.id)),
-            (ctx === null || ctx === void 0 ? void 0 : ctx.chat.id) != process.env.CHAT_ID && chatController.addChat({ first_name: ctx.update.message.chat.first_name, chatId: ctx.update.message.chat.id, chat: false });
+            (ctx === null || ctx === void 0 ? void 0 : ctx.chat.id) != process.env.CHAT_ID &&
+                chatController.addChat({
+                    first_name: ctx.update.message.chat.first_name,
+                    chatId: ctx.update.message.chat.id,
+                    chat: false,
+                });
     });
-    bot.hears("Время молитв", (ctx) => ctx.reply("Выберите действие", prayerKeyboardСontainer));
-    bot.hears("На главную", (ctx) => ctx.reply("Выберите действие", (ctx === null || ctx === void 0 ? void 0 : ctx.chat.id) == process.env.CHAT_ID ? adminKeyboard(ctx === null || ctx === void 0 ? void 0 : ctx.chat.id) : keyboardСontainer(ctx === null || ctx === void 0 ? void 0 : ctx.chat.id)));
-    bot.on("message", async (ctx) => {
+    bot.hears('Время молитв', (ctx) => ctx.reply('Выберите действие', prayerKeyboardСontainer));
+    bot.hears('На главную', (ctx) => ctx.reply('Выберите действие', (ctx === null || ctx === void 0 ? void 0 : ctx.chat.id) == process.env.CHAT_ID ? adminKeyboard(ctx === null || ctx === void 0 ? void 0 : ctx.chat.id) : keyboardСontainer(ctx === null || ctx === void 0 ? void 0 : ctx.chat.id)));
+    bot.on('message', async (ctx) => {
         var _a, _b;
         try {
             const message = ctx.update.message;
@@ -26,45 +30,50 @@ export const start = async () => {
             const timestamp = ctx.update.message.date;
             let chat = await chatController.getChatId(id);
             if (text) {
-                var [idAddress, params] = text === null || text === void 0 ? void 0 : text.split(":");
+                var [idAddress, params] = text === null || text === void 0 ? void 0 : text.split(':');
             }
-            if (text === "По названию города") {
+            if (text === 'По названию города') {
                 ctx.reply("Введите названия города в таком формате: 'Время: Россия, Грозный'");
                 return;
             }
-            if (!location && idAddress === "Время") {
+            if (!location && idAddress === 'Время') {
                 const messagePrayer = rgx(params);
                 await prayerTimeCity(messagePrayer, { bot, id });
+                botCommands.prayer_counter.name++;
+                console.log(botCommands);
                 return;
             }
-            if (id == process.env.CHAT_ID && idAddress === "Umma places") {
+            if ((id == process.env.CHAT_ID && idAddress === 'Umma places') ||
+                (id == process.env.CHAT_ID && caption === 'Umma places')) {
                 const chatIdArr = await chatController.getChat();
                 if (chatIdArr && chatIdArr.length > 0) {
                     await sendBroadcast(message_id, chatIdArr, bot);
                     return;
                 }
             }
-            if (id == process.env.CHAT_ID && text === "Получить данные") {
+            if (id == process.env.CHAT_ID && text === 'Получить данные') {
                 await addressController.getInfo({ bot, id });
                 return;
             }
-            if (idAddress === "id" && params && id == process.env.CHAT_ID) {
+            if (idAddress === 'id' && params && id == process.env.CHAT_ID) {
                 await addressController.getAddressId(params, { bot, id });
                 return;
             }
             if (location) {
                 await prayerTime(timestamp, location, { bot, id });
+                botCommands.prayer_counter.geolocation++;
+                console.log(botCommands);
                 return;
             }
-            if (text === "Написать администратору") {
+            if (text === 'Написать администратору') {
                 chat = await chatController.addChat({ first_name, chatId: id, chat: true });
                 await ctx.reply(`Вам скоро ответят, по воле Аллаха. Также, у нас есть группа, вы можете задать вопрос и там.\nhttps://t.me/+q3g7zPQgT6VmOWRi`, closeChat());
                 await ctx.telegram.forwardMessage(process.env.CHAT_ID, id, message_id);
                 return;
             }
-            if (text === "Закрыть чат") {
+            if (text === 'Закрыть чат') {
                 await chatController.addChat({ chatId: id, chat: false });
-                await ctx.reply("Чат закрыт", keyboardСontainer(id));
+                await ctx.reply('Чат закрыт', keyboardСontainer(id));
                 await bot.telegram.sendMessage(process.env.CHAT_ID, `Пользователь ${first_name} завершил беседу`, keyboardСontainer(id));
                 return;
             }
@@ -78,7 +87,7 @@ export const start = async () => {
                 return;
             }
             if (id == process.env.CHAT_ID && photo && caption) {
-                await addressController.updateAddress(params = { chatId: caption, photo, botObj: { bot, id } });
+                await addressController.updateAddress((params = { chatId: caption, photo, botObj: { bot, id } }));
                 return;
             }
             if (id == process.env.CHAT_ID && !replyIdChat) {
@@ -96,7 +105,7 @@ export const start = async () => {
             console.error(error);
         }
     });
-    bot.on("callback_query", async (query) => {
+    bot.on('callback_query', async (query) => {
         const callbackData = query.update.callback_query.data;
         const id = query.from.id;
         const queryInfo = callbackData === null || callbackData === void 0 ? void 0 : callbackData.split(':');
@@ -129,7 +138,7 @@ export const start = async () => {
         const chatInfo = ctx.update.my_chat_member;
         const { status } = chatInfo.new_chat_member;
         const { id } = chatInfo.chat;
-        if (status === "kicked") {
+        if (status === 'kicked') {
             await chatController.chatRemove(id);
         }
     });

@@ -9,9 +9,7 @@ export async function sendBroadcast(message: string, chatIdArr: string[], bot: C
 
         bot.telegram.sendMessage(process.env.CHAT_ID!, 'Рассылка начата!');
     } catch (error) {
-        console.log("Error");
-
-        console.log((error as any).TelegramError.on);
+        console.log("Ошибка рассылки");
     }
 
 }

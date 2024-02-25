@@ -6,8 +6,7 @@ export async function sendBroadcast(message, chatIdArr, bot) {
         bot.telegram.sendMessage(process.env.CHAT_ID, 'Рассылка начата!');
     }
     catch (error) {
-        console.log("Error");
-        console.log(error.TelegramError.on);
+        console.log("Ошибка рассылки");
     }
 }
 //# sourceMappingURL=mailing.js.map
