@@ -18,7 +18,6 @@ import { botCommands } from '../hooks/сommand/getData.js';
 
 export const bot = new Telegraf(process.env.TOKEN!);
 
-
 export const start = async (): Promise<void> => {
   // Обработка команд
 

@@ -11,7 +11,9 @@ const updateTime = () => {
   const moscowDate = new Date();
   const now = new Date();
   const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
-  return (endOfDay.setHours(endOfDay.getHours() + 3) - (moscowDate.getTime() + 3 * (60 * 60000))) / 1000;
+  console.log((endOfDay.setHours(endOfDay.getHours() + 3) - (moscowDate.getTime() + 3 * (60 * 60000))));
+  
+  return (endOfDay.setHours(endOfDay.getHours() + 3) - (moscowDate.getTime() + 3 * (60 * 60000)));
 };
 
 setTimeout(() => {
