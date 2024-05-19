@@ -23,10 +23,10 @@ const corsOptions = {
     optionsSuccessStatus: 204,
 };
 app.use(express.json());
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(router);
-app.use(ErrorMiddleware);
 app.use(express.static(path.join(__dirname, '../src/db/uploads/')));
+app.use(ErrorMiddleware);
 app.listen(PORT, async () => {
     console.log(`Server is running on port http://localhost:${PORT}`);
 });

@@ -7,7 +7,6 @@ module.exports = {
       `SELECT id, photo FROM Addresses`,
       { type: Sequelize.QueryTypes.SELECT }
     )
-    console.log(tableRows);
     for (const row of tableRows) {
       let updatePhoto = []
       try {

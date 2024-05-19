@@ -31,11 +31,10 @@ const corsOptions = {
 
 
 app.use(express.json());
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(router)
-app.use(ErrorMiddleware)
-
 app.use(express.static(path.join(__dirname, '../src/db/uploads/')))
+app.use(ErrorMiddleware)
 
 
 app.listen(PORT, async () => {
