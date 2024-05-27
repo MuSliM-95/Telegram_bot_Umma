@@ -2,7 +2,13 @@ import { existsSync, unlink } from "fs";
 import path from "path";
 import { __dirname } from "../../../index.js";
 export const readingFs = (data) => {
-    const fileName = data.photo[0] && data.photo[0].image;
+    let fileName = data.photo[0] && data.photo[0].image;
+    for (let i = 0; i < 3; i++) {
+        if (data.photo[i].image !== 'default.jpg') {
+            fileName = data.photo[i].image;
+            break;
+        }
+    }
     if (!fileName) {
         return 'default.jpg';
     }

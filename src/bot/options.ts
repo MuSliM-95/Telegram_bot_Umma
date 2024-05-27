@@ -133,7 +133,6 @@ export const addressInfoUserChat = async (data: Data, id: string): Promise<void>
 
 
 export const deleteMailingList = (message_id: string) => {
-
   const inlineKeyboard = {
     inline_keyboard: [
       [Markup.button.callback('Удалить  рассылку', `Удалить рассылку:${message_id}`)]

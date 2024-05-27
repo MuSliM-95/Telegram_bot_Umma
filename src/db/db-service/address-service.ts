@@ -142,7 +142,6 @@ export const filterAddresses = (data: Data[], req: Request) => {
 export const addMessageInChat = (data: Data, chatId: string) => {
   if (process.env.CHAT_ID !== chatId) {
     addressInfoUserChat(data, chatId);
-
   } else {
     addressInfoAdminChat(data, chatId);
   }
