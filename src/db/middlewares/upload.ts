@@ -10,15 +10,23 @@ interface ExpressMulterFile extends Express.Multer.File {
 
 const storage: multer.StorageEngine = multer.diskStorage({
   destination(req: Request, file: ExpressMulterFile, cb: (error: Error | null, destination: string) => void) {
+    if (file.originalname !== 'default.jpg' && file.originalname !== 'pred.jpg') {
+      cb(null, path.join(__dirname, "../src/db/uploads/"))
+    } else {
+      cb(null, path.join(__dirname, "../src/db/excluded/"))
+    }
 
-    cb(null, path.join(__dirname, "../src/db/uploads/"))
   },
 
   filename(req: Request, file: ExpressMulterFile, cb: (error: Error | null, destination: string) => void) {
     const data = moment().format('DDMMYYYY-HHmmss_SSS')
     const name = Math.random() * (9999 - 1) + 1
+    if (file.originalname !== 'default.jpg' && file.originalname !== 'pred.jpg') {
+      cb(null, `${data}-${name}.png`)
+    } else {
+      cb(null, file.originalname)
+    }
 
-    cb(null, `${data}-${name}.png`)
   }
 })
 
@@ -33,4 +41,4 @@ const fileFilter = (req: Request, file: ExpressMulterFile, cb: FileFilterCallbac
 
 
 
-export default multer({ storage, fileFilter }) as Multer 
+export default multer({ storage, fileFilter }) as Multer  

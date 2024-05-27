@@ -17,7 +17,7 @@ const Chat = sequelize.define<ChatTypes>("Chat", {
     block: {
         type: DataTypes.BOOLEAN,
     },
-    chat: {
+    chat: { 
         type: DataTypes.BOOLEAN,
         defaultValue: false,
     },

@@ -31,22 +31,22 @@ export const generateImage = async (ctx: Context, obj: PrayerTimeDataItem): Prom
     </style>
      <text x="70px" y="76px" text-anchor="middle" class="title">Фаджр:</text>
      <text x="500px" y="76px" text-anchor="middle" class="title">${Fajr.split('(')[0]}</text>
-     <text x="73px" y="123px" text-anchor="middle" class="title">Восход:</text>
+     <text x="72px" y="123px" text-anchor="middle" class="title">Восход:</text>
      <text x="500px" y="123px" text-anchor="middle" class="title">${Sunrise.split('(')[0]}</text>
-     <text x="53px" y="168px" text-anchor="middle" class="title">Зухр:</text>
+     <text x="51px" y="168px" text-anchor="middle" class="title">Зухр:</text>
      <text x="500px" y="168px" text-anchor="middle" class="title">${Dhuhr.split('(')[0]}</text>
-     <text x="46px" y="215px" text-anchor="middle" class="title">Аср:</text>
+     <text x="44px" y="215px" text-anchor="middle" class="title">Аср:</text>
      <text x="500px" y="215px" text-anchor="middle" class="title">${Asr.split('(')[0]}</text>
-     <text x="78px" y="265px" text-anchor="middle" class="title">Магриб:</text>
+     <text x="80px" y="265px" text-anchor="middle" class="title">Магриб:</text>
      <text x="500px" y="265px" text-anchor="middle" class="title">${Maghrib.split('(')[0]}</text>
-     <text x="54px" y="312px" text-anchor="middle" class="title">Иша:</text>
+     <text x="51px" y="312px" text-anchor="middle" class="title">Иша:</text>
      <text x="500px" y="312px" text-anchor="middle" class="title">${Isha.split('(')[0]}</text>
-     <text x="85px" y="405px" text-anchor="middle" class="title">Полночь:</text>
+     <text x="88px" y="405px" text-anchor="middle" class="title">Полночь:</text>
      <text x="500px" y="405px" text-anchor="middle" class="title">${Midnight.split('(')[0]}</text>
-     <text x="127px" y="455px" text-anchor="middle" class="title">Посл.1/3 ночи:</text>
+     <text x="140px" y="455px" text-anchor="middle" class="title">Посл.1/3 ночи:</text>
      <text x="500px" y="455px" text-anchor="middle" class="title">${Lastthird.split('(')[0]}</text>
-     <text x="118px" y="535px" text-anchor="middle" class="title">🌘  ${hijri.date}</text>
-     <text x="118px" y="585px" text-anchor="middle" class="title">⏱  ${gregorian.date}</text>
+     <text x="128px" y="535px" text-anchor="middle" class="title">🌘  ${hijri.date}</text>
+     <text x="128px" y="585px" text-anchor="middle" class="title">⏱  ${gregorian.date}</text>
      </svg>`)
 
     const res = await img.composite([{ input: textSvg }]).toBuffer()

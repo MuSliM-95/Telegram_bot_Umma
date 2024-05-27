@@ -1,4 +1,3 @@
-import { BadRequest } from "../../bot/exceptions/api-error.js"
 import { ChatTypes } from "../../types/global-types.js"
 import Chat from "../models/Chat.js"
 
@@ -28,7 +27,6 @@ export const createChat = async (params: ChatTypes) => {
     await getChat.save()
     
     return getChat
-
 }
 
 export const chatUpdate = async (chatId: string, block: boolean) => {
@@ -43,5 +41,4 @@ export const chatUpdate = async (chatId: string, block: boolean) => {
     await data.save()
 
     return data
-4
 }

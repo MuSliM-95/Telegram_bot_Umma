@@ -42,7 +42,7 @@ export const createAddress = async (req, res, next) => {
 };
 export const addressUpdate = async (req, res, next) => {
     try {
-        const { textarea, name, region, place, pred_name, city, prayer, address, location, time } = req.body;
+        const { textarea, name, region, place, city, prayer, address, location, time } = req.body;
         const { files } = req;
         const { chatId, addressId } = req.params;
         let filePhoto = [];
@@ -51,21 +51,26 @@ export const addressUpdate = async (req, res, next) => {
         if (!data) {
             throw new Error("Ошибка при попытке изменить адрес. Адрес не был найден!");
         }
-        if (Array.isArray(files) && files.length > 0) {
+        if (Array.isArray(files)) {
             files.forEach((file, index) => {
-                filePhoto.push({ image: file.filename });
-                if (pred_name[index] !== "pngtree-img-file-document-icon-png-image_897560.jpg") {
-                    removeImageInUploads(pred_name[index]);
+                if (file.filename === 'pred.jpg' && !data.photo[index]) {
+                    filePhoto[index] = { image: 'default.jpg' };
+                    return;
                 }
-            });
-        }
-        else {
-            filePhoto = data.photo;
-        }
-        if (data.photo.length > 0) {
-            data.photo.forEach((file) => {
-                if ((pred_name === null || pred_name === void 0 ? void 0 : pred_name.indexOf(file.image)) === -1) {
-                    filePhoto.push(file);
+                if (file.filename === 'pred.jpg') {
+                    filePhoto[index] = data.photo[index];
+                    return;
+                }
+                if (file.filename === "default.jpg") {
+                    filePhoto[index] = { image: file.filename };
+                    if (data.photo[index] && data.photo[index].image !== 'default.jpg') {
+                        removeImageInUploads(data.photo[index].image);
+                    }
+                    return;
+                }
+                filePhoto[index] = { image: file.filename };
+                if (data.photo[index] && data.photo[index].image !== 'default.jpg') {
+                    removeImageInUploads(data.photo[index].image);
                 }
             });
         }
@@ -117,7 +122,7 @@ export const removeImageInUploads = (address) => {
     if (typeof address === 'string') {
         const pathUploads = path.join(__dirname, `../src/db/uploads/${address}`);
         const file = existsSync(pathUploads);
-        if (file) {
+        if (file && address !== 'default.jpg') {
             removeImage(pathUploads);
         }
         return;
@@ -125,7 +130,7 @@ export const removeImageInUploads = (address) => {
     address.photo.map(el => {
         const pathUploads = path.join(__dirname, `../src/db/uploads/${el === null || el === void 0 ? void 0 : el.image}`);
         const file = existsSync(pathUploads);
-        if (file) {
+        if (file && el.image !== 'default.jpg') {
             removeImage(pathUploads);
         }
     });

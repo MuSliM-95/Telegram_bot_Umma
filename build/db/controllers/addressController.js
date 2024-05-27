@@ -38,11 +38,10 @@ export const addressController = {
             if (!data) {
                 throw new Error("Не предвиденная ошибка при получении данных об адресе");
             }
-            if (!chatId) {
-                res.json(data);
-                return;
+            res.json(data);
+            if (chatId) {
+                addMessageInChat(data, chatId);
             }
-            addMessageInChat(data, chatId);
         }
         catch (error) {
             next(error);

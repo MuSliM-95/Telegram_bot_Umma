@@ -48,10 +48,10 @@ export const chatblock = ({ chatId, block }: ChatTypes) => {
     return keyboard;
   } catch (error) {
     console.log(error);
-  }
+  } 
 };
-
-const pathImage = (params: string) => {
+ 
+const pathImage = (params: string) => { 
   return { source: path.join(__dirname, `../src/db/uploads/${params}`) };
 };
 
@@ -97,7 +97,8 @@ export const addressInfoAdminChat = async (data: Data, id: string) => {
       parse_mode: 'HTML',
       reply_markup: inlineKeyboard,
     });
-
+  
+    
   } catch (error) {
     console.error('Ошибка при отправке фото:', error);
   }
@@ -114,7 +115,7 @@ export const addressInfoUserChat = async (data: Data, id: string): Promise<void>
           ),
         ],
       ],
-    };
+    }; 
 
     const image = readingFs(data)
 
@@ -123,6 +124,7 @@ export const addressInfoUserChat = async (data: Data, id: string): Promise<void>
       parse_mode: 'HTML',
       reply_markup: inlineKeyboard,
     });
+    
 
   } catch (error) {
     console.error('Ошибка при отправке фото:', error);

@@ -19,7 +19,6 @@ export async function sendNewsletter(message, ctx) {
         await ctx.reply('Рассылка окончена. Функция рассылки отключена!', { reply_markup: deleteMailingList(message_ID.message_id) });
     }
     catch (error) {
-        console.log("Ошибка рассылки");
         throw await BadRequest(error);
     }
 }
@@ -37,7 +36,6 @@ export async function deleteNewsletter(ctx) {
         await ctx.reply('Рассылка успешна удалена!');
     }
     catch (error) {
-        console.log("Ошибка при удаления рассылки!", error);
         throw await BadRequest(error);
     }
 }

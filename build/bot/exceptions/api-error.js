@@ -1,7 +1,6 @@
-import { bot } from "../bot-commands/commands.js";
 import { botCommands } from "../bot-service/сommand/getData.js";
 export async function BadRequest(error) {
     botCommands.errors++;
-    return await bot.telegram.sendMessage(process.env.BADREQUEST, `${error.message}`);
+    console.log(error);
 }
 //# sourceMappingURL=api-error.js.map

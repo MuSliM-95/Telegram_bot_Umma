@@ -28,6 +28,5 @@ export const chatUpdate = async (chatId, block) => {
     data.update({ block, chat: false });
     await data.save();
     return data;
-    4;
 };
 //# sourceMappingURL=chat-service.js.map

@@ -33,7 +33,6 @@ export async function sendNewsletter(message: string, ctx: Context): Promise<voi
         await ctx.reply('Рассылка окончена. Функция рассылки отключена!', { reply_markup: deleteMailingList(message_ID.message_id) });
 
     } catch (error) {
-        console.log("Ошибка рассылки");
         throw await BadRequest(error as Error)
     }
 
@@ -52,7 +51,6 @@ export async function deleteNewsletter(ctx: Context): Promise<void> {
         adminCommand.messageidArr = []
         await ctx.reply('Рассылка успешна удалена!'); 
     } catch (error) {
-        console.log("Ошибка при удаления рассылки!", error);
         throw await BadRequest(error as Error)
     }
 }

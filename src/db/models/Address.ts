@@ -2,7 +2,6 @@ import { DataTypes } from "sequelize"
 import { Data } from "../../types/global-types.js"
 import { sequelize } from "../db-start.js"
 
-
 const Address = sequelize.define<Data>("Address", {
 
     region: {
