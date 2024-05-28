@@ -18,7 +18,7 @@ export const keyboardСontainer = (id: string) =>
   Markup.keyboard([
     [Markup.button.webApp('Добавить место', `${process.env.URL}/html/index.html?chatId=${id}`),
     Markup.button.webApp('Посмотреть адреса', `${process.env.URL}/html/maps.html?chatId=${id}`)],
-    [zemaAi, callback],
+    [callback],
     openСhat,
   ]).resize();
 
@@ -26,7 +26,7 @@ export const adminKeyboard = (id: string) =>
   Markup.keyboard([
     [Markup.button.webApp('Добавить место', `${process.env.URL}/html/index.html?chatId=${id}`),
     Markup.button.webApp('Посмотреть адреса', `${process.env.URL}/html/maps.html?chatId=${id}`)],
-    [zemaAi],
+    // [zemaAi],
     [messageAllUsers, callback],
     [info]
 
