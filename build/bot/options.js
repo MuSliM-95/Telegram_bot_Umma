@@ -84,7 +84,11 @@ export const addressInfoUserChat = async (data, id) => {
         const inlineKeyboard = {
             inline_keyboard: [
                 [
-                    Markup.button.webApp('Открыть в Яндекс картах', `https://yandex.ru/maps/?rtext=~${data === null || data === void 0 ? void 0 : data.latitude},${data === null || data === void 0 ? void 0 : data.longitude}`),
+                    Markup.button.webApp('Yandex maps', `https://yandex.ru/maps/?rtext=~${data === null || data === void 0 ? void 0 : data.latitude},${data === null || data === void 0 ? void 0 : data.longitude}`),
+                    Markup.button.webApp('Google maps', `https://www.google.com/maps?daddr=${data === null || data === void 0 ? void 0 : data.latitude},${data === null || data === void 0 ? void 0 : data.longitude}`),
+                ],
+                [
+                    Markup.button.webApp(`Открыть`, `${process.env.URL}/html/address.html?address=${data.id}`),
                 ],
             ],
         };

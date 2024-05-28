@@ -48,10 +48,10 @@ export const chatblock = ({ chatId, block }: ChatTypes) => {
     return keyboard;
   } catch (error) {
     console.log(error);
-  } 
+  }
 };
- 
-const pathImage = (params: string) => { 
+
+const pathImage = (params: string) => {
   return { source: path.join(__dirname, `../src/db/uploads/${params}`) };
 };
 
@@ -97,8 +97,8 @@ export const addressInfoAdminChat = async (data: Data, id: string) => {
       parse_mode: 'HTML',
       reply_markup: inlineKeyboard,
     });
-  
-    
+
+
   } catch (error) {
     console.error('Ошибка при отправке фото:', error);
   }
@@ -110,12 +110,19 @@ export const addressInfoUserChat = async (data: Data, id: string): Promise<void>
       inline_keyboard: [
         [
           Markup.button.webApp(
-            'Открыть в Яндекс картах',
+            'Yandex maps',
             `https://yandex.ru/maps/?rtext=~${data?.latitude},${data?.longitude}`,
           ),
+          Markup.button.webApp(
+            'Google maps',
+            `https://www.google.com/maps?daddr=${data?.latitude},${data?.longitude}`,
+          ),
+        ],
+        [
+          Markup.button.webApp(`Открыть`, `${process.env.URL}/html/address.html?address=${data.id}`),
         ],
       ],
-    }; 
+    };
 
     const image = readingFs(data)
 
@@ -124,7 +131,7 @@ export const addressInfoUserChat = async (data: Data, id: string): Promise<void>
       parse_mode: 'HTML',
       reply_markup: inlineKeyboard,
     });
-    
+
 
   } catch (error) {
     console.error('Ошибка при отправке фото:', error);
