@@ -23,7 +23,7 @@ const corsOptions = {
     optionsSuccessStatus: 204,
 };
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(router);
 app.use(express.static(path.join(__dirname, '../src/db/uploads/')));
 app.use(ErrorMiddleware);

@@ -11,12 +11,14 @@ export const createAddress = async (req, res, next) => {
         const { textarea, name, region, place, city, prayer, address, location, time } = req.body;
         const chatId = req.params.chatId;
         const coordinates = location === null || location === void 0 ? void 0 : location.split(',');
-        const filePhoto = [];
+        const image = { image: "default.jpg" };
+        const filePhoto = [image, image, image];
         if (Array.isArray(req.files)) {
-            req.files.forEach((file) => {
-                filePhoto.push({ image: file.filename });
+            req.files.forEach((file, index) => {
+                filePhoto[index] = { image: file.filename };
             });
         }
+        console.log(filePhoto);
         const data = await Address.create({
             title: name,
             descriptions: textarea || '',

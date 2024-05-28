@@ -5,7 +5,7 @@ export const botCommands = {
   },
   add_address_counter: 0,
   maps_counter: 0,
-  errors: 0
+  errors: 0,
 };
 
 const updateTime = () => {

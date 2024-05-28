@@ -22,6 +22,7 @@ export const message = (bot: Context) => {
 
     bot.on('message', async (ctx: Context) => {
         try {
+            
             const message = ctx.update.message;
             const { message_id, photo, caption, text, location } = message;
             const { id, first_name } = message?.from;

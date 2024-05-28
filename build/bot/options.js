@@ -3,25 +3,26 @@ import path from 'path';
 import { bot } from './bot-commands/commands.js';
 import { __dirname } from '../index.js';
 import { readingFs } from './bot-service/readingFiles/readingFiles.js';
-const callback = [Markup.button.callback('Время молитв', 'Время молитв')];
+const callback = Markup.button.callback('Время молитв', 'Время молитв');
 const prayerButtonlocation = [Markup.button.locationRequest('По геолокации')];
 const prayerButton = [Markup.button.callback('По названию города', 'По названию города')];
 const backButtonHome = Markup.button.callback('На главную', '');
 const openСhat = [Markup.button.text('Написать администратору')];
-const info = [Markup.button.text('Получить данные')];
-const messageAllUsers = [Markup.button.text('Начать рассылку')];
+const info = Markup.button.text('Получить данные');
+const messageAllUsers = Markup.button.text('Начать рассылку');
+const zemaAi = Markup.button.webApp('zema.ai', 'https://zema.ai');
 export const keyboardСontainer = (id) => Markup.keyboard([
-    [Markup.button.webApp('Добавить место', `${process.env.URL}/html/index.html?chatId=${id}`)],
-    [Markup.button.webApp('Посмотреть адреса', `${process.env.URL}/html/maps.html?chatId=${id}`)],
-    callback,
+    [Markup.button.webApp('Добавить место', `${process.env.URL}/html/index.html?chatId=${id}`),
+        Markup.button.webApp('Посмотреть адреса', `${process.env.URL}/html/maps.html?chatId=${id}`)],
+    [zemaAi, callback],
     openСhat,
 ]).resize();
 export const adminKeyboard = (id) => Markup.keyboard([
-    [Markup.button.webApp('Добавить место', `${process.env.URL}/html/index.html?chatId=${id}`)],
-    [Markup.button.webApp('Посмотреть адреса', `${process.env.URL}/html/maps.html?chatId=${id}`)],
-    callback,
-    info,
-    messageAllUsers
+    [Markup.button.webApp('Добавить место', `${process.env.URL}/html/index.html?chatId=${id}`),
+        Markup.button.webApp('Посмотреть адреса', `${process.env.URL}/html/maps.html?chatId=${id}`)],
+    [zemaAi],
+    [messageAllUsers, callback],
+    [info]
 ]).resize();
 export const closeChat = () => Markup.keyboard([[Markup.button.text('Закрыть чат')]]).resize();
 export const prayerKeyboardСontainer = Markup.keyboard([prayerButton, prayerButtonlocation, [backButtonHome]]).resize();
