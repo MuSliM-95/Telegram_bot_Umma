@@ -19,7 +19,8 @@ const PORT = process.env.PORT || 5000
 export const adminCommand: Admin = {
     newsletter: false,
     chat: false,
-    messageidArr: []
+    messageidArr: [],
+    
 } 
 
 const corsOptions = {

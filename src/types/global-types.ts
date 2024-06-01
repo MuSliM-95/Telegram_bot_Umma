@@ -67,5 +67,8 @@ export interface UpdateAddress {
 
 export interface Admin extends MessageData {
   newsletter: boolean,
-  chat: boolean
+  chat: boolean,
+  message_ID?: {
+    message_id:string
+  }
 }

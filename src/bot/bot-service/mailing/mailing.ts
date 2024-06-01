@@ -9,49 +9,79 @@ interface Message_Id {
     message_id: string
 }
 
-export interface MessageData {
-    messageidArr: Array<Message_Id | undefined>
-}
+interface ErrorCopyMessage {
+    on: {
+        payload: {
+            chat_id: string
 
-export async function sendNewsletter(message: string, ctx: Context): Promise<void> {
-    try {
-
-        const chatIdArr = await chatController.getChat();
-        if (!chatIdArr || chatIdArr.length < 0) {
-            return
         }
-
-        adminCommand.messageidArr = []
-        const message_ID = await ctx.reply('Рассылка начата!');
-
-        await Promise.all(chatIdArr.map(async (id, index) => {
-            const messageid = await ctx.copyMessage(id, process.env.CHAT_ID, message)
-            adminCommand.messageidArr[index] = messageid
-        }))
- 
-        adminCommand.newsletter = false
-        await ctx.reply('Рассылка окончена. Функция рассылки отключена!', { reply_markup: deleteMailingList(message_ID.message_id) });
-
-    } catch (error) {
-        throw await BadRequest(error as Error)
     }
 
 }
 
-export async function deleteNewsletter(ctx: Context): Promise<void> {
+export interface MessageData {
+    messageidArr: Array<Message_Id | undefined>
+}
+
+export const sendNewsletter = async (message: string, ctx: Context, index: number = 0): Promise<void> => {
+    try {
+        const chatIdArr = await chatController.getChat();
+
+        if (!chatIdArr || chatIdArr.length < 0) {
+            return
+        }
+
+        if (index === 0) {
+            adminCommand.message_ID = await ctx.reply('Рассылка начата!');
+            adminCommand.messageidArr = []
+        }
+
+        const id = chatIdArr[index]
+
+        if (index < chatIdArr.length) {
+            const messageid = await ctx.copyMessage(id, process.env.CHAT_ID, message)
+            adminCommand.messageidArr[index] = messageid
+            return sendNewsletter(message, ctx, index + 1)
+        }
+
+        adminCommand.newsletter = false
+        await ctx.reply('Рассылка окончена. Функция рассылки отключена!', { reply_markup: deleteMailingList(adminCommand.message_ID!.message_id) });
+    } catch (error) {
+        const err = error as ErrorCopyMessage
+        const chat_id = err.on?.payload.chat_id
+        // console.log(err);
+        return sendNewsletter(message, ctx, index + 1)
+        // throw await BadRequest(error as Error)
+
+        // await chatController.chatRemove(id);
+
+    }
+
+}
+
+export const deleteNewsletter = async (ctx: Context, index: number = 0): Promise<void> => {
     try {
         const chatIdArr = await chatController.getChat();
         if (!chatIdArr || chatIdArr.length < 0) {
             return
         }
 
-        await Promise.all(chatIdArr.map(async (id, index) => {
+        const id = chatIdArr[index]
+
+        if (index < chatIdArr.length) {
             await bot.telegram.deleteMessage(id, +adminCommand.messageidArr[index]?.message_id!)
-        }))
+            return deleteNewsletter(ctx, index + 1)
+
+        }
+
         adminCommand.messageidArr = []
-        await ctx.reply('Рассылка успешна удалена!'); 
+        await ctx.reply('Рассылка успешна удалена!');
     } catch (error) {
-        throw await BadRequest(error as Error)
+        const err = error as ErrorCopyMessage
+        const chat_id = err.on.payload.chat_id
+        console.log(chat_id);
+        return deleteNewsletter(ctx, index + 1)
+        // throw await BadRequest(error as Error)
     }
 }
 

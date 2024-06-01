@@ -14,13 +14,12 @@ const zemaAi = Markup.button.webApp('zema.ai', 'https://zema.ai');
 export const keyboardСontainer = (id) => Markup.keyboard([
     [Markup.button.webApp('Добавить место', `${process.env.URL}/html/index.html?chatId=${id}`),
         Markup.button.webApp('Посмотреть адреса', `${process.env.URL}/html/maps.html?chatId=${id}`)],
-    [zemaAi, callback],
+    [callback],
     openСhat,
 ]).resize();
 export const adminKeyboard = (id) => Markup.keyboard([
     [Markup.button.webApp('Добавить место', `${process.env.URL}/html/index.html?chatId=${id}`),
         Markup.button.webApp('Посмотреть адреса', `${process.env.URL}/html/maps.html?chatId=${id}`)],
-    [zemaAi],
     [messageAllUsers, callback],
     [info]
 ]).resize();

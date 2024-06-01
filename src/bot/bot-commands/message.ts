@@ -22,7 +22,8 @@ export const message = (bot: Context) => {
 
     bot.on('message', async (ctx: Context) => {
         try {
-            
+            console.log(adminCommand.newsletter);
+
             const message = ctx.update.message;
             const { message_id, photo, caption, text, location } = message;
             const { id, first_name } = message?.from;
@@ -31,7 +32,7 @@ export const message = (bot: Context) => {
             const timestamp = ctx.update.message.date;
 
             let chat = await chatController.getChatId(id);
-            
+
             if (text) {
                 var [idAddress, params] = text?.split(':');
             }
@@ -98,11 +99,14 @@ export const message = (bot: Context) => {
 
             if (text === 'Начать рассылку') {
                 adminCommand.newsletter = true
+                console.log(adminCommand.newsletter);
                 return
             }
 
             if (adminCommand.newsletter) {
                 await sendNewsletter(message_id, ctx);
+                adminCommand.newsletter = false
+                return
             }
 
 

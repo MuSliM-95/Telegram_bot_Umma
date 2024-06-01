@@ -15,6 +15,7 @@ export const message = (bot) => {
     bot.on('message', async (ctx) => {
         var _a, _b;
         try {
+            console.log(adminCommand.newsletter);
             const message = ctx.update.message;
             const { message_id, photo, caption, text, location } = message;
             const { id, first_name } = message === null || message === void 0 ? void 0 : message.from;
@@ -70,10 +71,13 @@ export const message = (bot) => {
             }
             if (text === 'Начать рассылку') {
                 adminCommand.newsletter = true;
+                console.log(adminCommand.newsletter);
                 return;
             }
             if (adminCommand.newsletter) {
                 await sendNewsletter(message_id, ctx);
+                adminCommand.newsletter = false;
+                return;
             }
             if (id == process.env.CHAT_ID && !replyIdChat && adminCommand.chat) {
                 const chat = await chatController.getChatFirst_name(text);
