@@ -103,7 +103,7 @@ export const message = (bot: Context) => {
                 return
             }
 
-            if (adminCommand.newsletter) {
+            if (adminCommand.newsletter && id == process.env.CHAT_ID) {
                 await sendNewsletter(message_id, ctx);
                 adminCommand.newsletter = false
                 return

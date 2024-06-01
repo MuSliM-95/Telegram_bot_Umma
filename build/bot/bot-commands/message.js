@@ -74,7 +74,7 @@ export const message = (bot) => {
                 console.log(adminCommand.newsletter);
                 return;
             }
-            if (adminCommand.newsletter) {
+            if (adminCommand.newsletter && id == process.env.CHAT_ID) {
                 await sendNewsletter(message_id, ctx);
                 adminCommand.newsletter = false;
                 return;
