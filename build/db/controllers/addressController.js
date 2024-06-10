@@ -23,7 +23,8 @@ export const addressController = {
         try {
             const data = await Address.findOne({ where: { id: Id } });
             if (!data) {
-                throw new Error("Адрес не найден");
+                await bot.telegram.sendMessage(process.env.CHAT_ID, "Адрес не найден");
+                return;
             }
             await addressInfoAdminChat(data, chatId);
         }
@@ -36,7 +37,7 @@ export const addressController = {
         try {
             const data = await Address.findOne({ where: { id: addressId } });
             if (!data) {
-                throw new Error("Не предвиденная ошибка при получении данных об адресе");
+                throw new Error(`Не предвиденная ошибка при получении данных об адресе`);
             }
             res.json(data);
             if (chatId) {

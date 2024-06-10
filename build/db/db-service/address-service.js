@@ -18,7 +18,6 @@ export const createAddress = async (req, res, next) => {
                 filePhoto[index] = { image: file.filename };
             });
         }
-        console.log(filePhoto);
         const data = await Address.create({
             title: name,
             descriptions: textarea || '',
@@ -75,9 +74,6 @@ export const addressUpdate = async (req, res, next) => {
                     removeImageInUploads(data.photo[index].image);
                 }
             });
-        }
-        if (chatId !== process.env.CHAT_ID) {
-            throw new Error("У вас нет доступа, для изменения адреса");
         }
         data.update({
             title: name,

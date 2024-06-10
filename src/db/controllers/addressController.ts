@@ -10,7 +10,7 @@ import { BadRequest } from '../../bot/exceptions/api-error.js';
 
 export const addressController = {
   postData: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    await createAddress(req, res, next)    
+    await createAddress(req, res, next)
     res.json('Данные сохранены');
   },
 
@@ -29,9 +29,9 @@ export const addressController = {
     try {
       const data = await Address.findOne({ where: { id: Id } });
       if (!data) {
-        throw new Error("Адрес не найден")
+        await bot.telegram.sendMessage(process.env.CHAT_ID!, "Адрес не найден")
+        return
       }
-
       await addressInfoAdminChat(data, chatId);
     } catch (error) {
       throw await BadRequest(error as Error)
@@ -43,15 +43,15 @@ export const addressController = {
     try {
       const data = await Address.findOne({ where: { id: addressId } });
       if (!data) {
-        throw new Error("Не предвиденная ошибка при получении данных об адресе")
+        throw new Error(`Не предвиденная ошибка при получении данных об адресе`)
       }
 
       res.json(data)
 
-      if(chatId) {
+      if (chatId) {
         addMessageInChat(data, chatId)
       }
-      
+
     } catch (error) {
       next(error)
     }
@@ -75,7 +75,7 @@ export const addressController = {
 
   updateAddress: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { chatId, addressId } = req.params
-    
+
     const address = await addressUpdate(req, res, next)
 
     await addressInfoAdminChat(address!, chatId);
