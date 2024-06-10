@@ -24,10 +24,6 @@ export const createAddress = async (req: Request, res: Response, next: NextFunct
       });
     }
 
-
-    console.log(filePhoto);
-    
-
     const data = await Address.create({
       title: name,
       descriptions: textarea || '',
@@ -98,10 +94,6 @@ export const addressUpdate = async (req: Request, res: Response, next: NextFunct
         }
 
       })
-    }
-
-    if (chatId !== process.env.CHAT_ID) {
-      throw new Error("У вас нет доступа, для изменения адреса")
     }
 
     data.update({

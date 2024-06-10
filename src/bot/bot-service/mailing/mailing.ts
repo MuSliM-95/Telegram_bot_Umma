@@ -53,7 +53,7 @@ export const sendNewsletter = async (message: string, ctx: Context, index: numbe
         return sendNewsletter(message, ctx, index + 1)
         // throw await BadRequest(error as Error)
 
-        // await chatController.chatRemove(id);
+        await chatController.chatRemove(chat_id);
 
     }
 

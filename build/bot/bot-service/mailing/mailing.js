@@ -26,6 +26,7 @@ export const sendNewsletter = async (message, ctx, index = 0) => {
         const err = error;
         const chat_id = (_a = err.on) === null || _a === void 0 ? void 0 : _a.payload.chat_id;
         return sendNewsletter(message, ctx, index + 1);
+        await chatController.chatRemove(chat_id);
     }
 };
 export const deleteNewsletter = async (ctx, index = 0) => {

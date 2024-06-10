@@ -15,7 +15,6 @@ export const message = (bot) => {
     bot.on('message', async (ctx) => {
         var _a, _b;
         try {
-            console.log(adminCommand.newsletter);
             const message = ctx.update.message;
             const { message_id, photo, caption, text, location } = message;
             const { id, first_name } = message === null || message === void 0 ? void 0 : message.from;
