@@ -1,6 +1,6 @@
 import Address from "../models/Address.js";
 import { addressInfoAdminChat, addressInfoUserChat } from "../../bot/options.js";
-import { botCommands } from "../../bot/bot-service/сommand/getData.js";
+import { botCommands } from "../../bot/bot-service/command/getData.js";
 import { bot } from "../../bot/bot-commands/commands.js";
 import { removeImage } from "../../bot/bot-service/readingFiles/readingFiles.js";
 import path from "path";

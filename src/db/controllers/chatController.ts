@@ -21,6 +21,7 @@ export const chatController = {
 
     addChat: async (chatParams: ChatTypes): Promise<ChatTypes | undefined> => {
         try {
+            
             const chat = await createChat(chatParams)
 
             return chat

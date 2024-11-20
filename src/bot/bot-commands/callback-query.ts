@@ -1,6 +1,6 @@
 import { Context } from "vm";
 import { addressController } from "../../db/controllers/addressController.js";
-import { deleteMessage } from "../bot-service/сommand/delete-message.js";
+import { deleteMessage } from "../bot-service/command/delete-message.js";
 import { ChatTypes } from "../../types/global-types.js";
 import { chatController } from "../../db/controllers/chatController.js";
 import { deleteNewsletter } from "../bot-service/mailing/mailing.js";

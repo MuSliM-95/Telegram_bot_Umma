@@ -7,6 +7,7 @@ export const createChat = async (params: ChatTypes) => {
     const getChat = await Chat.findOne({ where: { chatId } })
 
     if (!getChat) {
+        
         const data = await Chat.create({
             first_name,
             chatId,

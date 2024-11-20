@@ -23,7 +23,9 @@ const Chat = sequelize.define<ChatTypes>("Chat", {
     },
     
 }, {
-    timestamps: false
+    timestamps: false,
+    charset: 'utf8mb4',
+    collate: 'utf8mb4_general_ci'
 })
 
 Chat.sync()

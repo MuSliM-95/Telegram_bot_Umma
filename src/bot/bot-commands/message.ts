@@ -2,7 +2,7 @@ import { Context } from "vm";
 import { chatController } from "../../db/controllers/chatController.js";
 import rgx from "../bot-service/regExp/regExp.js";
 import { prayerTime, prayerTimeCity } from "../bot-asyncs/fetch.js";
-import { botCommands } from "../bot-service/сommand/getData.js";
+import { botCommands } from "../bot-service/command/getData.js";
 import { addressController } from "../../db/controllers/addressController.js";
 import { adminKeyboard, chatblock, closeChat, keyboardСontainer, prayerKeyboardСontainer } from "../options.js";
 import { ChatTypes } from "../../types/global-types.js";

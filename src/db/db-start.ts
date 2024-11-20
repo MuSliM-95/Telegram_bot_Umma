@@ -5,7 +5,14 @@ export const sequelize = new Sequelize(process.env.DB_NAME!, process.env.USER_DB
     dialect: "mysql",
     logging: false,
     port: Number(process.env.DB_PORT!),
-
+    dialectOptions: {
+        charset: 'utf8mb4',
+    },
+    define: {
+        charset: 'utf8mb4',
+        collate: 'utf8mb4_unicode_ci',
+    }
+    
 });
 
 export const connect = async (): Promise<void> => {

@@ -61,7 +61,7 @@ export const addressController = {
     try {
       const address = await Address.findOne({ where: { id: addressId } });
       if (!address) {
-        throw new Error("Не предвиденная ошибка при попытке удалить адрес")
+        throw new Error("Не предвиденная ошибка при попытке удалить адрес. Возможно адрес был ране вами удален.")
       }
 
       removeImageInUploads(address)
@@ -80,6 +80,7 @@ export const addressController = {
 
     await addressInfoAdminChat(address!, chatId);
   },
+  
 
   getInfo: async (): Promise<void> => {
     try {

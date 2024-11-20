@@ -19,7 +19,9 @@ const Chat = sequelize.define("Chat", {
         defaultValue: false,
     },
 }, {
-    timestamps: false
+    timestamps: false,
+    charset: 'utf8mb4',
+    collate: 'utf8mb4_general_ci'
 });
 Chat.sync();
 export default Chat;

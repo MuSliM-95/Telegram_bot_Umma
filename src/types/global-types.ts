@@ -22,6 +22,7 @@ export interface Data extends Model<InferAttributes<Data>, InferCreationAttribut
   address: string;
   time: string;
 }
+
 export interface File {
   filename: string;
 }

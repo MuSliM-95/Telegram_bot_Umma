@@ -8,6 +8,7 @@ import "./db/db-start.js"
 import { start } from "./bot/bot-commands/commands.js";
 import { ErrorMiddleware } from "./db/middlewares/error-middleware.js";
 import { Admin } from "./types/global-types.js";
+import helmet from 'helmet';
  
 
 const __filename = fileURLToPath(import.meta.url);
@@ -32,6 +33,7 @@ const corsOptions = {
 
 
 app.use(express.json());
+app.use(helmet())
 app.use(cors(corsOptions));
 app.use(router)
 app.use(express.static(path.join(__dirname, '../src/db/uploads/')))

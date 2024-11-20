@@ -7,7 +7,7 @@ export const startCommand = (bot: Context) => {
     bot.start(async (ctx: Context) => {
         const id = ctx.update.message.chat.id
         const name = ctx.update.message.chat.first_name
-
+        
         await ctx.replyWithHTML(
             infoText(),
             id == process.env.CHAT_ID! ? adminKeyboard(id) : keyboardСontainer(id),
