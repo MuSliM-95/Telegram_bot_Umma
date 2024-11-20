@@ -32,9 +32,9 @@ export const createAddress = async (req, res, next) => {
             time,
         });
         if (chatId && process.env.CHAT_ID !== chatId) {
-            addressInfoAdminChat(data, chatId);
+            await addressInfoAdminChat(data, chatId);
         }
-        addressInfoAdminChat(data, process.env.CHAT_ID);
+        await addressInfoAdminChat(data, process.env.CHAT_ID);
         botCommands.add_address_counter++;
     }
     catch (error) {

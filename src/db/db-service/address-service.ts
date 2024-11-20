@@ -39,9 +39,9 @@ export const createAddress = async (req: Request, res: Response, next: NextFunct
     });
 
     if (chatId && process.env.CHAT_ID !== chatId) {
-      addressInfoAdminChat(data, chatId);
+     await addressInfoAdminChat(data, chatId);
     }
-    addressInfoAdminChat(data, process.env.CHAT_ID!);
+     await  addressInfoAdminChat(data, process.env.CHAT_ID!);
 
     botCommands.add_address_counter++
 

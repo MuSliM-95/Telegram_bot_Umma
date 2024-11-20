@@ -10,8 +10,8 @@ import { BadRequest } from '../../bot/exceptions/api-error.js';
 
 export const addressController = {
   postData: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    await createAddress(req, res, next)
-    res.json('Данные сохранены');
+      await createAddress(req, res, next)
+      res.json('Данные сохранены');  
   },
 
   getAddresses: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -21,6 +21,7 @@ export const addressController = {
 
       res.json(address);
     } catch (error) {
+      console.log('getAddresses');
       next(error)
     }
   },
@@ -34,6 +35,8 @@ export const addressController = {
       }
       await addressInfoAdminChat(data, chatId);
     } catch (error) {
+      console.log('getAddressId');
+      
       throw await BadRequest(error as Error)
     }
   },
@@ -53,6 +56,7 @@ export const addressController = {
       }
 
     } catch (error) {
+      console.log('getClientInfo');
       next(error)
     }
   },
@@ -69,16 +73,20 @@ export const addressController = {
       await bot.telegram.sendMessage(ChatId, 'Адрес удален');
 
     } catch (error) {
+      console.log('deleteAddress');
+      
       throw await BadRequest(error as Error)
     }
   },
 
   updateAddress: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const { chatId, addressId } = req.params
 
-    const address = await addressUpdate(req, res, next)
-
-    await addressInfoAdminChat(address!, chatId);
+      const { chatId, addressId } = req.params
+  
+      const address = await addressUpdate(req, res, next)
+  
+      await addressInfoAdminChat(address!, chatId);
+  
   },
   
 
@@ -89,6 +97,7 @@ export const addressController = {
 
       await sendMessages(address, users)
     } catch (error) {
+      console.log('getInfo');  
       throw await BadRequest(error as Error)
     }
   },

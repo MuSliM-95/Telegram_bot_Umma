@@ -10,7 +10,6 @@ const backButtonHome = Markup.button.callback('На главную', '');
 const openСhat = [Markup.button.text('Написать администратору')];
 const info = Markup.button.text('Получить данные');
 const messageAllUsers = Markup.button.text('Начать рассылку');
-const zemaAi = Markup.button.webApp('zema.ai', 'https://zema.ai');
 export const keyboardСontainer = (id) => Markup.keyboard([
     [Markup.button.webApp('Добавить место', `${process.env.URL}/html/index.html?chatId=${id}`),
         Markup.button.webApp('Посмотреть адреса', `${process.env.URL}/html/maps.html?chatId=${id}`)],

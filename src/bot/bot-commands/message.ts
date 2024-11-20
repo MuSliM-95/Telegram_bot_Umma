@@ -97,7 +97,6 @@ export const message = (bot: Context) => {
 
             if (text === 'Начать рассылку') {
                 adminCommand.newsletter = true
-                console.log(adminCommand.newsletter);
                 return
             }
 

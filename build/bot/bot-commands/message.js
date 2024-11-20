@@ -70,7 +70,6 @@ export const message = (bot) => {
             }
             if (text === 'Начать рассылку') {
                 adminCommand.newsletter = true;
-                console.log(adminCommand.newsletter);
                 return;
             }
             if (adminCommand.newsletter && id == process.env.CHAT_ID) {

@@ -12,7 +12,6 @@ const backButtonHome = Markup.button.callback('На главную', '');
 const openСhat = [Markup.button.text('Написать администратору')];
 const info = Markup.button.text('Получить данные');
 const messageAllUsers = Markup.button.text('Начать рассылку')
-const zemaAi = Markup.button.webApp('zema.ai', 'https://zema.ai')
 
 export const keyboardСontainer = (id: string) =>
   Markup.keyboard([
@@ -26,7 +25,6 @@ export const adminKeyboard = (id: string) =>
   Markup.keyboard([
     [Markup.button.webApp('Добавить место', `${process.env.URL}/html/index.html?chatId=${id}`),
     Markup.button.webApp('Посмотреть адреса', `${process.env.URL}/html/maps.html?chatId=${id}`)],
-    // [zemaAi],
     [messageAllUsers, callback],
     [info]
 
@@ -69,7 +67,7 @@ const caption = (params: Data) => {
   );
 };
 
-export const addressInfoAdminChat = async (data: Data, id: string) => {
+export const addressInfoAdminChat = async (data: Data, id: string): Promise<void> => {
   try {
     const inlineKeyboard = {
       inline_keyboard: [

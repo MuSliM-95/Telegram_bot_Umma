@@ -9,6 +9,7 @@ export const deleteMessage = async (ctx, message) => {
         await ctx.deleteMessage(messageId);
     }
     catch (error) {
+        console.log('deleteMessage');
         throw await BadRequest(error);
     }
 };
@@ -26,6 +27,7 @@ export const deleteMessageSetTimeOut = async (ctx, message) => {
         }, 20000);
     }
     catch (error) {
+        console.log('deleteMessageSetTimeOut');
         throw await BadRequest(error);
     }
 };
