@@ -10,7 +10,6 @@ import { ErrorMiddleware } from "./db/middlewares/error-middleware.js";
 import { Admin } from "./types/global-types.js";
 import helmet from 'helmet';
  
-
 const __filename = fileURLToPath(import.meta.url);
 export const __dirname = path.dirname(__filename);
 
@@ -21,7 +20,6 @@ export const adminCommand: Admin = {
     newsletter: false,
     chat: false,
     messageidArr: [],
-    
 } 
 
 const corsOptions = {
@@ -37,6 +35,11 @@ app.use(helmet())
 app.use(cors(corsOptions));
 app.use(router)
 app.use(express.static(path.join(__dirname, '../src/db/uploads/')))
+app.use((req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+    console.log('Headers:', req.headers);
+    next();
+});
 app.use(ErrorMiddleware)
 
 

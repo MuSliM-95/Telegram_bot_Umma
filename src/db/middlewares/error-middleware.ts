@@ -9,3 +9,4 @@ export async function ErrorMiddleware(err: Error) {
         return await  BadRequest(err)
     }
 }
+

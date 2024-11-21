@@ -7,7 +7,6 @@ import { bot } from '../../bot/bot-commands/commands.js';
 import { addMessageInChat, addressUpdate, createAddress, filterAddresses, removeImageInUploads, sendMessages } from '../db-service/address-service.js';
 import { BadRequest } from '../../bot/exceptions/api-error.js';
 
-
 export const addressController = {
   postData: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
       await createAddress(req, res, next)
@@ -21,7 +20,6 @@ export const addressController = {
 
       res.json(address);
     } catch (error) {
-      console.log('getAddresses');
       next(error)
     }
   },
@@ -35,8 +33,6 @@ export const addressController = {
       }
       await addressInfoAdminChat(data, chatId);
     } catch (error) {
-      console.log('getAddressId');
-      
       throw await BadRequest(error as Error)
     }
   },
@@ -56,7 +52,6 @@ export const addressController = {
       }
 
     } catch (error) {
-      console.log('getClientInfo');
       next(error)
     }
   },
@@ -73,8 +68,6 @@ export const addressController = {
       await bot.telegram.sendMessage(ChatId, 'Адрес удален');
 
     } catch (error) {
-      console.log('deleteAddress');
-      
       throw await BadRequest(error as Error)
     }
   },
@@ -97,7 +90,6 @@ export const addressController = {
 
       await sendMessages(address, users)
     } catch (error) {
-      console.log('getInfo');  
       throw await BadRequest(error as Error)
     }
   },

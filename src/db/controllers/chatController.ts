@@ -15,7 +15,6 @@ export const chatController = {
             const id = chatId.map(el => el.chatId)
             return id
         } catch (error) {
-            console.log('getChat');
             throw await BadRequest(error as Error)
         }
     },
@@ -28,7 +27,6 @@ export const chatController = {
             return chat
 
         } catch (error) {
-            console.log('addChat');
             throw await BadRequest(error as Error)
         }
     },
@@ -43,7 +41,6 @@ export const chatController = {
             return data
 
         } catch (error) {
-            console.log('getChatId');
             throw await BadRequest(error as Error)
         }
     },
@@ -57,7 +54,6 @@ export const chatController = {
 
             return data
         } catch (error) {
-            console.log('getChatFirst_name');
             throw await BadRequest(error as Error)
         }
     },
@@ -69,7 +65,6 @@ export const chatController = {
 
             return data.block
         } catch (error) {
-            console.log('updateChat');
             throw await BadRequest(error as Error)
         }
     },
@@ -83,7 +78,6 @@ export const chatController = {
             })
 
         } catch (error) {
-            console.log('chatRemove');
             throw await BadRequest(error as Error)
         }
     }
