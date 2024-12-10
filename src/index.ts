@@ -37,7 +37,8 @@ app.use(router)
 app.use(express.static(path.join(__dirname, '../src/db/uploads/')))
 app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
-    console.log('Headers:', req.headers);
+    // console.log('Headers:', req.headers);
+    console.log(req.hostname)
     next();
 });
 app.use(ErrorMiddleware)
