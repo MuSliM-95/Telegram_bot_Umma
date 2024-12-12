@@ -39,7 +39,7 @@ app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
     console.log(`Request from IP: ${req.ip}, Referrer: ${req.headers['referer'] || 'No referrer'}`);
     // console.log('Headers:', req.headers);
-    console.log(req.url)
+    console.log(req.hostname)
     next();
 });
 app.use(ErrorMiddleware)
