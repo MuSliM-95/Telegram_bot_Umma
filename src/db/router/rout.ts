@@ -10,4 +10,5 @@ router.patch("/address/:chatId/:addressId",  upload.array("photo[]", 3),  addres
 router.get("/addresses/:jsonLocation",  addressController.getAddresses) 
 router.get("/address/:addressId/:chatId?",  addressController.getClientInfo) 
 
+
 export default router

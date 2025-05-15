@@ -16,7 +16,6 @@ export const addressController = {
             res.json(address);
         }
         catch (error) {
-            console.log('getAddresses');
             next(error);
         }
     },
@@ -30,7 +29,6 @@ export const addressController = {
             await addressInfoAdminChat(data, chatId);
         }
         catch (error) {
-            console.log('getAddressId');
             throw await BadRequest(error);
         }
     },
@@ -47,7 +45,6 @@ export const addressController = {
             }
         }
         catch (error) {
-            console.log('getClientInfo');
             next(error);
         }
     },
@@ -62,7 +59,6 @@ export const addressController = {
             await bot.telegram.sendMessage(ChatId, 'Адрес удален');
         }
         catch (error) {
-            console.log('deleteAddress');
             throw await BadRequest(error);
         }
     },
@@ -78,7 +74,6 @@ export const addressController = {
             await sendMessages(address, users);
         }
         catch (error) {
-            console.log('getInfo');
             throw await BadRequest(error);
         }
     },
